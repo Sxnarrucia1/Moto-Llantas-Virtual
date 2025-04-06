@@ -7,59 +7,76 @@
         <meta charset="UTF-8"/>
     </head>
     <body>
+        <section th:fragment="logo" class="bg-custom">
+            <div class="container px-5">
+                <div class="row gx-5 align-items-center justify-content-center">
+                    <div class="col-lg-8 col-xl-7 col-xxl-6">
+                        <div class="my-5 text-center text-xl-start">
+                            <h1 class="display-5 fw-bolder text-white mb-2">Moto Llantas Virtual</h1>
+                            <p class="lead fw-normal text-white-50 mb-4">Todo lo que necesitas para tu motocicleta, contamos con taller de instalación y envíos a todo el país.</p>
+                            <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
+                                <a class="btn btn-custom-primary-y btn-lg px-4 me-sm-3" href="#features">Servicios</a>
+                                <a class="btn btn-custom-outline-light btn-lg px-4" th:href="@{/about}">Sobre Nosotros</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-5 col-xxl-6 d-none d-xl-block text-center"><img class="img-fluid rounded-3 my-5" src="/img/motollantaslogo.png" alt="Logo Moto Llantas" /></div>
+                </div>
+            </div>
+        </section>
         <section th:fragment="features" class="py-5" id="features">
             <div class="container px-5 my-5">
                 <div class="row gx-5">
-                    <div class="col-lg-4 mb-5 mb-lg-0"><h2 class="fw-bolder mb-0">A better way to start building.</h2></div>
+                    <div class="col-lg-4 mb-5 mb-lg-0"><h2 class="fw-bolder mb-0">Cuida de tu moto con los mejores.</h2></div>
                     <div class="col-lg-8">
                         <div class="row gx-5 row-cols-1 row-cols-md-2">
                             <div class="col mb-5 h-100">
-                                <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-collection"></i></div>
-                                <h2 class="h5">Featured title</h2>
-                                <p class="mb-0">Paragraph of text beneath the heading to explain the heading. Here is just a bit more text.</p>
+                                <div class="feature bg-feature text-black rounded-3 mb-3"><i class="bi bi-wrench"></i></div>
+                                <h2 class="h5">Mantenimiento Preventivo</h2>
+                                <p class="mb-0">Cuida de tu motocicleta realizando mantenimientos preventivos, contamos con todos los insumos necesarios.</p>
                             </div>
                             <div class="col mb-5 h-100">
-                                <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-building"></i></div>
-                                <h2 class="h5">Featured title</h2>
-                                <p class="mb-0">Paragraph of text beneath the heading to explain the heading. Here is just a bit more text.</p>
+                                <div class="feature bg-feature text-black rounded-3 mb-3"><i class="bi bi-tools"></i></div>
+                                <h2 class="h5">Reparaciones</h2>
+                                <p class="mb-0">¿Necesitás de alguna reparación para tu motocicleta? No te preocupés acá te ayudamos.</p>
                             </div>
                             <div class="col mb-5 mb-md-0 h-100">
-                                <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-toggles2"></i></div>
-                                <h2 class="h5">Featured title</h2>
-                                <p class="mb-0">Paragraph of text beneath the heading to explain the heading. Here is just a bit more text.</p>
+                                <div class="feature bg-feature bg-gradient text-black rounded-3 mb-3"><i class="bi bi-cash"></i></div>
+                                <h2 class="h5">Cambio de Llantas</h2>
+                                <p class="mb-0">Tu motocicleta merece lo mejor, por eso contamos con las mejores llantas del mercado y a excelentes precios.</p>
                             </div>
                             <div class="col h-100">
-                                <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-toggles2"></i></div>
-                                <h2 class="h5">Featured title</h2>
-                                <p class="mb-0">Paragraph of text beneath the heading to explain the heading. Here is just a bit more text.</p>
+                                <div class="feature bg-feature bg-gradient text-black rounded-3 mb-3"><i class="bi bi-bag-plus"></i></div>
+                                <h2 class="h5">Accesorios y complementos</h2>
+                                <p class="mb-0">Dale ese toque personalizado a tu motocicleta con nuestra amplia variedad de accesorios, no solo tenemos para tu moto sino también para vos.</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-        <!-- Testimonial section-->
-        <div class="py-5 bg-light">
-            <div class="container px-5 my-5">
-                <div class="row gx-5 justify-content-center">
-                    <div class="col-lg-10 col-xl-7">
-                        <div class="text-center">
-                            <div class="fs-4 mb-4 fst-italic">"Working with Start Bootstrap templates has saved me tons of development time when building new projects! Starting with a Bootstrap template just makes things easier!"</div>
-                            <div class="d-flex align-items-center justify-content-center">
-                                <img class="rounded-circle me-3" src="https://dummyimage.com/40x40/ced4da/6c757d" alt="..." />
-                                <div class="fw-bold">
-                                    Tom Ato
-                                    <span class="fw-bold text-primary mx-1">/</span>
-                                    CEO, Pomodoro
+            <!-- Testimonial section-->
+            <div class="py-5 bg-light">
+                <div class="container px-5 my-5">
+                    <div class="row gx-5 justify-content-center">
+                        <div class="col-lg-10 col-xl-7">
+                            <div class="text-center">
+                                <div class="fs-4 mb-4 fst-italic">"Working with Start Bootstrap templates has saved me tons of development time when building new projects! Starting with a Bootstrap template just makes things easier!"</div>
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <img class="rounded-circle me-3" src="https://dummyimage.com/40x40/ced4da/6c757d" alt="..." />
+                                    <div class="fw-bold">
+                                        Tom Ato
+                                        <span class="fw-bold text-primary mx-1">/</span>
+                                        CEO, Pomodoro
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
         <!-- Blog preview section-->
-        <section th:fragment="testimonios" class="py-5">
+        <section th:fragment="testimonios" class="py-1">
             <div class="container px-5 my-5">
                 <div class="row gx-5 justify-content-center">
                     <div class="col-lg-8 col-xl-6">

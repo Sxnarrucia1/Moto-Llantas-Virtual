@@ -13,10 +13,25 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 @Controller
 public class HomeController {
-    
+
     @GetMapping("/")
-    public String home(){
+    public String home() {
         return "index";
     }
-    
+
+    @GetMapping("/about")
+    public String about() {
+        return "about";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login/login";
+    }
+
+    @GetMapping("/register")
+    public String register() {
+        return "login/register";
+    }
+
 }

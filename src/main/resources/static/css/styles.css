@@ -1,15 +1,4 @@
 @charset "UTF-8";
-/*!
-* Start Bootstrap - Modern Business v5.0.7 (https://startbootstrap.com/template-overviews/modern-business)
-* Copyright 2013-2023 Start Bootstrap
-* Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-modern-business/blob/master/LICENSE)
-*/
-/*!
- * Bootstrap  v5.2.3 (https://getbootstrap.com/)
- * Copyright 2011-2022 The Bootstrap Authors
- * Copyright 2011-2022 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
- */
 :root {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
@@ -10848,3 +10837,56 @@ html {
 }.header {
 
 }
+
+.bg-feature {
+    background-color: #FED14A;
+}
+
+.btn-custom-primary-y {
+    background-color: #FED14A;
+    border-color: #FED14A;
+    color: black;
+}
+
+.btn-custom-outline-light {
+    background-color: transparent;
+    border-color: #DDDDDF;
+    color: #DDDDDF;
+}
+
+.btn-custom-outline-light:hover {
+    background-color: #DDDDDF;
+    color: black;
+}
+
+.btn-custom-primary-y:hover {
+    background-color: #E5B93F;
+    border-color: #E5B93F;
+    color: black;
+}
+
+.bg-custom {
+    background-color: #5F5E5D;
+}
+.navbar-custom {
+    background-color: #5F5E5D;
+}
+
+.gradient-custom-2 {
+/* fallback for old browsers */
+background: #F47808;
+}
+
+.btn-outline-custom{
+    background-color: transparent;
+    border-color: #F47808;
+    color: #F47808;
+}
+
+.btn-outline-custom:hover {
+    background-color: #F47808;
+    border-color: #F47808;
+    color: white;
+}
+
+
