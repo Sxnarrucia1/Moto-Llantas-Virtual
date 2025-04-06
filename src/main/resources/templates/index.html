@@ -2,19 +2,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       >
-    <head th:replace="~{layout/plantilla :: head}">
+    <head th:replace="~{layout/layout :: head}">
         <title>Moto Llantas</title>
         <meta charset="UTF-8"/>
     </head>
     <body>
-        <header th:replace="~{layout/plantilla :: header}"/>
+        <header th:replace="~{layout/layout :: header}"/>
 
-        <section th:replace="~{landing/fragmentos :: logo}"/>
+        <section th:replace="~{landing/fragments :: logo}"/>
 
-        <section th:replace="~{landing/fragmentos :: features}"/>
+        <section th:replace="~{landing/fragments :: features}"/>
 
-        <section th:replace="~{landing/fragmentos :: testimonios}"/>
+        <section th:replace="~{landing/fragments :: testimonios}"/>
 
-        <footer th:replace="~{layout/plantilla :: footer}"/>
+        <footer th:replace="~{layout/layout :: footer}"/>
     </body>
 </html>

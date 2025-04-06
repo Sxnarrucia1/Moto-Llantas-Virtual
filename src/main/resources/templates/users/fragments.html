@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      >
+    <head th:replace="~{layout/layout :: head}">
+        <link rel="stylesheet" href="css/styles.css" type="text/css"/>
+        <title>Taller Llantas</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        <section th:fragment="users">
+            <div class="container mt-5">
+                <h2>Lista de Empleados</h2>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Cédula</th>
+                            <th>Nombre</th>
+                            <th>Teléfono</th>
+                            <th>Correo Electrónico</th>
+                            <th>Fecha Contratación</th>
+                            <th>Salario</th>
+                            <th>Rol</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>12345678</td>
+                            <td>Juan Pérez</td>
+                            <td>+506 1234 5678</td>
+                            <td>juan.perez@example.com</td>
+                            <td>01/01/2020</td>
+                            <td>$1,500</td>
+                            <td>Administrador</td>
+                            <td>Activo</td>
+                            <td>
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editEmployeeModal">Editar</button>
+                                <button class="btn btn-danger">Eliminar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>87654321</td>
+                            <td>María Gómez</td>
+                            <td>+506 8765 4321</td>
+                            <td>maria.gomez@example.com</td>
+                            <td>15/03/2019</td>
+                            <td>$1,200</td>
+                            <td>Mecánico</td>
+                            <td>Activo</td>
+                            <td>
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editEmployeeModal">Editar</button>
+                                <button class="btn btn-danger">Eliminar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>11223344</td>
+                            <td>Carlos Rodríguez</td>
+                            <td>+506 1122 3344</td>
+                            <td>carlos.rodriguez@example.com</td>
+                            <td>10/07/2018</td>
+                            <td>$1,800</td>
+                            <td>Bodeguero</td>
+                            <td>Inactivo</td>
+                            <td>
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editEmployeeModal">Editar</button>
+                                <button class="btn btn-danger">Eliminar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>22334455</td>
+                            <td>Laura Martínez</td>
+                            <td>+506 2233 4455</td>
+                            <td>laura.martinez@example.com</td>
+                            <td>05/02/2021</td>
+                            <td>$1,400</td>
+                            <td>Mecánico</td>
+                            <td>Activo</td>
+                            <td>
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editEmployeeModal">Editar</button>
+                                <button class="btn btn-danger">Eliminar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>33445566</td>
+                            <td>Pedro Sánchez</td>
+                            <td>+506 3344 5566</td>
+                            <td>pedro.sanchez@example.com</td>
+                            <td>20/11/2020</td>
+                            <td>$1,600</td>
+                            <td>Mecánico</td>
+                            <td>Activo</td>
+                            <td>
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editEmployeeModal">Editar</button>
+                                <button class="btn btn-danger">Eliminar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>44556677</td>
+                            <td>Andrea López</td>
+                            <td>+506 4455 6677</td>
+                            <td>andrea.lopez@example.com</td>
+                            <td>15/08/2019</td>
+                            <td>$1,700</td>
+                            <td>Administrador</td>
+                            <td>Activo</td>
+                            <td>
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editEmployeeModal">Editar</button>
+                                <button class="btn btn-danger">Eliminar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>55667788</td>
+                            <td>Fernando Castillo</td>
+                            <td>+506 5566 7788</td>
+                            <td>fernando.castillo@example.com</td>
+                            <td>10/05/2018</td>
+                            <td>$1,800</td>
+                            <td>Administrador</td>
+                            <td>Activo</td>
+                            <td>
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editEmployeeModal">Editar</button>
+                                <button class="btn btn-danger">Eliminar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>66778899</td>
+                            <td>Gabriela Ramírez</td>
+                            <td>+506 6677 8899</td>
+                            <td>gabriela.ramirez@example.com</td>
+                            <td>25/12/2017</td>
+                            <td>$1,900</td>
+                            <td>Bodeguero</td>
+                            <td>Activo</td>
+                            <td>
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editEmployeeModal">Editar</button>
+                                <button class="btn btn-danger">Eliminar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>77889900</td>
+                            <td>Ricardo Díaz</td>
+                            <td>+506 7788 9900</td>
+                            <td>ricardo.diaz@example.com</td>
+                            <td>30/06/2016</td>
+                            <td>$2,000</td>
+                            <td>Mecánico</td>
+                            <td>Activo</td>
+                            <td>
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editEmployeeModal">Editar</button>
+                                <button class="btn btn-danger">Eliminar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>88990011</td>
+                            <td>Silvia Torres</td>
+                            <td>+506 8899 0011</td>
+                            <td>silvia.torres@example.com</td>
+                            <td>18/04/2015</td>
+                            <td>$2,100</td>
+                            <td>Mecánico</td>
+                            <td>Inactivo</td>
+                            <td>
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editEmployeeModal">Editar</button>
+                                <button class="btn btn-danger">Eliminar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>99001122</td>
+                            <td>José Hernández</td>
+                            <td>+506 9900 1122</td>
+                            <td>jose.hernandez@example.com</td>
+                            <td>22/09/2014</td>
+                            <td>$2,200</td>
+                            <td>Mecánico</td>
+                            <td>Inactivo</td>
+                            <td>
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editEmployeeModal">Editar</button>
+                                <button class="btn btn-danger">Eliminar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>00112233</td>
+                            <td>Patricia Vega</td>
+                            <td>+506 0011 2233</td>
+                            <td>patricia.vega@example.com</td>
+                            <td>05/07/2013</td>
+                            <td>$2,300</td>
+                            <td>Administrador</td>
+                            <td>Inactivo</td>
+                            <td>
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editEmployeeModal">Editar</button>
+                                <button class="btn btn-danger">Eliminar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>11223344</td>
+                            <td>Roberto Jiménez</td>
+                            <td>+506 1122 3344</td>
+                            <td>roberto.jimenez@example.com</td>
+                            <td>12/11/2012</td>
+                            <td>$2,400</td>
+                            <td>Bodeguero</td>
+                            <td>Inactivo</td>
+                            <td>
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editEmployeeModal">Editar</button>
+                                <button class="btn btn-danger">Eliminar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editUserModalLabel">Editar Usuario</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="editUsername" class="form-label">Nombre de Usuario</label>
+                                    <input type="text" class="form-control" id="editUsername"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editEmail" class="form-label">Correo Electrónico</label>
+                                    <input type="email" class="form-control" id="editEmail"/>
+                                </div>
+                                mb-3">
+                                <label for="editPassword" class="form-label">Contraseña</label>
+                                <input type="password" class="form-control" id="editPassword"/>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section>
+    </body>
+</html>

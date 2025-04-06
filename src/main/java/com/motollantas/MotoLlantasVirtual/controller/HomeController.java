@@ -34,4 +34,8 @@ public class HomeController {
         return "login/register";
     }
 
+    @GetMapping("/users")
+    public String users() {
+        return "users/adminDashboard";
+    }
 }
