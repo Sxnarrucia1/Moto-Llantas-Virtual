@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      >
+    <head th:replace="~{layout/plantilla :: head}">
+        <title>Moto Llantas</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        <header th:replace="~{layout/plantilla :: header}"/>
+
+        <section th:replace="~{landing/fragmentos :: features}"/>
+
+        <section th:replace="~{landing/fragmentos :: testimonios}"/>
+
+        <footer th:replace="~{layout/plantilla :: footer}"/>
+    </body>
+</html>
