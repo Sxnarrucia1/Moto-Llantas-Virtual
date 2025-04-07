@@ -19,6 +19,11 @@ public class HomeController {
         return "index";
     }
 
+    @GetMapping("/catalog")
+    public String catalog() {
+        return "catalog/catalog";
+    }
+
     @GetMapping("/about")
     public String about() {
         return "about";
