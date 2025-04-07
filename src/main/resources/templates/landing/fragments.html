@@ -171,5 +171,80 @@
                 </aside>
             </div>
         </section>
+
+        <section th:fragment="location" class="container py-5" style="max-width: 800px; font-family: 'Libre Baskerville', serif;">
+            <h2 id="title" class="text-center mb-4" style="font-size: 2.5rem; color: #333;">
+                Contáctanos - Moto Llantas Virtual
+            </h2>
+            <p class="text-center" style="color: #555; font-size: 1.2rem;">
+                ¡Nos encantaría saber de ti! Puedes comunicarte con nosotros a través de los siguientes métodos.
+            </p>
+
+            <div class="row mt-5">
+                <!-- Columna de Local -->
+                <div class="col-md-6 mb-4">
+                    <div class="card p-4 shadow-sm rounded-4">
+                        <h3 class="text-center" style="color: #4CAF50;"><i class="fas fa-map-marker-alt"></i> Nuestro local</h3>
+                        <p class="text-center" style="color: #666; font-size: 1.1rem;">
+                            Calle Siles 203, San José Province,<br />
+                            San Pedro, Santa Marta, 11501
+                        </p>
+                        <p class="text-center" style="color: #666; font-size: 1.1rem;">
+                            <abbr title="Teléfono"><i class="fas fa-phone-alt"></i>:</abbr> 425.555.0100
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Columna de Contacto por Email -->
+                <div class="col-md-6 mb-4">
+                    <div class="card p-4 shadow-sm rounded-4">
+                        <h3 class="text-center" style="color: #4CAF50;"><i class="fas fa-envelope"></i> Escríbenos</h3>
+                        <p class="text-center" style="color: #666; font-size: 1.1rem;">
+                            <strong>Soporte:</strong>
+                            <a href="mailto:soporte@.com" style="color: #4CAF50; text-decoration: none;">soporte@libremax.com</a>
+                        </p>
+                        <p class="text-center" style="color: #666; font-size: 1.1rem;">
+                            <strong>Marketing:</strong>
+                            <a href="mailto:marketing@.com" style="color: #4CAF50; text-decoration: none;">marketing@libremax.com</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ubicación en Google Maps -->
+            <div class="text-center mt-4">
+                <h4 style="color: #4CAF50;">Ubicación</h4>
+                <div style="border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15720.035903368916!2d-84.0350103!3d9.9332099!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8fa0e3f47ea4ff37%3A0x7a7818a6a9e5c90c!2sFidelitas%20University%20Campus%20San%20Pedro!5e0!3m2!1sen!2scr!4v1733385765434!5m2!1sen!2scr"
+                            width="800"
+                            height="300"
+                            style="border: 0;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+
+            <!-- Redes Sociales -->
+            <div class="text-center mt-4">
+                <h4 style="color: #4CAF50;">Síguenos en Redes Sociales</h4>
+                <div class="d-flex justify-content-center">
+                    <a href="https://www.facebook.com/ufidelitas/" class="mx-3" style="font-size: 1.5rem; color: #3b5998; text-decoration: none;">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="https://ufidelitas.ac.cr/?currency=CRC" class="mx-3" style="font-size: 1.5rem; color: #00acee; text-decoration: none;">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://www.instagram.com/ufidelitas/" class="mx-3" style="font-size: 1.5rem; color: #c13584; text-decoration: none;">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/school/ufidelitas/posts/?feedView=all" class="mx-3" style="font-size: 1.5rem; color: #0077b5; text-decoration: none;">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
     </body>
 </html>

@@ -24,6 +24,19 @@ public class HomeController {
         return "catalog/catalog";
     }
 
+    @GetMapping("/productDetails")
+    public String productDetails() {
+        return "catalog/productDetails";
+    }
+
+    @GetMapping("/cart")
+    public String cart() {
+        return "cart/cart";
+    }
+
+    @GetMapping("/location")
+    public String location() { return "location";}
+
     @GetMapping("/about")
     public String about() {
         return "about";

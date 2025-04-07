@@ -98,14 +98,15 @@
                 </select>
             </div>
 
-            <!-- Espacio para otros filtros si se desea agregar -->
+
             <div class="col-md-9">
-                <!-- Sección de productos -->
                 <div class="row g-4">
                     <!-- Producto 1 -->
                     <div class="col-12 col-md-6 col-lg-4">
                         <div class="card shadow-sm rounded-3">
+                            <a th:href="@{/productDetails}" class="text-decoration-none">
                             <img src="https://motorepuestoscalleblancos.com/cdn/shop/products/D_NQ_NP_833778-MLC45978666256_052021-O.jpg?v=1667484926" class="card-img-top" alt="Filtro de Aire">
+                            </a>
                             <div class="card-body">
                                 <h5 class="card-title">Filtro de Aire</h5>
                                 <p class="card-text">Compatible con Honda y Yamaha.</p>
@@ -140,10 +141,94 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Más productos... -->
                 </div>
             </div>
+        </div>
+    </div>
+</section>
+
+
+
+<section th:fragment="productDetails" class="py-5">
+    <div class="container">
+        <!-- Detalle del producto -->
+        <div class="row mb-5">
+            <div class="col-md-6">
+                <!-- Carrusel de imágenes -->
+                <div id="productCarousel" class="carousel slide mb-3" data-bs-ride="carousel">
+                    <div class="carousel-inner rounded shadow">
+                        <div class="carousel-item active">
+                            <img src="https://motorepuestoscalleblancos.com/cdn/shop/products/D_NQ_NP_833778-MLC45978666256_052021-O.jpg?v=1667484926" class="d-block w-100" alt="Imagen 1">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://motorepuestoscalleblancos.com/cdn/shop/products/D_NQ_NP_833778-MLC45978666256_052021-O.jpg?v=1667484926" class="d-block w-100" alt="Imagen 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://motorepuestoscalleblancos.com/cdn/shop/products/D_NQ_NP_833778-MLC45978666256_052021-O.jpg?v=1667484926" class="d-block w-100" alt="Imagen 3">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                </div>
+
+                <!-- Miniaturas -->
+                <div class="d-flex justify-content-between">
+                    <img src="https://motorepuestoscalleblancos.com/cdn/shop/products/D_NQ_NP_833778-MLC45978666256_052021-O.jpg?v=1667484926" class="img-thumbnail" style="width: 30%;">
+                    <img src="https://motorepuestoscalleblancos.com/cdn/shop/products/D_NQ_NP_833778-MLC45978666256_052021-O.jpg?v=1667484926" class="img-thumbnail" style="width: 30%;">
+                    <img src="https://motorepuestoscalleblancos.com/cdn/shop/products/D_NQ_NP_833778-MLC45978666256_052021-O.jpg?v=1667484926" class="img-thumbnail" style="width: 30%;">
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <h2 class="mb-3">Lorem Ipsum</h2>
+                <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <h4 class="text-danger fw-bold mb-4">₡2.000.000</h4>
+                <button class="btn btn-primary rounded-pill px-4">Agregar al carrito</button>
+            </div>
+        </div>
+
+
+        <!-- Reseñas del producto -->
+        <div class="row">
+            <div class="col-12">
+                <h4 class="mb-4">Reseñas</h4>
+            </div>
+
+            <!-- Reseña 1 -->
+            <div class="col-md-6 mb-4">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <h6 class="fw-bold mb-1">Juan Pérez <span class="text-warning">★ ★ ★ ★ ☆</span></h6>
+                        <p class="mb-0">Muy buen producto, cumplió mis expectativas y llegó rápido.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reseña 2 -->
+            <div class="col-md-6 mb-4">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <h6 class="fw-bold mb-1">Laura Rodríguez <span class="text-warning">★ ★ ★ ★ ★</span></h6>
+                        <p class="mb-0">Excelente calidad. Lo recomiendo totalmente.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reseña 3 -->
+            <div class="col-md-6 mb-4">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <h6 class="fw-bold mb-1">Carlos Jiménez <span class="text-warning">★ ★ ★ ☆ ☆</span></h6>
+                        <p class="mb-0">El producto es bueno, pero tardó un poco en llegar.</p>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
     </div>
 </section>
