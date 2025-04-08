@@ -9,7 +9,7 @@
 
     </head>
     <body>
-        <section th:fragment="login" class="h-100 gradient-form" style="background-color: #eee;">
+        <section th:fragment="login" class="h-100 gradient-form" style="background-color: #DDDDDF;">
             <div class="container py-5 h-100">
                 <div class="row d-flex justify-content-center align-items-center h-100">
                     <div class="col-xl-10">
@@ -32,7 +32,8 @@
 
                                             <div data-mdb-input-init class="form-outline mb-4">
                                                 <label class="form-label" for="form2Example22">Contraseña</label>
-                                                <input type="password" id="form2Example22" class="form-control" />
+                                                <input type="password" id="form2Example22" class="form-control"
+                                                       placeholder="Contraseña"/>
                                             </div>
 
                                             <div class="text-center pt-1 mb-5 pb-1">
@@ -43,7 +44,7 @@
 
                                             <div class="d-flex align-items-center justify-content-center pb-4">
                                                 <p class="mb-0 me-2">¿No tienes cuenta?</p>
-                                                <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-custom" onclick="window.location.href='/register'">Crear Cuenta</button>
+                                                <button  type="button" class="btn btn-outline-custom" onclick="window.location.href='/register'">Crear Cuenta</button>
                                             </div>
                                         </form>
 
@@ -62,7 +63,7 @@
                 </div>
             </div>
         </section>
-        <section th:fragment="register" class="h-100 gradient-form" style="background-color: #eee;">
+        <section th:fragment="register" class="h-100 gradient-form" style="background-color: #DDDDDF;">
             <div class="container py-5 h-100">
                 <div class="row d-flex justify-content-center align-items-center h-100">
                     <div class="col-xl-10">
