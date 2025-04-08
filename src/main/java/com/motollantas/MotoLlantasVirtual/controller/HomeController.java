@@ -37,7 +37,9 @@ public class HomeController {
     }
 
     @GetMapping("/location")
-    public String location() { return "location";}
+    public String location() {
+        return "location";
+    }
 
     @GetMapping("/about")
     public String about() {
@@ -58,10 +60,15 @@ public class HomeController {
     public String users() {
         return "users/adminDashboard";
     }
-    
+
     @GetMapping("/contabilidad")
-public String contabilidad() {
-    return "transacciones";
-}
+    public String contabilidad() {
+        return "transacciones";
+    }
+
+    @GetMapping("/userGarage")
+    public String garageUser() {
+        return "garage/userGarage";
+    }
 
 }
