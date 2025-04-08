@@ -25,41 +25,18 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>2025-04-05</td>
-                <td>150000</td>
-                <td>Venta de llantas</td>
-                <td>Ventas</td>
-                <td>Ingreso</td>
+            <tr th:each="transaccion : ${transacciones}">
+                <td th:text="${transaccion.fecha}"></td>
+                <td th:text="${transaccion.monto}"></td>
+                <td th:text="${transaccion.descripcion}"></td>
+                <td th:text="${transaccion.categoria}"></td>
+                <td th:text="${transaccion.tipo}"></td>
                 <td>
-                    <a href="#" class="btn btn-sm btn-warning">Editar</a>
-                    <a href="#" class="btn btn-sm btn-danger">Eliminar</a>
-                </td>
-            </tr>
-            <tr>
-                <td>2025-04-06</td>
-                <td>50000</td>
-                <td>Compra de inventario</td>
-                <td>Compras</td>
-                <td>Egreso</td>
-                <td>
-                    <a href="#" class="btn btn-sm btn-warning">Editar</a>
-                    <a href="#" class="btn btn-sm btn-danger">Eliminar</a>
-                </td>
-            </tr>
-            <tr>
-                <td>2025-04-07</td>
-                <td>30000</td>
-                <td>Pago de servicios públicos</td>
-                <td>Servicios</td>
-                <td>Egreso</td>
-                <td>
-                    <a href="#" class="btn btn-sm btn-warning">Editar</a>
-                    <a href="#" class="btn btn-sm btn-danger">Eliminar</a>
+                    <a th:href="@{'/contabilidad/editar/' + ${transaccion.id}}" class="btn btn-sm btn-warning">Editar</a>
+                    <a th:href="@{'/contabilidad/eliminar/' + ${transaccion.id}}" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro?')">Eliminar</a>
                 </td>
             </tr>
         </tbody>
-        
     </table>
 </div>
 
