@@ -1,122 +1,143 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/layout :: head}">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Taller Llantas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="css/styles.css" type="text/css"/>
-        <title>Taller Llantas</title>
-        <meta charset="UTF-8"/>
+    <style>
+        body {
+            background-color: #eee;
+        }
 
-    </head>
-    <body>
-        <section th:fragment="login" class="h-100 gradient-form" style="background-color: #eee;">
-            <div class="container py-5 h-100">
-                <div class="row d-flex justify-content-center align-items-center h-100">
-                    <div class="col-xl-10">
-                        <div class="card rounded-3 text-black">
-                            <div class="row g-0">
-                                <div class="col-lg-6">
-                                    <div class="card-body p-md-5 mx-md-4">
-                                        <div class="text-center">
-                                            <img src="/img/motollantaslogo.png"
-                                                 style="width: 185px;" alt="logo">
-                                                <h4 class="mt-1 mb-5 pb-1">Bienvenido a nuestra plataforma</h4>
-                                        </div>
-                                        <form>
+        .gradient-custom-2 {
+            background: linear-gradient(to right, #5e72e4, #825ee4);
+        }
 
-                                            <div data-mdb-input-init class="form-outline mb-4">
-                                                <label class="form-label" for="form2Example11">Nombre de Usuario</label>
-                                                <input type="email" id="form2Example11" class="form-control"
-                                                       placeholder="Correo Electrónico" />
-                                            </div>
+        .btn-outline-custom {
+            border: 2px solid #5e72e4;
+            color: #5e72e4;
+            transition: 0.3s ease-in-out;
+        }
 
-                                            <div data-mdb-input-init class="form-outline mb-4">
-                                                <label class="form-label" for="form2Example22">Contraseña</label>
-                                                <input type="password" id="form2Example22" class="form-control" />
-                                            </div>
+        .btn-outline-custom:hover {
+            background-color: #5e72e4;
+            color: #fff;
+        }
 
-                                            <div class="text-center pt-1 mb-5 pb-1">
-                                                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-custom btn-block fa-lg mb-3" 
-                                                        type="button">Iniciar Sesión</button>
-                                                <a class="text-muted" href="#!">¿Olvidó su contraseña?</a>
-                                            </div>
+        .card {
+            border-radius: 1rem;
+        }
 
-                                            <div class="d-flex align-items-center justify-content-center pb-4">
-                                                <p class="mb-0 me-2">¿No tienes cuenta?</p>
-                                                <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-custom" onclick="window.location.href='/register'">Crear Cuenta</button>
-                                            </div>
-                                        </form>
+        .form-control:focus {
+            box-shadow: 0 0 0 0.2rem rgba(94, 114, 228, 0.25);
+            border-color: #5e72e4;
+        }
 
-                                    </div>
+        .form-label {
+            font-weight: 500;
+        }
+
+        .text-white h4, .text-white p {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+
+<section th:fragment="login" class="h-100 gradient-form">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-xl-10">
+                <div class="card rounded-3 text-black">
+                    <div class="row g-0">
+                        <div class="col-lg-6">
+                            <div class="card-body p-md-5 mx-md-4">
+                                <div class="text-center">
+                                    <img src="/img/motollantaslogo.png" style="width: 185px;" alt="logo">
+                                    <h4 class="mt-1 mb-5 pb-1">Bienvenido a nuestra plataforma</h4>
                                 </div>
-                                <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
-                                    <div class="text-white px-3 py-4 p-md-5 mx-md-4">
-                                        <h4 class="mb-4">Somos más que un taller.</h4>
-                                        <p class="small mb-0">En nuestra plataforma vas a poder acceder a todos nuestros servicios como: Agendar Citas, 
-                                            Consultar nuestro inventario en tiempo real, revisar historial de tu motocicleta en nuestro taller, entre muchas cosas más.</p>
+                                <form>
+                                    <div class="form-outline mb-4">
+                                        <label class="form-label">Nombre de Usuario</label>
+                                        <input type="email" class="form-control" placeholder="Correo Electrónico" />
                                     </div>
-                                </div>
+                                    <div class="form-outline mb-4">
+                                        <label class="form-label">Contraseña</label>
+                                        <input type="password" class="form-control" />
+                                    </div>
+                                    <div class="text-center pt-1 mb-5 pb-1">
+                                        <button class="btn btn-outline-custom btn-block mb-3" type="button">Iniciar Sesión</button>
+                                        <a class="text-muted" href="#!">¿Olvidó su contraseña?</a>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-center pb-4">
+                                        <p class="mb-0 me-2">¿No tienes cuenta?</p>
+                                        <button type="button" class="btn btn-outline-custom" onclick="window.location.href='/register'">Crear Cuenta</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+                            <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                                <h4 class="mb-4">Somos más que un taller.</h4>
+                                <p class="small mb-0">Accede a servicios como agendar citas, consultar inventario en tiempo real, revisar el historial de tu motocicleta y más.</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-        <section th:fragment="register" class="h-100 gradient-form" style="background-color: #eee;">
-            <div class="container py-5 h-100">
-                <div class="row d-flex justify-content-center align-items-center h-100">
-                    <div class="col-xl-10">
-                        <div class="card rounded-3 text-black">
-                            <div class="row g-0">
-                                <div class="col-lg-6">
-                                    <div class="card-body p-md-5 mx-md-4">
-                                        <div class="text-center">
-                                            <img src="/img/motollantaslogo.png"
-                                                 style="width: 185px;" alt="logo">
-                                                <h4 class="mt-1 mb-5 pb-1">Regístrese a nuestra plataforma</h4>
-                                        </div>
-                                        <form>
+        </div>
+    </div> 
+</section>
 
-                                            <div data-mdb-input-init class="form-outline mb-4">
-                                                <label class="form-label" for="form2Example11">Nombre Completo</label>
-                                                <input type="email" id="form2Example11" class="form-control"/>
-                                            </div>
 
-                                            <div data-mdb-input-init class="form-outline mb-4">
-                                                <label class="form-label" for="form2Example22">Identificación</label>
-                                                <input type="password" id="form2Example22" class="form-control" />
-                                            </div>
-
-                                            <div data-mdb-input-init class="form-outline mb-4">
-                                                <label class="form-label" for="form2Example22">Correo Electrónico</label>
-                                                <input type="password" id="form2Example22" class="form-control" />
-                                            </div>
-
-                                            <div data-mdb-input-init class="form-outline mb-4">
-                                                <label class="form-label" for="form2Example22">Contraseña</label>
-                                                <input type="password" id="form2Example22" class="form-control" />
-                                            </div>
-
-                                            <div class="text-center pt-1 mb-5 pb-1">
-                                                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-custom btn-block fa-lg mb-3" 
-                                                        type="button">Registrarse</button>
-                                            </div>
-                                        </form>
-
-                                    </div>
+<section th:fragment="register" class="h-100 gradient-form">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-xl-10">
+                <div class="card rounded-3 text-black">
+                    <div class="row g-0">
+                        <div class="col-lg-6">
+                            <div class="card-body p-md-5 mx-md-4">
+                                <div class="text-center">
+                                    <img src="/img/motollantaslogo.png" style="width: 185px;" alt="logo">
+                                    <h4 class="mt-1 mb-5 pb-1">Regístrese a nuestra plataforma</h4>
                                 </div>
-                                <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
-                                    <div class="text-white px-3 py-4 p-md-5 mx-md-4">
-                                        <h4 class="mb-4">Somos más que un taller.</h4>
-                                        <p class="small mb-0">En nuestra plataforma vas a poder acceder a todos nuestros servicios como: Agendar Citas, 
-                                            Consultar nuestro inventario en tiempo real, revisar historial de tu motocicleta en nuestro taller, entre muchas cosas más.</p>
+                                <form>
+                                    <div class="form-outline mb-4">
+                                        <label class="form-label">Nombre Completo</label>
+                                        <input type="text" class="form-control" />
                                     </div>
-                                </div>
+                                    <div class="form-outline mb-4">
+                                        <label class="form-label">Identificación</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <label class="form-label">Correo Electrónico</label>
+                                        <input type="email" class="form-control" />
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <label class="form-label">Contraseña</label>
+                                        <input type="password" class="form-control" />
+                                    </div>
+                                    <div class="text-center pt-1 mb-5 pb-1">
+                                        <button class="btn btn-outline-custom btn-block mb-3" type="button">Registrarse</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+                            <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                                <h4 class="mb-4">Somos más que un taller.</h4>
+                                <p class="small mb-0">Accede a servicios como agendar citas, consultar inventario en tiempo real, revisar el historial de tu motocicleta y más.</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-    </body>
+        </div>
+    </div> 
+</section>
+
+</body>
 </html>
