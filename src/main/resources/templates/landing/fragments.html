@@ -140,76 +140,90 @@
             </aside>
         </section>
 
-        <section th:fragment="location" class="container py-5" style="max-width: 800px; font-family: 'Libre Baskerville', serif;">
-            <h2 id="title" class="text-center mb-4" style="font-size: 2.5rem; color: #333;">
-                Contáctanos - Moto Llantas Virtual
-            </h2>
-            <p class="text-center" style="color: #555; font-size: 1.2rem;">
-                ¡Nos encantaría saber de ti! Puedes comunicarte con nosotros a través de los siguientes métodos.
-            </p>
+        <section th:fragment="location" style="width: 100%; min-height: 100vh; font-family: 'Libre Baskerville', serif; background-color: #FFFDF5;">
+            <!-- Sección principal del título -->
+            <div class="container-fluid py-5" style="background-color: #FED14A;">
+                <h2 class="text-center mb-3" style="font-size: 3rem; color: #484744; font-weight: bold;">
+                    Contáctanos - Moto Llantas Virtual
+                </h2>
+                <p class="text-center" style="color: #5F5E5D; font-size: 1.3rem;">
+                    ¡Nos encantaría saber de ti! Comunícate con nosotros de la forma que prefieras.
+                </p>
+            </div>
 
-            <div class="row mt-5">
-                <!-- Columna de Local -->
-                <div class="col-md-6 mb-4">
-                    <div class="card p-4 shadow-sm rounded-4">
-                        <h3 class="text-center" style="color: #4CAF50;"><i class="fas fa-map-marker-alt"></i> Nuestro local</h3>
-                        <p class="text-center" style="color: #666; font-size: 1.1rem;">
-                            Calle Siles 203, San José Province,<br />
-                            San Pedro, Santa Marta, 11501
-                        </p>
-                        <p class="text-center" style="color: #666; font-size: 1.1rem;">
-                            <abbr title="Teléfono"><i class="fas fa-phone-alt"></i>:</abbr> 425.555.0100
-                        </p>
+            <!-- Sección de contacto y local -->
+            <div class="container-fluid py-5" style="background-color: #DDDDDF;">
+                <div class="row justify-content-center">
+                    <!-- Información de Local -->
+                    <div class="col-lg-5 mb-4">
+                        <div class="p-4 shadow rounded-4" style="background-color: #FFF8E1; height: 100%;">
+                            <h3 class="text-center mb-3" style="color: #484744;"><i class="fas fa-map-marker-alt"></i> Nuestro Local</h3>
+                            <p class="text-center" style="color: #5F5E5D; font-size: 1.2rem;">
+                                Zapote frente al jardin de<br> niños Napoleón Quesada
+                            </p>
+                            <p class="text-center" style="color: #5F5E5D; font-size: 1.2rem;">
+                                <i class="fas fa-phone-alt"></i> 425.555.0100
+                            </p>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Columna de Contacto por Email -->
-                <div class="col-md-6 mb-4">
-                    <div class="card p-4 shadow-sm rounded-4">
-                        <h3 class="text-center" style="color: #4CAF50;"><i class="fas fa-envelope"></i> Escríbenos</h3>
-                        <p class="text-center" style="color: #666; font-size: 1.1rem;">
-                            <strong>Soporte:</strong>
-                            <a href="mailto:soporte@.com" style="color: #4CAF50; text-decoration: none;">soporte@libremax.com</a>
-                        </p>
-                        <p class="text-center" style="color: #666; font-size: 1.1rem;">
-                            <strong>Marketing:</strong>
-                            <a href="mailto:marketing@.com" style="color: #4CAF50; text-decoration: none;">marketing@libremax.com</a>
-                        </p>
+                    <!-- Información de Email -->
+                    <div class="col-lg-5 mb-4">
+                        <div class="p-4 shadow rounded-4" style="background-color: #FFF8E1; height: 100%;">
+                            <h3 class="text-center mb-3" style="color: #484744;"><i class="fas fa-envelope"></i> Escríbenos</h3>
+                            <p class="text-center" style="color: #5F5E5D; font-size: 1.2rem;">
+                                <strong>Soporte:</strong> <a href="mailto:soporte@.com" style="color: #F47808;">soporte@.com</a>
+                            </p>
+                            <p class="text-center" style="color: #5F5E5D; font-size: 1.2rem;">
+                                <strong>Marketing:</strong> <a href="mailto:marketing@.com" style="color: #F47808;">marketing@.com</a>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Ubicación en Google Maps -->
-            <div class="text-center mt-4">
-                <h4 style="color: #4CAF50;">Ubicación</h4>
-                <div style="border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15720.035903368916!2d-84.0350103!3d9.9332099!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8fa0e3f47ea4ff37%3A0x7a7818a6a9e5c90c!2sFidelitas%20University%20Campus%20San%20Pedro!5e0!3m2!1sen!2scr!4v1733385765434!5m2!1sen!2scr"
-                            width="800"
-                            height="300"
-                            style="border: 0;"
-                            allowfullscreen=""
-                            loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade">
-                    </iframe>
+            <!-- Horarios -->
+            <div class="container-fluid py-5" style="background-color: #5F5E5D;">
+                <h4 class="text-center mb-4" style="color: #FED14A; font-weight: bold; font-size: 2rem;">
+                    Horarios de Atención
+                </h4>
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <ul class="list-group shadow rounded-4">
+                            <li class="list-group-item d-flex justify-content-between align-items-center" style="background-color: #DDDDDF; color: #484744;">
+                                <i class="far fa-calendar-alt me-2"></i> Lunes a Viernes
+                                <span class="badge rounded-pill" style="background-color: #F47808; color: white;">8:00 AM - 6:00 PM</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center" style="background-color: #DDDDDF; color: #484744;">
+                                <i class="far fa-calendar-alt me-2"></i> Sábados
+                                <span class="badge rounded-pill" style="background-color: #FED14A; color: #484744;">9:00 AM - 2:00 PM</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center" style="background-color: #DDDDDF; color: #5F5E5D;">
+                                <i class="fas fa-times-circle me-2"></i> Domingos
+                                <span class="badge rounded-pill" style="background-color: #F47808; color: white;">Cerrado</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mapa -->
+            <div class="container-fluid py-5" style="background-color: #FFF8E1;">
+                <h4 class="text-center mb-4" style="color: #484744; font-weight: bold; font-size: 2rem;">Ubicación</h4>
+                <div class="d-flex justify-content-center">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3930.1417134980384!2d-84.05456559999999!3d9.922153500000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8fa0fdddef0da8cb%3A0x4329a7d04fdbe0d9!2sMoto%20Llantas%20Virtual!5e0!3m2!1sen!2scr!4v1744129871541!5m2!1sen!2scr"
+                            width="90%" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>
 
             <!-- Redes Sociales -->
-            <div class="text-center mt-4">
-                <h4 style="color: #4CAF50;">Síguenos en Redes Sociales</h4>
+            <div class="container-fluid py-5" style="background-color: #484744;">
+                <h4 class="text-center mb-4" style="color: #FED14A; font-weight: bold; font-size: 2rem;">Síguenos en Redes Sociales</h4>
                 <div class="d-flex justify-content-center">
-                    <a href="https://www.facebook.com/ufidelitas/" class="mx-3" style="font-size: 1.5rem; color: #3b5998; text-decoration: none;">
-                        <i class="fab fa-facebook"></i>
-                    </a>
-                    <a href="https://ufidelitas.ac.cr/?currency=CRC" class="mx-3" style="font-size: 1.5rem; color: #00acee; text-decoration: none;">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="https://www.instagram.com/ufidelitas/" class="mx-3" style="font-size: 1.5rem; color: #c13584; text-decoration: none;">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/school/ufidelitas/posts/?feedView=all" class="mx-3" style="font-size: 1.5rem; color: #0077b5; text-decoration: none;">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
+                    <a href="#" class="mx-3" style="font-size: 2rem; color: #3b5998;"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="mx-3" style="font-size: 2rem; color: #00acee;"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="mx-3" style="font-size: 2rem; color: #c13584;"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="mx-3" style="font-size: 2rem; color: #0077b5;"><i class="fab fa-linkedin"></i></a>
                 </div>
             </div>
         </section>
