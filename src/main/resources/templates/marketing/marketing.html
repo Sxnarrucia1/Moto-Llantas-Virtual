@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/layout :: head}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/styles.css" type="text/css"/>
+    <title>Módulo de Marketing</title>
+    </head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Módulo de Marketing</h1>
+        </div>
+
+        <div class="main-content">
+
+            <div class="section" id="notification-preferences">
+                <h2 class="section-title">Preferencias de Notificaciones</h2>
+
+                <div class="card">
+                    <h3>Configuración de Notificaciones</h3>
+                    <p>Ajusta tus preferencias para recibir información relevante y evitar saturación de correos.</p>
+
+                    <div class="form-group">
+                        <label>Notificaciones por correo electrónico</label>
+                        <div>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                            <span>Recibir notificaciones por correo</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tipo de notificaciones</label>
+                        <div>
+                            <input type="checkbox" id="promo" checked>
+                            <label for="promo">Promociones y descuentos</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="update" checked>
+                            <label for="update">Actualizaciones importantes</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="news" checked>
+                            <label for="news">Novedades del taller</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="products">
+                            <label for="products">Nuevos productos</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Frecuencia de notificaciones</label>
+                        <select>
+                            <option>Inmediatamente</option>
+                            <option>Diariamente</option>
+                            <option>Semanalmente</option>
+                            <option>Mensualmente</option>
+                        </select>
+                    </div>
+
+                    <button class="btn">Guardar preferencias</button>
+                </div>
+
+                <div class="notification-list">
+                    <h3>Notificaciones recientes</h3>
+
+                    <div class="notification">
+                        <h4>¡20% de descuento en todos los servicios!</h4>
+                        <p>Aprovecha esta promoción exclusiva para clientes registrados. Válido hasta el 30 de abril.
+                        </p>
+                        <small>Recibido: 05/04/2025</small>
+                    </div>
+
+                    <div class="notification">
+                        <h4>Nuevo producto: Kit de herramientas profesional</h4>
+                        <p>Hemos añadido a nuestro catálogo el nuevo kit de herramientas profesional. ¡Ven a conocerlo!
+                        </p>
+                        <small>Recibido: 03/04/2025</small>
+                    </div>
+
+                    <div class="notification">
+                        <h4>Actualización importante: Horarios de atención</h4>
+                        <p>A partir del 10 de abril, nuestro horario de atención se extenderá hasta las 20:00 horas.</p>
+                        <small>Recibido: 01/04/2025</small>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="section" id="product-notifications">
+                <h2 class="section-title">Notificaciones de Nuevos Productos</h2>
+
+                <div class="card">
+                    <h3>Último producto añadido</h3>
+                    <div>
+                        <h4>Kit de herramientas profesional</h4>
+                        <p><strong>Categoría:</strong> Herramientas</p>
+                        <p><strong>Descripción:</strong> Kit completo con 45 piezas para todo tipo de reparaciones.
+                            Incluye destornilladores, llaves allen, alicates y más.</p>
+                        <p><strong>Precio:</strong> $89.99</p>
+                        <button class="btn">Ver detalles</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Notificaciones de productos</h3>
+                    <p>Selecciona las categorías de productos sobre las que deseas recibir notificaciones</p>
+
+                    <div class="form-group">
+                        <div>
+                            <input type="checkbox" id="cat-tools" checked>
+                            <label for="cat-tools">Herramientas</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="cat-parts">
+                            <label for="cat-parts">Repuestos</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="cat-accessories" checked>
+                            <label for="cat-accessories">Accesorios</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="cat-consumables">
+                            <label for="cat-consumables">Consumibles</label>
+                        </div>
+                    </div>
+
+                    <button class="btn">Guardar preferencias</button>
+                </div>
+            </div>
+
+
+            <div class="section" id="social-sharing">
+                <h2 class="section-title">Compartir en Redes Sociales</h2>
+
+                <div class="card">
+                    <h3>Promoción actual</h3>
+                    <div>
+                        <h4>¡20% de descuento en todos los servicios!</h4>
+                        <p>Aprovecha esta promoción exclusiva para clientes registrados. Válido hasta el 30 de abril.
+                        </p>
+
+                        <div class="form-group">
+                            <label>Personalizar mensaje</label>
+                            <textarea
+                                rows="3">¡Miren esta increíble oferta que encontré! 20% de descuento en todos los servicios del taller. ¡No se lo pierdan!</textarea>
+                        </div>
+
+                        <div class="social-buttons">
+                            <button class="social-btn facebook">f</button>
+                            <button class="social-btn whatsapp">w</button>
+                            <button class="social-btn instagram">i</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Novedades recientes</h3>
+
+                    <div class="notification">
+                        <h4>Nuevo curso de mantenimiento básico</h4>
+                        <p>Este mes iniciamos nuestro curso de mantenimiento básico para principiantes.</p>
+                        <div class="social-buttons">
+                            <button class="social-btn facebook">f</button>
+                            <button class="social-btn whatsapp">w</button>
+                            <button class="social-btn instagram">i</button>
+                        </div>
+                    </div>
+
+                    <div class="notification">
+                        <h4>Ampliación de instalaciones</h4>
+                        <p>Hemos ampliado nuestras instalaciones para ofrecerte un mejor servicio.</p>
+                        <div class="social-buttons">
+                            <button class="social-btn facebook">f</button>
+                            <button class="social-btn whatsapp">w</button>
+                            <button class="social-btn instagram">i</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="section" id="email-campaign">
+                <h2 class="section-title">Gestión de Campañas de Correo Electrónico</h2>
+
+                <div class="tab-container">
+                    <div class="tabs">
+                        <div class="tab active">Crear Campaña</div>
+                        <div class="tab">Programación</div>
+                        <div class="tab">Informes</div>
+                    </div>
+
+                    <div class="tab-content active">
+                        <h3>Crear Nueva Campaña</h3>
+
+                        <div class="form-group">
+                            <label>Nombre de la campaña</label>
+                            <input type="text" placeholder="Ej: Promoción Primavera 2025">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Asunto del correo</label>
+                            <input type="text" placeholder="Ej: ¡Ofertas especiales solo para ti!">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Destinatarios</label>
+                            <select>
+                                <option>Todos los usuarios</option>
+                                <option>Clientes VIP</option>
+                                <option>Clientes recientes (último mes)</option>
+                                <option>Clientes inactivos (+3 meses)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Contenido del correo</label>
+                            <textarea rows="10" placeholder="Escribe aquí el contenido de tu campaña..."></textarea>
+                        </div>
+
+                        <button class="btn">Vista previa</button>
+                        <button class="btn btn-secondary">Guardar borrador</button>
+                    </div>
+
+                    <div class="tab-content">
+                        <h3>Programar Envío</h3>
+
+                        <div class="form-group">
+                            <label>Seleccionar campaña</label>
+                            <select>
+                                <option>Promoción Primavera 2025</option>
+                                <option>Newsletter Abril 2025</option>
+                                <option>Nuevos Productos - Marzo 2025</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Fecha de envío</label>
+                            <input type="date">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Hora de envío</label>
+                            <input type="time">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Repetir</label>
+                            <select>
+                                <option>No repetir</option>
+                                <option>Diariamente</option>
+                                <option>Semanalmente</option>
+                                <option>Mensualmente</option>
+                            </select>
+                        </div>
+
+                        <button class="btn">Programar envío</button>
+                    </div>
+
+                    <div class="tab-content">
+                        <h3>Informes y Seguimiento</h3>
+
+                        <div class="form-group">
+                            <label>Seleccionar campaña</label>
+                            <select>
+                                <option>Promoción Primavera 2025</option>
+                                <option>Newsletter Abril 2025</option>
+                                <option>Nuevos Productos - Marzo 2025</option>
+                            </select>
+                        </div>
+
+                        <div class="card">
+                            <h4>Resumen</h4>
+                            <p><strong>Enviados:</strong> 1,245</p>
+                            <p><strong>Abiertos:</strong> 687 (55.2%)</p>
+                            <p><strong>Clics:</strong> 342 (27.5%)</p>
+                            <p><strong>Rebotes:</strong> 23 (1.8%)</p>
+                            <p><strong>Cancelaciones:</strong> 5 (0.4%)</p>
+                        </div>
+
+                        <div class="notification">
+                            <h4>Estado</h4>
+                            <p>Campaña enviada correctamente. No se han detectado errores.</p>
+                        </div>
+
+                        <button class="btn">Descargar informe</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+       
+    </script>
+</body>
+
+</html>
