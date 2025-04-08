@@ -10943,3 +10943,92 @@ html {
     }
 }
 
+div.kanban-column::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Customize the track of the scrollbar */
+
+div.kanban-column::-webkit-scrollbar-track {
+    background: #fff;
+}
+
+/* Customize the thumb (the draggable part) */
+
+div.kanban-column::-webkit-scrollbar-thumb {
+    background-color: #797979;
+    border-radius: 6px;
+    border: none;
+}
+
+/* Customize the thumb when hovered */
+
+div.kanban-column::-webkit-scrollbar-thumb:hover {
+    background: magenta;
+}
+
+@media (max-width: 767px) {
+    div.kanban-column {
+        max-height: calc(100vh - 150px);
+        overflow-y: auto;
+        min-height: calc(100vh - 150px);
+    }
+}
+
+@media (min-width: 768px) {
+    div.kanban-column {
+        max-height: calc(100vh - 150px);
+        overflow-y: auto;
+        min-height: calc(100vh - 150px);
+    }
+}
+
+div.kanban-card.dragging {
+    opacity: .5;
+    transform: scale(.8);
+}
+
+div.kanban-column.drop {
+    background-color: #f0f0f0;
+}
+
+#mobile-kanban-menu {
+    font-size: 0.9em;
+}
+
+@media (min-width: 768px) {
+    .nav-tabs {
+        display: none;
+    }
+}
+
+@media (min-width: 768px) {
+    .tab-content > .tab-pane {
+        display: block;
+        opacity: 1;
+    }
+}
+
+@media (min-width: 768px) {
+    .kanban-col > .card {
+        background-color: var(--bs-primary-bg-subtle)!important;
+    }
+}
+
+@media (min-width: 768px) {
+    div.kanban-column::-webkit-scrollbar-track {
+        background: var(--bs-primary-bg-subtle);
+    }
+}
+
+@media (max-width: 767px) {
+    .kanban-col > .card {
+        background-color: #fff;
+    }
+}
+
+.kanban-card .info {
+    font-size: 0.9em;
+    color: var(--bs-gray);
+}
+

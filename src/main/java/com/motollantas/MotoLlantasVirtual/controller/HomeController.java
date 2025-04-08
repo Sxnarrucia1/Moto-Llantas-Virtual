@@ -4,8 +4,6 @@
  */
 package com.motollantas.MotoLlantasVirtual.controller;
 
-import ch.qos.logback.core.model.Model;
-import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -63,12 +61,22 @@ public class HomeController {
 
     @GetMapping("/contabilidad")
     public String contabilidad() {
-        return "transacciones";
+        return "contabilidad/contabilidad";
     }
 
     @GetMapping("/userGarage")
     public String garageUser() {
         return "garage/userGarage";
+    }
+
+    @GetMapping("/marketing")
+    public String marketing() {
+        return "marketing/marketing";
+    }
+
+    @GetMapping("/adminGarage")
+    public String garageAdmin() {
+        return "garage/adminGarage";
     }
 
 }
