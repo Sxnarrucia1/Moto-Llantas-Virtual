@@ -26,15 +26,37 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each="transaccion : ${transacciones}">
-                <td th:text="${transaccion.fecha}">2025-04-07</td>
-                <td th:text="${transaccion.monto}">30000</td>
-                <td th:text="${transaccion.descripcion}">Pago de servicios</td>
-                <td th:text="${transaccion.categoria}">Servicios</td>
-                <td th:text="${transaccion.tipo}">Egreso</td>
+              <tr>
+                <td>2025-04-05</td>
+                <td>150000</td>
+                <td>Venta de llantas</td>
+                <td>Ventas</td>
+                <td>Ingreso</td>
                 <td>
-                    <a th:href="@{/contabilidad/editar/{id}(id=${transaccion.id})}" class="btn btn-sm btn-warning">Editar</a>
-                    <a th:href="@{/contabilidad/eliminar/{id}(id=${transaccion.id})}" class="btn btn-sm btn-danger">Eliminar</a>
+                    <a href="#" class="btn btn-sm btn-warning">Editar</a>
+                    <a href="#" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+              <tr>
+                <td>2025-04-06</td>
+                <td>50000</td>
+                <td>Compra de inventario</td>
+                <td>Compras</td>
+                <td>Egreso</td>
+                <td>
+                    <a href="#" class="btn btn-sm btn-warning">Editar</a>
+                    <a href="#" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+            <tr>
+                <td>2025-04-07</td>
+                <td>30000</td>
+                <td>Pago de servicios públicos</td>
+                <td>Servicios</td>
+                <td>Egreso</td>
+                <td>
+                    <a href="#" class="btn btn-sm btn-warning">Editar</a>
+                    <a href="#" class="btn btn-sm btn-danger">Eliminar</a>
                 </td>
             </tr>
         </tbody>
