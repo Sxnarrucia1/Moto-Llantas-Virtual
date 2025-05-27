@@ -1,62 +1,63 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="head">
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Taller Moto Llantas Virtual</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" th:href="@{css/styles.css}" />
-    <!-- Font Awesome -->
-    <script src="https://kit.fontawesome.com/a2e0b5f26a.js" crossorigin="anonymous"></script>
-</head>
-<body class="flex flex-col min-h-screen">
+    <head th:fragment="head">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Taller Moto Llantas Virtual</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" th:href="@{css/styles.css}" />
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
 
-<!-- Header -->
-<header th:fragment="header" class="bg-[#5F5E5D] text-white">
-    <nav class="container mx-auto flex flex-wrap items-center justify-between px-4 py-3">
-        <!-- Logo -->
-        <a class="text-xl font-semibold" th:href="@{/index}">
-            Taller Moto Llantas Virtual
-        </a>
+    </head>
+    <body class="flex flex-col min-h-screen">
 
-        <!-- Botón móvil -->
-        <button id="menu-toggle" class="text-white md:hidden focus:outline-none">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
-                 viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-        </button>
+        <!-- Header -->
+        <header th:fragment="header" class="bg-[#5F5E5D] text-white">
+            <nav class="container mx-auto flex flex-wrap items-center justify-between px-4 py-3">
+                <!-- Logo -->
+                <a class="text-xl font-semibold" th:href="@{/index}">
+                    Taller Moto Llantas Virtual
+                </a>
 
-        <!-- Menú -->
-        <div id="menu" class="w-full md:w-auto mt-4 md:mt-0 hidden md:flex md:items-center md:space-x-6">
-            <a th:href="@{/index}" class="block py-2 md:py-0 hover:text-yellow-400">Inicio</a>
-            <a th:href="@{/catalog}" class="block py-2 md:py-0 hover:text-yellow-400">Catálogo</a>
-            <a th:href="@{/userGarage}" class="block py-2 md:py-0 hover:text-yellow-400">Agendar Cita</a>
-            <a th:href="@{/location}" class="block py-2 md:py-0 hover:text-yellow-400">Ubicación</a>
-            <a th:href="@{/login}" class="block py-2 md:py-0 hover:text-yellow-400 text-xl">
-                <i class="fa-solid fa-user"></i>
-            </a>
-            <a th:href="@{/cart}" class="relative block py-2 md:py-0 hover:text-yellow-400">
-                <i class="fa-solid fa-cart-shopping text-xl"></i>
-                <span class="absolute -top-2 -right-2 bg-yellow-500 text-white text-xs px-2 py-0.5 rounded-full">0</span>
-            </a>
-        </div>
-    </nav>
-</header>
+                <!-- Botón móvil -->
+                <button id="menu-toggle" class="text-white md:hidden focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+                         viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
 
-<!-- Footer -->
-<footer th:fragment="footer" class="bg-[#5F5E5D] text-white py-6 mt-auto">
-    <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
-        <div class="text-sm">&copy; Moto Llantas Virtual 2025</div>
-        <div class="flex space-x-4 mt-2 md:mt-0">
-            <a href="#!" class="text-sm hover:underline">Privacidad</a>
-            <a href="#!" class="text-sm hover:underline">Términos y Condiciones</a>
-            <a href="#!" class="text-sm hover:underline">Contacto</a>
-        </div>
-    </div>
-    <script src="js/scripts.js"></script>
-</footer>0
-</body>
+                <!-- Menú -->
+                <div id="menu" class="w-full md:w-auto mt-4 md:mt-0 hidden md:flex md:items-center md:space-x-6">
+                    <a th:href="@{/index}" class="block py-2 md:py-0 hover:text-yellow-400">Inicio</a>
+                    <a th:href="@{/catalog}" class="block py-2 md:py-0 hover:text-yellow-400">Catálogo</a>
+                    <a th:href="@{/userGarage}" class="block py-2 md:py-0 hover:text-yellow-400">Agendar Cita</a>
+                    <a th:href="@{/location}" class="block py-2 md:py-0 hover:text-yellow-400">Ubicación</a>
+                    <a th:href="@{/login}" class="block py-2 md:py-0 hover:text-yellow-400 text-xl">
+                        <i class="fa-solid fa-user"></i>
+                    </a>
+                    <a th:href="@{/cart}" class="relative block py-2 md:py-0 hover:text-yellow-400">
+                        <i class="fa-solid fa-cart-shopping text-xl"></i>
+                        <span class="absolute -top-2 -right-2 bg-yellow-500 text-white text-xs px-2 py-0.5 rounded-full">0</span>
+                    </a>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Footer -->
+        <footer th:fragment="footer" class="bg-[#5F5E5D] text-white py-6 mt-auto">
+            <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
+                <div class="text-sm">&copy; Moto Llantas Virtual 2025</div>
+                <div class="flex space-x-4 mt-2 md:mt-0">
+                    <a href="#!" class="text-sm hover:underline">Privacidad</a>
+                    <a href="#!" class="text-sm hover:underline">Términos y Condiciones</a>
+                    <a href="#!" class="text-sm hover:underline">Contacto</a>
+                </div>
+            </div>
+            <script src="js/scripts.js"></script>
+        </footer>
+    </body>
 </html>
