@@ -5,6 +5,8 @@
 package com.motollantas.MotoLlantasVirtual.domain;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,23 +25,38 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "repair_orders")
-public class Repair_Orders {
+public class RepairOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_orden;
+    
     @ManyToOne
     @JoinColumn(name = "id_usuario")
-    private User usuario;
-    private String nombre_cliente;
-    private String modelo_moto;
-    private int anio;
-    private int cilindraje;
+    private User user;
+    
+    private String clientName;
+    private String modelName;
+    private int year;
+    private int displacement;
     private int kilometraje;
-    private String numero_placa;
+    private String licensePlate;
     private String color;
+    
     @NotNull
     @Future
-    private LocalDateTime fecha_cita;
-    private OrderStatus estadoCita = OrderStatus.NUEVO;
+    private LocalDateTime appointmentDate;
+    
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus = OrderStatus.NUEVO;
+    
+    private String serviceType;
+    
+    @ManyToOne
+    private Employee mechanic;
+    
+    @Enumerated(EnumType.STRING)
+    private OrderPriority priority = OrderPriority.BAJA;
+    
+    private String problemDescription;
 }

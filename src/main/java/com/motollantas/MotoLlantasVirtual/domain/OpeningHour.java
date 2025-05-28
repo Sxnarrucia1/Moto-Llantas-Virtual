@@ -24,27 +24,27 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class HorarioAtencion {
+public class OpeningHour {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idHorario;
+    private Long idSchedule;
 
-    private DayOfWeek dia;
-    private LocalTime horaInicio;
-    private LocalTime horaFin;
+    private DayOfWeek day;
+    private LocalTime startTime;
+    private LocalTime endTime;
 
-    public LocalTime getHoraInicio() {
-        return horaInicio;
+    public LocalTime getStart() {
+        return startTime;
     }
 
-    public LocalTime getHoraFin() {
-        return horaFin;
+    public LocalTime getClose() {
+        return endTime;
     }
 
-    public HorarioAtencion(DayOfWeek dia, LocalTime horaInicio, LocalTime horaFin) {
-        this.dia = dia;
-        this.horaInicio = horaInicio;
-        this.horaFin = horaFin;
+    public OpeningHour(DayOfWeek day, LocalTime startTime, LocalTime endTime) {
+        this.day = day;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 }

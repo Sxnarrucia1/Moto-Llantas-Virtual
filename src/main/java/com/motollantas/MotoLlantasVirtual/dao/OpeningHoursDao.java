@@ -4,7 +4,7 @@
  */
 package com.motollantas.MotoLlantasVirtual.dao;
 
-import com.motollantas.MotoLlantasVirtual.domain.HorarioAtencion;
+import com.motollantas.MotoLlantasVirtual.domain.OpeningHour;
 import java.time.DayOfWeek;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,9 +13,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
  *
  * @author esteb
  */
-public interface HorarioAtencionDao extends JpaRepository<HorarioAtencion, Long> {
+public interface OpeningHoursDao extends JpaRepository<OpeningHour, Long> {
 
-    public Optional<HorarioAtencion> findByDia(DayOfWeek dia);
+    public Optional<OpeningHour> findByDay(DayOfWeek day);
     
     
 }

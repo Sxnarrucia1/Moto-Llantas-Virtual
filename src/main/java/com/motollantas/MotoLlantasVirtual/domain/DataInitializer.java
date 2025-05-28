@@ -4,12 +4,12 @@
  */
 package com.motollantas.MotoLlantasVirtual.domain;
 
-import com.motollantas.MotoLlantasVirtual.dao.HorarioAtencionDao;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import com.motollantas.MotoLlantasVirtual.dao.OpeningHoursDao;
 
 /**
  *
@@ -19,15 +19,15 @@ import org.springframework.context.annotation.Configuration;
 public class DataInitializer {
     
     @Bean
-    public CommandLineRunner initHorarios(HorarioAtencionDao dao){
+    public CommandLineRunner initHorarios(OpeningHoursDao dao){
         return args -> {
         if (dao.count() == 0){
-            dao.save(new HorarioAtencion(DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(17, 0)));
-            dao.save(new HorarioAtencion(DayOfWeek.TUESDAY, LocalTime.of(9, 0), LocalTime.of(17, 0)));
-            dao.save(new HorarioAtencion(DayOfWeek.WEDNESDAY, LocalTime.of(9, 0), LocalTime.of(17, 0)));
-            dao.save(new HorarioAtencion(DayOfWeek.THURSDAY, LocalTime.of(9, 0), LocalTime.of(17, 0)));
-            dao.save(new HorarioAtencion(DayOfWeek.FRIDAY, LocalTime.of(9, 0), LocalTime.of(17, 0)));
-            dao.save(new HorarioAtencion(DayOfWeek.SATURDAY, LocalTime.of(9, 0), LocalTime.of(14, 0)));
+            dao.save(new OpeningHour(DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(17, 0)));
+            dao.save(new OpeningHour(DayOfWeek.TUESDAY, LocalTime.of(9, 0), LocalTime.of(17, 0)));
+            dao.save(new OpeningHour(DayOfWeek.WEDNESDAY, LocalTime.of(9, 0), LocalTime.of(17, 0)));
+            dao.save(new OpeningHour(DayOfWeek.THURSDAY, LocalTime.of(9, 0), LocalTime.of(17, 0)));
+            dao.save(new OpeningHour(DayOfWeek.FRIDAY, LocalTime.of(9, 0), LocalTime.of(17, 0)));
+            dao.save(new OpeningHour(DayOfWeek.SATURDAY, LocalTime.of(9, 0), LocalTime.of(14, 0)));
         }
         };
     }
