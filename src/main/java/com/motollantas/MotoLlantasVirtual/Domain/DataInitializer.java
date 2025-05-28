@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.motollantas.MotoLlantasVirtual.domain;
+package com.motollantas.MotoLlantasVirtual.Domain;
 
-import com.motollantas.MotoLlantasVirtual.dao.HorarioAtencionDao;
+import com.motollantas.MotoLlantasVirtual.Dao.HorarioAtencionDao;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import org.springframework.boot.CommandLineRunner;

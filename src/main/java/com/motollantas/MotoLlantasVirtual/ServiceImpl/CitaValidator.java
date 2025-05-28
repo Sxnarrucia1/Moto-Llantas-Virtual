@@ -5,7 +5,7 @@
 package com.motollantas.MotoLlantasVirtual.ServiceImpl;
 
 import com.motollantas.MotoLlantasVirtual.Service.HorarioAtencionService;
-import com.motollantas.MotoLlantasVirtual.domain.HorarioAtencion;
+import com.motollantas.MotoLlantasVirtual.Domain.HorarioAtencion;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;

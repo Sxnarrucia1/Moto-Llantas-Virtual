@@ -9,115 +9,135 @@
 
     </head>
     <body>
-        <section th:fragment="login" class="h-100 gradient-form" style="background-color: #DDDDDF;">
-            <div class="container py-5 h-100">
-                <div class="row d-flex justify-content-center align-items-center h-100">
-                    <div class="col-xl-10">
-                        <div class="card rounded-3 text-black">
-                            <div class="row g-0">
-                                <div class="col-lg-6">
-                                    <div class="card-body p-md-5 mx-md-4">
-                                        <div class="text-center">
-                                            <img src="/img/motollantaslogo.png"
-                                                 style="width: 185px;" alt="logo">
-                                                <h4 class="mt-1 mb-5 pb-1">Bienvenido a nuestra plataforma</h4>
-                                        </div>
-                                        <form>
+    <section th:fragment="login" class="min-h-screen bg-[#DDDDDF] flex items-center justify-center py-10 px-4">
+        <div class="w-full max-w-6xl bg-white rounded-3xl shadow-xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
 
-                                            <div data-mdb-input-init class="form-outline mb-4">
-                                                <label class="form-label" for="form2Example11">Nombre de Usuario</label>
-                                                <input type="email" id="form2Example11" class="form-control"
-                                                       placeholder="Correo Electrónico" />
-                                            </div>
+            <!-- Formulario -->
+            <div class="p-10">
+                <div class="text-center mb-6">
+                    <img src="/img/motollantaslogo.png" class="mx-auto w-40" alt="logo">
+                    <h2 class="text-2xl font-semibold text-gray-800 mt-4">Bienvenido a nuestra plataforma</h2>
+                </div>
 
-                                            <div data-mdb-input-init class="form-outline mb-4">
-                                                <label class="form-label" for="form2Example22">Contraseña</label>
-                                                <input type="password" id="form2Example22" class="form-control"
-                                                       placeholder="Contraseña"/>
-                                            </div>
-
-                                            <div class="text-center pt-1 mb-5 pb-1">
-                                                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-custom btn-block fa-lg mb-3" 
-                                                        type="button">Iniciar Sesión</button>
-                                                <a class="text-muted" href="#!">¿Olvidó su contraseña?</a>
-                                            </div>
-
-                                            <div class="d-flex align-items-center justify-content-center pb-4">
-                                                <p class="mb-0 me-2">¿No tienes cuenta?</p>
-                                                <button  type="button" class="btn btn-outline-custom" onclick="window.location.href='/register'">Crear Cuenta</button>
-                                            </div>
-                                        </form>
-
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
-                                    <div class="text-white px-3 py-4 p-md-5 mx-md-4">
-                                        <h4 class="mb-4">Somos más que un taller.</h4>
-                                        <p class="small mb-0">En nuestra plataforma vas a poder acceder a todos nuestros servicios como: Agendar Citas, 
-                                            Consultar nuestro inventario en tiempo real, revisar historial de tu motocicleta en nuestro taller, entre muchas cosas más.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <form>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1" for="form2Example11">Nombre de Usuario</label>
+                        <input type="email" id="form2Example11" placeholder="Correo Electrónico"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-[#F47808] focus:outline-none" />
                     </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1" for="form2Example22">Contraseña</label>
+                        <input type="password" id="form2Example22" placeholder="Contraseña"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-[#F47808] focus:outline-none" />
+                    </div>
+
+                    <div class="text-center mb-5 pt-1">
+                        <button type="button"
+                                class="w-full bg-[#F47808] text-white py-2 rounded-md hover:bg-orange-600 transition duration-300 mb-3">
+                            Iniciar Sesión
+                        </button>
+                        <a class="text-sm text-gray-600 hover:underline" href="#!">¿Olvidó su contraseña?</a>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <p class="text-sm text-gray-600">¿No tienes cuenta?
+                            <a href="/register" class="text-[#F47808] hover:underline font-medium">Registrate aquí</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Lado derecho -->
+            <div class="bg-gradient-to-br from-[#F47808] to-orange-500 text-white p-10 flex flex-col justify-center">
+                <h4 class="text-2xl font-semibold mb-4">Somos más que un taller.</h4>
+                <p class="text-sm leading-relaxed">
+                    En nuestra plataforma vas a poder acceder a todos nuestros servicios como: Agendar Citas,
+                    Consultar nuestro inventario en tiempo real, revisar historial de tu motocicleta en nuestro taller, entre muchas cosas más.
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <section th:fragment="register" style="background-color: #DDDDDF;" class="min-h-screen flex items-center justify-center py-10 px-4">
+            <div class="w-full max-w-6xl bg-white rounded-3xl shadow-xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
+
+                <!-- Formulario -->
+                <div class="p-10">
+                    <div class="text-center mb-6">
+                        <img src="/img/motollantaslogo.png" class="mx-auto w-40" alt="logo">
+                        <h2 class="text-2xl font-semibold text-black mt-4">Regístrese a nuestra plataforma</h2>
+                    </div>
+
+                    <form method="POST" action="/user/register" class="space-y-4 text-black">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">
+                                Nombre Completo <span class="text-gray-500 text-xs"></span>
+                            </label>
+                            <input type="text" name="fullName" placeholder="Ejemplo: Juan Pérez"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-[#F47808] focus:outline-none"
+                                   required />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium mb-1">
+                                Identificación <span class="text-gray-500 text-xs"></span>
+                            </label>
+                            <input type="text" name="identification" placeholder="Ejemplo: 123456789"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-[#F47808] focus:outline-none"
+                                   required />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium mb-1">
+                                Correo Electrónico <span class="text-gray-500 text-xs"></span>
+                            </label>
+                            <input type="email" name="email" placeholder="ejemplo@correo.com"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-[#F47808] focus:outline-none"
+                                   required />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium mb-1">
+                                Contraseña <span class="text-gray-500 text-xs"></span>
+                            </label>
+                            <input type="password" name="password" placeholder="********"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-[#F47808] focus:outline-none"
+                                   required />
+                        </div>
+
+                        <input type="hidden" name="userType" value="Cliente" />
+
+                        <div class="text-center pt-2">
+                            <button type="submit"
+                                    class="w-full bg-[#F47808] text-white py-2 rounded-md hover:bg-orange-600 transition duration-300">
+                                Registrarse
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <p class="text-sm text-gray-600">¿Ya tienes cuenta?
+                            <a href="/login" class="text-[#F47808] hover:underline font-medium">Inicia sesión aquí</a>
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <!-- Lado derecho -->
+                <div class="bg-gradient-to-br from-[#F47808] to-orange-500 text-white p-10 flex flex-col justify-center">
+                    <h4 class="text-2xl font-semibold mb-4">Somos más que un taller.</h4>
+                    <p class="text-sm leading-relaxed">
+                        En nuestra plataforma vas a poder acceder a todos nuestros servicios como: Agendar Citas,
+                        Consultar nuestro inventario en tiempo real, revisar historial de tu motocicleta en nuestro taller, entre muchas cosas más.
+                    </p>
                 </div>
             </div>
         </section>
-        <section th:fragment="register" class="h-100 gradient-form" style="background-color: #DDDDDF;">
-            <div class="container py-5 h-100">
-                <div class="row d-flex justify-content-center align-items-center h-100">
-                    <div class="col-xl-10">
-                        <div class="card rounded-3 text-black">
-                            <div class="row g-0">
-                                <div class="col-lg-6">
-                                    <div class="card-body p-md-5 mx-md-4">
-                                        <div class="text-center">
-                                            <img src="/img/motollantaslogo.png"
-                                                 style="width: 185px;" alt="logo">
-                                                <h4 class="mt-1 mb-5 pb-1">Regístrese a nuestra plataforma</h4>
-                                        </div>
-                                        <form>
 
-                                            <div data-mdb-input-init class="form-outline mb-4">
-                                                <label class="form-label" for="form2Example11">Nombre Completo</label>
-                                                <input type="email" id="form2Example11" class="form-control"/>
-                                            </div>
-
-                                            <div data-mdb-input-init class="form-outline mb-4">
-                                                <label class="form-label" for="form2Example22">Identificación</label>
-                                                <input type="password" id="form2Example22" class="form-control" />
-                                            </div>
-
-                                            <div data-mdb-input-init class="form-outline mb-4">
-                                                <label class="form-label" for="form2Example22">Correo Electrónico</label>
-                                                <input type="password" id="form2Example22" class="form-control" />
-                                            </div>
-
-                                            <div data-mdb-input-init class="form-outline mb-4">
-                                                <label class="form-label" for="form2Example22">Contraseña</label>
-                                                <input type="password" id="form2Example22" class="form-control" />
-                                            </div>
-
-                                            <div class="text-center pt-1 mb-5 pb-1">
-                                                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-custom btn-block fa-lg mb-3" 
-                                                        type="button">Registrarse</button>
-                                            </div>
-                                        </form>
-
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
-                                    <div class="text-white px-3 py-4 p-md-5 mx-md-4">
-                                        <h4 class="mb-4">Somos más que un taller.</h4>
-                                        <p class="small mb-0">En nuestra plataforma vas a poder acceder a todos nuestros servicios como: Agendar Citas, 
-                                            Consultar nuestro inventario en tiempo real, revisar historial de tu motocicleta en nuestro taller, entre muchas cosas más.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
     </body>
 </html>
