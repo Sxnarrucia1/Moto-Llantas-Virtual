@@ -22,28 +22,17 @@ public class DateValidator {
     @Autowired
     private OpeningHourService openingService;
 
-    private final Map<DayOfWeek, LocalTime[]> horarioDefault = Map.of(
-            DayOfWeek.MONDAY, new LocalTime[]{LocalTime.of(9, 0), LocalTime.of(17, 0)},
-            DayOfWeek.TUESDAY, new LocalTime[]{LocalTime.of(9, 0), LocalTime.of(17, 0)},
-            DayOfWeek.WEDNESDAY, new LocalTime[]{LocalTime.of(9, 0), LocalTime.of(17, 0)},
-            DayOfWeek.THURSDAY, new LocalTime[]{LocalTime.of(9, 0), LocalTime.of(17, 0)},
-            DayOfWeek.FRIDAY, new LocalTime[]{LocalTime.of(9, 0), LocalTime.of(17, 0)},
-            DayOfWeek.SATURDAY, new LocalTime[]{LocalTime.of(9, 0), LocalTime.of(17, 0)}
-    );
-
     public boolean isValidDate(LocalDateTime appointmentDate) {
         DayOfWeek day = appointmentDate.getDayOfWeek();
         LocalTime hour = appointmentDate.toLocalTime();
 
         Optional<OpeningHour> scheduleOpt = openingService.findByDay(day);
+        
+        System.out.println(scheduleOpt);
 
-        LocalTime startTime = scheduleOpt.map(OpeningHour::getStart)
-                .orElse(horarioDefault.getOrDefault(day, null)
-                        != null ? horarioDefault.get(day)[0] : null);
+        LocalTime startTime = scheduleOpt.get().getStart();
 
-        LocalTime endTime = scheduleOpt.map(OpeningHour::getClose)
-                .orElse(horarioDefault.getOrDefault(day, null)
-                        != null ? horarioDefault.get(day)[1] : null);
+        LocalTime endTime = scheduleOpt.get().getClose();
         
         if (startTime == null || endTime == null) {
             return false;

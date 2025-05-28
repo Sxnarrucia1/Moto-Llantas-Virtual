@@ -4,16 +4,13 @@
  */
 package com.motollantas.MotoLlantasVirtual.dao;
 
-import com.motollantas.MotoLlantasVirtual.domain.OpeningHour;
-import java.time.DayOfWeek;
-import java.util.Optional;
+import com.motollantas.MotoLlantasVirtual.domain.RepairOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
  * @author esteb
  */
-public interface OpeningHoursDao extends JpaRepository<OpeningHour, Long> {
-
-    public Optional<OpeningHour> findByDay(DayOfWeek day);
+public interface RepairOrderDao extends JpaRepository<RepairOrder, Long>{
+    
 }
