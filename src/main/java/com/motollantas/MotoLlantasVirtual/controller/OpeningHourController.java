@@ -4,15 +4,15 @@
  */
 package com.motollantas.MotoLlantasVirtual.controller;
 
-import com.motollantas.MotoLlantasVirtual.Service.HorarioAtencionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.motollantas.MotoLlantasVirtual.Service.OpeningHourService;
 
 /**
  *
  * @author esteb
  */
-public class HorarioAtencionController {
+public class OpeningHourController {
     
     @Autowired
-    private HorarioAtencionService horarioService;
+    private OpeningHourService openingService;
 }

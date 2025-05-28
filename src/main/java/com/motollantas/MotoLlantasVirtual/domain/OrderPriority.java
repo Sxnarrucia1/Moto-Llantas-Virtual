@@ -8,9 +8,9 @@ package com.motollantas.MotoLlantasVirtual.domain;
  *
  * @author esteb
  */
-public enum OrderStatus {
-    NUEVO,
-    CONFIRMADO,
-    CANCELADO,
-    EN_PROGRESO
+public enum OrderPriority {
+    BAJA, 
+    MEDIA, 
+    ALTA, 
+    URGENTE
 }

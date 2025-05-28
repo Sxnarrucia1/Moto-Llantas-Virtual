@@ -4,7 +4,7 @@
  */
 package com.motollantas.MotoLlantasVirtual.Service;
 
-import com.motollantas.MotoLlantasVirtual.domain.HorarioAtencion;
+import com.motollantas.MotoLlantasVirtual.domain.OpeningHour;
 import java.time.DayOfWeek;
 import java.util.List;
 import java.util.Optional;
@@ -13,12 +13,12 @@ import java.util.Optional;
  *
  * @author esteb
  */
-public interface HorarioAtencionService {
+public interface OpeningHourService {
     
-    public Optional<HorarioAtencion>findByDia (DayOfWeek dia);
+    public Optional<OpeningHour>findByDay (DayOfWeek day);
     
-    public void Save (HorarioAtencion horario);
+    public void Save (OpeningHour schedule);
     
-    public List<HorarioAtencion> getHorarios();
+    public List<OpeningHour> getSchedule();
     
 }
