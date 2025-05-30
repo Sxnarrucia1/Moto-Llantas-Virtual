@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
-    <head th:fragment="head">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head">
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Taller Moto Llantas Virtual</title>
@@ -43,7 +44,27 @@
                         <i class="fa-solid fa-cart-shopping text-xl"></i>
                         <span class="absolute -top-2 -right-2 bg-yellow-500 text-white text-xs px-2 py-0.5 rounded-full">0</span>
                     </a>
+
+
                 </div>
+                <div class="flex items-center space-x-4" sec:authorize="isAuthenticated()">
+                    <!-- Ícono y nombre -->
+                    <div class="flex items-center space-x-2 bg-gray-100 px-3 py-1 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M5.121 17.804A13.937 13.937 0 0112 15c2.763 0 5.304.802 7.379 2.18M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span sec:authentication="name" class="text-gray-800 text-sm font-medium"></span>
+                    </div>
+
+                    <!-- Botón de cerrar sesión -->
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1 rounded-md">
+                            Cerrar Sesión
+                        </button>
+                    </form>
+                </div>
+
             </nav>
         </header>
 
