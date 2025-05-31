@@ -59,7 +59,7 @@ public class HomeController {
         return "login/register";
     }
 
-    @GetMapping("/users")
+    @GetMapping("/dashboard")
     public String users() {
         return "users/adminDashboard";
     }
