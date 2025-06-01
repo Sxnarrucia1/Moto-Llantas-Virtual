@@ -1,0 +1,86 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.motollantas.MotoLlantasVirtual.controller;
+
+import com.motollantas.MotoLlantasVirtual.DTO.ClientDateDTO;
+import com.motollantas.MotoLlantasVirtual.Service.RepairOrderService;
+import com.motollantas.MotoLlantasVirtual.ServiceImpl.DateValidator;
+import com.motollantas.MotoLlantasVirtual.dao.UserDao;
+import com.motollantas.MotoLlantasVirtual.domain.User;
+import java.time.LocalDateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+/**
+ *
+ * @author esteb
+ */
+@Controller
+@RequestMapping("/garage")
+public class ClientDateController {
+
+    @Autowired
+    private RepairOrderService repairOrderService;
+
+    @Autowired
+    private DateValidator dateValidator;
+
+    @Autowired
+    private UserDao userDao;
+
+    @GetMapping("/userGarage")
+    public String mostrarFormularioCita(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+
+        User usuario = userDao.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        model.addAttribute("clientDateDTO", new ClientDateDTO());
+        model.addAttribute("fullName", usuario.getFullName());
+        model.addAttribute("identification", usuario.getIdentification());
+
+        return "garage/userGarage";
+    }
+
+    @PostMapping("/saveDate")
+    public String guardarCita(@ModelAttribute("clientDateDTO") ClientDateDTO clientDateDTO,
+            RedirectAttributes redirectAttributes) {
+        LocalDateTime appointmentDate = clientDateDTO.getAppointmentDate();
+
+        if (dateValidator.isClosedDay(appointmentDate)) {
+            redirectAttributes.addFlashAttribute("mensajeError", "El taller está cerrado ese día.");
+            return "redirect:/garage/userGarage";
+        }
+
+        if (!dateValidator.isWithinOpeningHours(appointmentDate)) {
+            redirectAttributes.addFlashAttribute("mensajeError", "La hora seleccionada está fuera del horario de atención.");
+            return "redirect:/garage/userGarage";
+        }
+
+        if (!dateValidator.isSlotAvailable(appointmentDate)) {
+            redirectAttributes.addFlashAttribute("mensajeError", "Ya existe una cita registrada en ese horario.");
+            return "redirect:/garage/userGarage";
+        }
+
+        try {
+            repairOrderService.createDateClient(clientDateDTO);
+            redirectAttributes.addFlashAttribute("mensajeExito", "¡Cita registrada exitosamente!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("mensajeError", "Error al registrar la cita: " + e.getMessage());
+        }
+
+        return "redirect:/garage/userGarage";
+
+    }
+}

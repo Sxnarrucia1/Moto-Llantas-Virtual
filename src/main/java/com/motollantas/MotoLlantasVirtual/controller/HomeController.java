@@ -69,11 +69,6 @@ public class HomeController {
         return "contabilidad/contabilidad";
     }
 
-    @GetMapping("/userGarage")
-    public String garageUser() {
-        return "garage/userGarage";
-    }
-
     @GetMapping("/marketing")
     public String marketing() {
         return "marketing/marketing";

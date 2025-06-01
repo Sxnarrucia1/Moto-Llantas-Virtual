@@ -1,21 +1,18 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
->
-<head th:replace="~{layout/layout :: head}">
-    <title>Moto Llantas</title>
-    <meta charset="UTF-8"/>
-</head>
-<body>
+      >
+    <head th:replace="~{layout/layout :: head}">
+        <title>Moto Llantas</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
 
-<header th:replace="~{layout/layout :: header}"/>
+        <header th:replace="~{layout/layout :: header}"/>
 
-<section th:replace="~{cart/fragments :: cart}"/>
+        <section th:replace="~{cart/fragments :: cart}"/>
 
-<footer th:replace="~{layout/layout :: footer}"/>
+        <footer th:replace="~{layout/layout :: footer}"/>
 
-
-<script src="js/scripts.js"></script>
-
-</body>
+    </body>
 </html>

@@ -8,36 +8,49 @@ import com.motollantas.MotoLlantasVirtual.domain.OpeningHour;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.motollantas.MotoLlantasVirtual.Service.OpeningHourService;
+import com.motollantas.MotoLlantasVirtual.Service.RepairOrderService;
+import java.time.Duration;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author esteb
  */
+@Component
 public class DateValidator {
 
     @Autowired
     private OpeningHourService openingService;
 
-    public boolean isValidDate(LocalDateTime appointmentDate) {
+    @Autowired
+    private RepairOrderService repairService;
+
+    public boolean isClosedDay(LocalDateTime appointmentDate) {
+        DayOfWeek day = appointmentDate.getDayOfWeek();
+        Optional<OpeningHour> scheduleOpt = openingService.findByDay(day);
+        return scheduleOpt.isEmpty();
+    }
+
+    public boolean isWithinOpeningHours(LocalDateTime appointmentDate) {
         DayOfWeek day = appointmentDate.getDayOfWeek();
         LocalTime hour = appointmentDate.toLocalTime();
 
         Optional<OpeningHour> scheduleOpt = openingService.findByDay(day);
-        
-        System.out.println(scheduleOpt);
-
-        LocalTime startTime = scheduleOpt.get().getStart();
-
-        LocalTime endTime = scheduleOpt.get().getClose();
-        
-        if (startTime == null || endTime == null) {
+        if (scheduleOpt.isEmpty()) {
             return false;
         }
-        
-        return !hour.isBefore(startTime) && !hour.isAfter(endTime);
+
+        LocalTime startTime = scheduleOpt.get().getStart();
+        LocalTime endTime = scheduleOpt.get().getClose();
+        return startTime != null && endTime != null
+                && !hour.isBefore(startTime) && !hour.isAfter(endTime);
+    }
+
+    public boolean isSlotAvailable(LocalDateTime appointmentDate) {
+        Duration defaultDuration = Duration.ofMinutes(30); // duración por defecto
+        return !repairService.hasOverlappingAppointment(appointmentDate, defaultDuration);
     }
 }

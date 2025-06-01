@@ -11,11 +11,13 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.motollantas.MotoLlantasVirtual.dao.OpeningHoursDao;
 import com.motollantas.MotoLlantasVirtual.Service.OpeningHourService;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author esteb
  */
+@Service
 public class OpeningHourServiceImpl implements OpeningHourService {
 
     @Autowired

@@ -10,20 +10,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  *
  * @author esteb
  */
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
-@Builder
 public class OpeningHour {
 
     @Id
@@ -40,6 +34,9 @@ public class OpeningHour {
 
     public LocalTime getClose() {
         return endTime;
+    }
+
+    public OpeningHour() {
     }
 
     public OpeningHour(DayOfWeek day, LocalTime startTime, LocalTime endTime) {
