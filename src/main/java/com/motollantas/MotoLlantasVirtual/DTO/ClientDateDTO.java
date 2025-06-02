@@ -20,8 +20,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ClientDateDTO {
 
+    private Long id;
+
     @NotBlank(message = "El nombre del cliente es obligatorio")
-    private String clientName;
+    private String fullName;
 
     @NotNull
     private String identification;
@@ -45,12 +47,22 @@ public class ClientDateDTO {
     @NotBlank(message = "Debe seleccionar un tipo de servicio")
     private String serviceType;
 
+    private String formattedAppointmentDate;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getClientName() {
-        return clientName;
+        return fullName;
     }
 
     public void setClientName(String clientName) {
-        this.clientName = clientName;
+        this.fullName = clientName;
     }
 
     public String getModelName() {
@@ -107,6 +119,14 @@ public class ClientDateDTO {
 
     public void setIdentification(String identification) {
         this.identification = identification;
+    }
+
+    public String getFormattedAppointmentDate() {
+        return formattedAppointmentDate;
+    }
+
+    public void setFormattedAppointmentDate(String formattedAppointmentDate) {
+        this.formattedAppointmentDate = formattedAppointmentDate;
     }
 
 }

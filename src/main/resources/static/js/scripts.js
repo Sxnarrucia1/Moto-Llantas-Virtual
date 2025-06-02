@@ -48,6 +48,21 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+function openModal(id) {
+    document.getElementById(`modal-${id}`).classList.remove('hidden');
+}
+
+function closeModal(id) {
+    document.getElementById(`modal-${id}`).classList.add('hidden');
+}
+
+function toggleSubmenu(id) {
+    const submenu = document.getElementById(id);
+    const icon = document.getElementById(id + '-icon');
+    submenu.classList.toggle('hidden');
+    icon.classList.toggle('rotate-180');
+}
+
 
 
 

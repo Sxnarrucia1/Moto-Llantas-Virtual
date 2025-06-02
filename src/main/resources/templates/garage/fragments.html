@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html class="h-full" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     >
     <head th:replace="~{layout/layout :: head}">
         <title>Taller Llantas</title>
     </head>
-    <body>
+    <body class="flex flex-col min-h-screen">
         <section th:fragment="userDate" class="h-100 h-custom gradient-custom-garage">
             <div class="container py-5 h-100"> 
-                <form th:action="@{/garage/saveDate}" th:object="${clientDateDTO}" method="post">
+                <form th:action="${clientDateDTO.id} != null ? @{/garage/updateDate} : @{/garage/saveDate}" th:object="${clientDateDTO}" method="post">
+                    <input type="hidden" th:field="*{id}" />
                     <div class="row d-flex justify-content-center align-items-center h-100">
                         <div class="col-12">
                             <div class="card card-registration card-registration-2" style="border-radius: 15px;">
@@ -22,43 +23,42 @@
                                                 <div class="row">
                                                     <div class="row">
                                                         <div class="mb-4 pb-2">
-                                                            <div class="form-outline">
+                                                            <div data-mdb-input-init class="form-outline">
                                                                 <input type="text" th:value="${identification}" class="form-control form-control-lg" readonly />
                                                                 <label class="form-label" for="form3Examplev4">Identificación</label>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6 mb-4 pb-2">
+                                                    <div class="mb-4 pb-2">
                                                         <div data-mdb-input-init class="form-outline">
                                                             <input type="text" th:value="${fullName}" class="form-control form-control-lg" readonly/>
                                                             <label class="form-label" for="form3Examplev2">Nombre</label>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6 mb-4 pb-2">
-                                                        <div data-mdb-input-init class="form-outline">
-                                                            <input type="text" id="form3Examplev3" class="form-control form-control-lg" />
-                                                            <label class="form-label" for="form3Examplev3">Apellido</label>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                                 <div class="mb-4 pb-2">
                                                     <div data-mdb-input-init class="form-outline">
-                                                        <input type="datetime-local" th:field="*{appointmentDate}" class="form-control form-control-lg" />
+                                                        <input type="datetime-local"
+                                                               name="appointmentDate"
+                                                               th:value="${clientDateDTO.formattedAppointmentDate != null} ? ${clientDateDTO.formattedAppointmentDate} : ''"
+                                                               class="form-control form-control-lg"
+                                                               required />
                                                         <label class="form-label" for="form3Examplev4">Fecha y Hora</label>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="mb-4 pb-2">
-                                                        <select th:field="*{serviceType}" class="form-select form-select-lg">
-                                                            <option value="1">Tipo Cita</option>
+                                                        <select th:field="*{serviceType}" class="form-select form-select-lg" required>
+                                                            <option value="0">Tipo Cita</option>
                                                             <option value="2">Mantenimiento Preventivo</option>
                                                             <option value="3">Reparación</option>
                                                             <option value="4">Instalación Accesorios</option>
-                                                            <option value="4">Instalación Llantas</option>
+                                                            <option value="5">Instalación Llantas</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <p th:text="${clientDateDTO.appointmentDate}"></p>
                                         </div>
                                         <div class="col-lg-6 bg-custom-orange bg-gradient text-white">
                                             <div class="p-5">
@@ -66,32 +66,33 @@
 
                                                 <div class="mb-5 pb-2">
                                                     <div data-mdb-input-init class="form-outline form-white">
-                                                        <input type="text" th:field="*{brand}" class="form-control form-control-lg" />
+                                                        <input type="text" th:field="*{brand}" class="form-control form-control-lg" required/>
                                                         <label class="form-label" for="form3Examplea2">Marca</label>
                                                     </div>
                                                 </div>
                                                 <div class="mb-5 pb-2">
                                                     <div data-mdb-input-init class="form-outline form-white">
-                                                        <input type="text" th:field="*{modelName}" class="form-control form-control-lg" />
+                                                        <input type="text" th:field="*{modelName}" class="form-control form-control-lg" required/>
                                                         <label class="form-label" for="form3Examplea3">Modelo</label>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-5 mb-4 pb-2">
                                                         <div data-mdb-input-init class="form-outline form-white">
-                                                            <input type="number" th:field="*{year}" class="form-control form-control-lg" min="1900" />
+                                                            <input type="number" th:field="*{year}" class="form-control form-control-lg" min="1900" required/>
                                                             <label class="form-label" for="form3Examplea4">Año</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-7 mb-4 pb-2">
                                                         <div data-mdb-input-init class="form-outline form-white">
-                                                            <input type="text" th:field="*{licensePlate}" class="form-control form-control-lg" />
+                                                            <input type="text" th:field="*{licensePlate}" class="form-control form-control-lg" required/>
                                                             <label class="form-label" for="form3Examplea5">Número de Placa</label>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <button  type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-light btn-lg"
-                                                         data-mdb-ripple-color="dark">Agendar Cita</button>
+                                                <button type="submit" class="btn btn-light btn-lg" data-mdb-ripple-color="dark">
+                                                    <span th:text="${clientDateDTO.id} != null ? 'Actualizar Cita' : 'Agendar Cita'">Agendar Cita</span>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -102,97 +103,70 @@
                 </form>
             </div>
         </section>
-        <section th:fragment="sidebar-admin-garage">
-            <div class="container-fluid">
-                <div class="row flex-nowrap">
-                    <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-custom">
-                        <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100 sidebar-content">
-                            <a th:href="@{/index}" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-decoration-none">
-                                <span class="fs-5 d-none d-sm-inline">Taller Moto Llantas Virtual</span>
-                            </a>
-                            <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-                                <li class="nav-item">
-                                    <a th:href="@{/index}" class="nav-link align-middle px-0">
-                                        <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Inicio</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-                                        <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">Reportes</span> </a>
-                                    <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
-                                        <li class="w-100">
-                                            <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Reporte Finanzas</span></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Reporte Ventas</span></a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a th:href="@{/inventory}" class="nav-link px-0 align-middle">
-                                        <i class="fa-solid fa-boxes-stacked"></i> <span class="ms-1 d-none d-sm-inline">Inventario</span></a>
-                                </li>
-                                <li>
-                                    <a th:href="@{/adminGarage}" class="nav-link px-0 align-middle">
-                                        <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Órdenes Reparación</span></a>
-                                </li>
-                                <li>
-                                    <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">
-                                        <i class="fs-4 bi-cash-coin"></i> <span class="ms-1 d-none d-sm-inline">Finanzas</span></a>
-                                    <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
-                                        <li class="w-100">
-                                            <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Ingresos</span></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Egresos</span></a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#submenu3" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-                                        <i class="fs-4 bi-grid"></i> <span class="ms-1 d-none d-sm-inline">Productoss</span> </a>
-                                    <ul class="collapse nav flex-column ms-1" id="submenu3" data-bs-parent="#menu">
-                                        <li class="w-100">
-                                            <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Llantas</span></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Aceites</span></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Terminales</span></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Accesorios</span></a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a th:href="@{/users}" class="nav-link px-0 align-middle">
-                                        <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Empleados</span> </a>
-                                </li>
-                            </ul>
-                            <hr>
-                                <div class="dropdown pb-4">
-                                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img src="https://github.com/mdo.png" alt="hugenerd" width="30" height="30" class="rounded-circle">
-                                            <span class="d-none d-sm-inline mx-1">Diego</span>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                                        <li><a class="dropdown-item" href="#">Nueva órden reparación</a></li>
-                                        <li><a class="dropdown-item" href="#">Configuraciones</a></li>
-                                        <li><a class="dropdown-item" href="#">Perfil</a></li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
-                                    </ul>
+        <section th:fragment="appointmentsClient" class="max-w-7xl mx-auto px-4 py-10">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-3xl font-bold text-orange-600">Mis Citas Agendadas</h2>
+                <a href="/garage/userGarage"
+                   class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded shadow">
+                    + Nueva Cita
+                </a>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white border border-gray-200 shadow-md rounded-lg">
+                    <thead class="bg-gray-800 text-white">
+                        <tr>
+                            <th class="px-6 py-3 text-sm font-semibold text-center">Fecha y Hora</th>
+                            <th class="px-6 py-3 text-sm font-semibold text-center">Tipo de Servicio</th>
+                            <th class="px-6 py-3 text-sm font-semibold text-center">Marca</th>
+                            <th class="px-6 py-3 text-sm font-semibold text-center">Modelo</th>
+                            <th class="px-6 py-3 text-sm font-semibold text-center">Año</th>
+                            <th class="px-6 py-3 text-sm font-semibold text-center">Placa</th>
+                            <th class="px-6 py-3 text-sm font-semibold text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="clientDates : ${appointments}" class="border-t hover:bg-gray-100">
+                            <td class="px-6 py-4 text-center" th:text="${#temporals.format(clientDates.appointmentDate, 'dd/MM/yyyy HH:mm')}"></td>
+                            <td class="px-6 py-4 text-center" th:text="${clientDates.serviceType}"></td>
+                            <td class="px-6 py-4 text-center" th:text="${clientDates.brand}"></td>
+                            <td class="px-6 py-4 text-center" th:text="${clientDates.modelName}"></td>
+                            <td class="px-6 py-4 text-center" th:text="${clientDates.year}"></td>
+                            <td class="px-6 py-4 text-center" th:text="${clientDates.licensePlate}"></td>
+                            <td class="px-6 py-4 text-center space-x-2">
+                                <a th:href="@{'/garage/edit/' + ${clientDates.id}}" 
+                                   class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">Editar</a>
+                                <button type="button"
+                                        th:attr="onclick=|openModal('${clientDates.id}')|"
+                                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">
+                                    Cancelar
+                                </button>
+                            </td>
+                        </tr>
+                        <tr th:each="clientDates : ${appointments}">
+                            <td colspan="7">
+                                <div th:id="'modal-' + ${clientDates.id}" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                                    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                                        <h3 class="text-lg font-semibold text-gray-800 mb-4">¿Cancelar esta cita?</h3>
+                                        <p class="text-gray-600 mb-6">Esta acción no se puede deshacer.</p>
+                                        <div class="flex justify-end space-x-4">
+                                            <button th:attr="onclick=|closeModal('${clientDates.id}')|"
+                                                    class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded">
+                                                Cancelar
+                                            </button>
+                                            <a th:href="@{'/garage/delete/' + ${clientDates.id}}"
+                                               class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded">
+                                                Confirmar
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
-                        </div>
-                    </div>
-                    <div class="col py-2">
-                        <section th:replace="~{garage/fragments :: garage-jobs}"/>
-                    </div>
-                </div>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(appointments)}">
+                            <td colspan="7" class="px-6 py-4 text-center text-gray-500">No tienes citas agendadas.</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </section>
         <section th:fragment="garage-jobs">
@@ -543,6 +517,71 @@
                 </div>
             </div>
         </section>
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <section th:fragment="jira-example">
+            <div class="container mx-auto py-4">
+                <!-- Botones de filtro (opcional) -->
+                <div class="flex justify-between mb-4">
+                    <button class="bg-blue-500 text-white px-4 py-2 rounded">Nuevo</button>
+                    <button class="bg-green-500 text-white px-4 py-2 rounded">En Proceso</button>
+                    <button class="bg-yellow-500 text-white px-4 py-2 rounded">Completado</button>
+                    <button class="bg-red-500 text-white px-4 py-2 rounded">Cancelado</button>
+                </div>
+
+                <!-- Columnas del tablero -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <!-- NUEVOS -->
+                    <div class="bg-gray-100 p-4 rounded shadow">
+                        <h2 class="text-lg font-semibold mb-2">Nuevos</h2>
+                        <div class="space-y-2">
+                            <div class="bg-white p-4 rounded shadow">
+                                <h3 class="font-semibold text-gray-800">Orden #1001</h3>
+                                <p class="text-sm text-gray-600">Cliente: Juan Pérez</p>
+                                <p class="text-sm text-gray-600">Vehículo: Honda CB650R</p>
+                                <p class="text-sm text-gray-500 mt-2">Cambio de aceite y revisión general.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- EN PROCESO -->
+                    <div class="bg-gray-100 p-4 rounded shadow">
+                        <h2 class="text-lg font-semibold mb-2">En Proceso</h2>
+                        <div class="space-y-2">
+                            <div class="bg-white p-4 rounded shadow">
+                                <h3 class="font-semibold text-gray-800">Orden #1002</h3>
+                                <p class="text-sm text-gray-600">Cliente: María López</p>
+                                <p class="text-sm text-gray-600">Vehículo: Kawasaki ZX6R</p>
+                                <p class="text-sm text-gray-500 mt-2">Reparación de frenos.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- COMPLETADOS -->
+                    <div class="bg-gray-100 p-4 rounded shadow">
+                        <h2 class="text-lg font-semibold mb-2">Completados</h2>
+                        <div class="space-y-2">
+                            <div class="bg-white p-4 rounded shadow">
+                                <h3 class="font-semibold text-gray-800">Orden #1003</h3>
+                                <p class="text-sm text-gray-600">Cliente: Carlos Ruiz</p>
+                                <p class="text-sm text-gray-600">Vehículo: Yamaha R3</p>
+                                <p class="text-sm text-gray-500 mt-2">Instalación llantas.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CANCELADOS -->
+                    <div class="bg-gray-100 p-4 rounded shadow">
+                        <h2 class="text-lg font-semibold mb-2">Cancelados</h2>
+                        <div class="space-y-2">
+                            <div class="bg-white p-4 rounded shadow">
+                                <h3 class="font-semibold text-gray-800">Orden #1004</h3>
+                                <p class="text-sm text-gray-600">Cliente: Ana Torres</p>
+                                <p class="text-sm text-gray-600">Vehículo: CFMoto 300SR</p>
+                                <p class="text-sm text-gray-500 mt-2">Orden cancelada por el cliente.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </body>
 </html>
