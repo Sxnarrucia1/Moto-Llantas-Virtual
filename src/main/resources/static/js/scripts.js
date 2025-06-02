@@ -65,4 +65,33 @@ function toggleSubmenu(id) {
 
 
 
+// script for dropdown user in layout/layoutAdmin
+const button = document.getElementById('userMenuButton');
+    const dropdown = document.getElementById('userDropdown');
 
+    button.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdown.classList.toggle('opacity-0');
+      dropdown.classList.toggle('invisible');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!button.contains(e.target)) {
+        dropdown.classList.add('opacity-0');
+        dropdown.classList.add('invisible');
+      }
+    });
+
+
+//script for modal in users/fragments
+function openModal() {
+        const modal = document.getElementById('editUserModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('editUserModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }

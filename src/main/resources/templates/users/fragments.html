@@ -8,330 +8,115 @@
         <meta charset="UTF-8"/>
     </head>
     <body>
-        <section th:fragment="users">
-            <div class="container mt-5">
-                <h2>Lista de Empleados</h2>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Cédula</th>
-                            <th>Nombre</th>
-                            <th>Teléfono</th>
-                            <th>Correo Electrónico</th>
-                            <th>Fecha Contratación</th>
-                            <th>Salario</th>
-                            <th>Rol</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
+        <section th:fragment="users"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Lista de Empleados del Taller</h2>
+            <div class="overflow-x-auto bg-white shadow-md rounded-lg">
+                <table class="min-w-full text-sm text-left text-gray-700">
+                    <thead class="bg-gray-100 uppercase text-xs text-gray-600">
+                    <tr>
+                        <th class="px-4 py-3">Cédula</th>
+                        <th class="px-4 py-3">Nombre</th>
+                        <th class="px-4 py-3">Teléfono</th>
+                        <th class="px-4 py-3">Correo</th>
+                        <th class="px-4 py-3">Fecha</th>
+                        <th class="px-4 py-3">Salario</th>
+                        <th class="px-4 py-3">Rol</th>
+                        <th class="px-4 py-3">Estado</th>
+                        <th class="px-4 py-3">Acciones</th>
+                    </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>12345678</td>
-                            <td>Juan Pérez</td>
-                            <td>+506 1234 5678</td>
-                            <td>juan.perez@example.com</td>
-                            <td>01/01/2020</td>
-                            <td>$1,500</td>
-                            <td>Administrador</td>
-                            <td>Activo</td>
-                            <td>
-                                <button type="button" class="btn btn-custom-primary-y" data-bs-toggle="modal" data-bs-target="#editUserModal">Editar Usuario</button>
-                                <button class="btn btn-danger">Eliminar</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>87654321</td>
-                            <td>María Gómez</td>
-                            <td>+506 8765 4321</td>
-                            <td>maria.gomez@example.com</td>
-                            <td>15/03/2019</td>
-                            <td>$1,200</td>
-                            <td>Mecánico</td>
-                            <td>Activo</td>
-                            <td>
-                                <button type="button" class="btn btn-custom-primary-y" data-bs-toggle="modal" data-bs-target="#editUserModal">Editar Usuario</button>
-                                <button class="btn btn-danger">Eliminar</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>11223344</td>
-                            <td>Carlos Rodríguez</td>
-                            <td>+506 1122 3344</td>
-                            <td>carlos.rodriguez@example.com</td>
-                            <td>10/07/2018</td>
-                            <td>$1,800</td>
-                            <td>Bodeguero</td>
-                            <td>Inactivo</td>
-                            <td>
-                                <button type="button" class="btn btn-custom-primary-y" data-bs-toggle="modal" data-bs-target="#editUserModal">Editar Usuario</button>
-                                <button class="btn btn-danger">Eliminar</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>22334455</td>
-                            <td>Laura Martínez</td>
-                            <td>+506 2233 4455</td>
-                            <td>laura.martinez@example.com</td>
-                            <td>05/02/2021</td>
-                            <td>$1,400</td>
-                            <td>Mecánico</td>
-                            <td>Activo</td>
-                            <td>
-                                <button type="button" class="btn btn-custom-primary-y" data-bs-toggle="modal" data-bs-target="#editUserModal">Editar Usuario</button>
-                                <button class="btn btn-danger">Eliminar</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>33445566</td>
-                            <td>Pedro Sánchez</td>
-                            <td>+506 3344 5566</td>
-                            <td>pedro.sanchez@example.com</td>
-                            <td>20/11/2020</td>
-                            <td>$1,600</td>
-                            <td>Mecánico</td>
-                            <td>Activo</td>
-                            <td>
-                                <button type="button" class="btn btn-custom-primary-y" data-bs-toggle="modal" data-bs-target="#editUserModal">Editar Usuario</button>
-                                <button class="btn btn-danger">Eliminar</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>44556677</td>
-                            <td>Andrea López</td>
-                            <td>+506 4455 6677</td>
-                            <td>andrea.lopez@example.com</td>
-                            <td>15/08/2019</td>
-                            <td>$1,700</td>
-                            <td>Administrador</td>
-                            <td>Activo</td>
-                            <td>
-                                <button type="button" class="btn btn-custom-primary-y" data-bs-toggle="modal" data-bs-target="#editUserModal">Editar Usuario</button>
-                                <button class="btn btn-danger">Eliminar</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>55667788</td>
-                            <td>Fernando Castillo</td>
-                            <td>+506 5566 7788</td>
-                            <td>fernando.castillo@example.com</td>
-                            <td>10/05/2018</td>
-                            <td>$1,800</td>
-                            <td>Administrador</td>
-                            <td>Activo</td>
-                            <td>
-                                <button type="button" class="btn btn-custom-primary-y" data-bs-toggle="modal" data-bs-target="#editUserModal">Editar Usuario</button>
-                                <button class="btn btn-danger">Eliminar</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>66778899</td>
-                            <td>Gabriela Ramírez</td>
-                            <td>+506 6677 8899</td>
-                            <td>gabriela.ramirez@example.com</td>
-                            <td>25/12/2017</td>
-                            <td>$1,900</td>
-                            <td>Bodeguero</td>
-                            <td>Activo</td>
-                            <td>
-                                <button type="button" class="btn btn-custom-primary-y" data-bs-toggle="modal" data-bs-target="#editUserModal">Editar Usuario</button>
-                                <button class="btn btn-danger">Eliminar</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>77889900</td>
-                            <td>Ricardo Díaz</td>
-                            <td>+506 7788 9900</td>
-                            <td>ricardo.diaz@example.com</td>
-                            <td>30/06/2016</td>
-                            <td>$2,000</td>
-                            <td>Mecánico</td>
-                            <td>Activo</td>
-                            <td>
-                                <button type="button" class="btn btn-custom-primary-y" data-bs-toggle="modal" data-bs-target="#editUserModal">Editar Usuario</button>
-                                <button class="btn btn-danger">Eliminar</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>88990011</td>
-                            <td>Silvia Torres</td>
-                            <td>+506 8899 0011</td>
-                            <td>silvia.torres@example.com</td>
-                            <td>18/04/2015</td>
-                            <td>$2,100</td>
-                            <td>Mecánico</td>
-                            <td>Inactivo</td>
-                            <td>
-                                <button type="button" class="btn btn-custom-primary-y" data-bs-toggle="modal" data-bs-target="#editUserModal">Editar Usuario</button>
-                                <button class="btn btn-danger">Eliminar</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>99001122</td>
-                            <td>José Hernández</td>
-                            <td>+506 9900 1122</td>
-                            <td>jose.hernandez@example.com</td>
-                            <td>22/09/2014</td>
-                            <td>$2,200</td>
-                            <td>Mecánico</td>
-                            <td>Inactivo</td>
-                            <td>
-                                <button type="button" class="btn btn-custom-primary-y" data-bs-toggle="modal" data-bs-target="#editUserModal">Editar Usuario</button>
-                                <button class="btn btn-danger">Eliminar</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>00112233</td>
-                            <td>Patricia Vega</td>
-                            <td>+506 0011 2233</td>
-                            <td>patricia.vega@example.com</td>
-                            <td>05/07/2013</td>
-                            <td>$2,300</td>
-                            <td>Administrador</td>
-                            <td>Inactivo</td>
-                            <td>
-                                <button type="button" class="btn btn-custom-primary-y" data-bs-toggle="modal" data-bs-target="#editUserModal">Editar Usuario</button>
-                                <button class="btn btn-danger">Eliminar</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>11223344</td>
-                            <td>Roberto Jiménez</td>
-                            <td>+506 1122 3344</td>
-                            <td>roberto.jimenez@example.com</td>
-                            <td>12/11/2012</td>
-                            <td>$2,400</td>
-                            <td>Bodeguero</td>
-                            <td>Inactivo</td>
-                            <td>
-                                <button type="button" class="btn btn-custom-primary-y" data-bs-toggle="modal" data-bs-target="#editUserModal">Editar Usuario</button>
-                                <button class="btn btn-danger">Eliminar</button>
-                            </td>
-                        </tr>
+                    <tbody class="divide-y divide-gray-200">
+
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3">12345678</td>
+                        <td class="px-4 py-3">Juan Pérez</td>
+                        <td class="px-4 py-3">+506 1234 5678</td>
+                        <td class="px-4 py-3">juan.perez@taller.com</td>
+                        <td class="px-4 py-3">01/01/2020</td>
+                        <td class="px-4 py-3">₡850,000</td>
+                        <td class="px-4 py-3">Mecánico</td>
+                        <td class="px-4 py-3"><span class="inline-block bg-green-200 text-green-800 text-xs px-2 py-1 rounded-full">Activo</span></td>
+                        <td class="px-4 py-3 space-x-2">
+                            <button onclick="openModal()" class="text-blue-600 hover:text-blue-800 transition"><i class="fas fa-edit"></i></button>
+                            <button class="text-red-600 hover:text-red-800 transition"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3">87654321</td>
+                        <td class="px-4 py-3">Laura Ramírez</td>
+                        <td class="px-4 py-3">+506 9876 5432</td>
+                        <td class="px-4 py-3">laura.ramirez@taller.com</td>
+                        <td class="px-4 py-3">15/03/2021</td>
+                        <td class="px-4 py-3">₡720,000</td>
+                        <td class="px-4 py-3">Recepcionista</td>
+                        <td class="px-4 py-3"><span class="inline-block bg-yellow-200 text-yellow-800 text-xs px-2 py-1 rounded-full">Vacaciones</span></td>
+                        <td class="px-4 py-3 space-x-2">
+                            <button onclick="openModal()" class="text-blue-600 hover:text-blue-800 transition"><i class="fas fa-edit"></i></button>
+                            <button class="text-red-600 hover:text-red-800 transition"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3">11223344</td>
+                        <td class="px-4 py-3">Carlos Jiménez</td>
+                        <td class="px-4 py-3">+506 5566 7788</td>
+                        <td class="px-4 py-3">carlos.jimenez@taller.com</td>
+                        <td class="px-4 py-3">10/06/2019</td>
+                        <td class="px-4 py-3">₡930,000</td>
+                        <td class="px-4 py-3">Supervisor</td>
+                        <td class="px-4 py-3"><span class="inline-block bg-green-200 text-green-800 text-xs px-2 py-1 rounded-full">Activo</span></td>
+                        <td class="px-4 py-3 space-x-2">
+                            <button onclick="openModal()" class="text-blue-600 hover:text-blue-800 transition"><i class="fas fa-edit"></i></button>
+                            <button class="text-red-600 hover:text-red-800 transition"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3">55667788</td>
+                        <td class="px-4 py-3">Natalia Vargas</td>
+                        <td class="px-4 py-3">+506 2233 4455</td>
+                        <td class="px-4 py-3">natalia.vargas@taller.com</td>
+                        <td class="px-4 py-3">28/09/2022</td>
+                        <td class="px-4 py-3">₡650,000</td>
+                        <td class="px-4 py-3">Ayudante</td>
+                        <td class="px-4 py-3"><span class="inline-block bg-red-200 text-red-800 text-xs px-2 py-1 rounded-full">Inactivo</span></td>
+                        <td class="px-4 py-3 space-x-2">
+                            <button onclick="openModal()" class="text-blue-600 hover:text-blue-800 transition"><i class="fas fa-edit"></i></button>
+                            <button class="text-red-600 hover:text-red-800 transition"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+
                     </tbody>
                 </table>
             </div>
-            <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editUserModalLabel">Editar Usuario</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+            <!-- Model -->
+            <div id="editUserModal" class="fixed inset-0 backdrop-blur-sm bg-white/30 hidden items-center justify-center z-50">
+            <div class="bg-white rounded-xl shadow-lg max-w-md w-full p-6 relative animate-fade-in border border-gray-200">
+                    <button onclick="closeModal()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-lg">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <h3 class="text-xl font-semibold mb-4 text-gray-800">Editar Usuario</h3>
+                    <form>
+                        <div class="mb-4">
+                            <label for="editUsername" class="block text-sm font-medium text-gray-700">Nombre de Usuario</label>
+                            <input type="text" id="editUsername" class="mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
                         </div>
-                        <form>
-                            <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="editUsername" class="form-label">Nombre de Usuario</label>
-                                    <input type="text" class="form-control" id="editUsername"/>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="editEmail" class="form-label">Correo Electrónico</label>
-                                    <input type="email" class="form-control" id="editEmail"/>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="editPassword" class="form-label">Contraseña</label>
-                                    <input type="password" class="form-control" id="editPassword"/>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                    <button type="submit" class="btn btn-custom-primary-y">Guardar Cambios</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section th:fragment="sidebar-users">
-            <div class="container-fluid">
-                <div class="row flex-nowrap">
-                    <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-custom">
-                        <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100 sidebar-content">
-                            <a th:href="@{/index}" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-decoration-none">
-                                <span class="fs-5 d-none d-sm-inline">Taller Moto Llantas Virtual</span>
-                            </a>
-                            <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-                                <li class="nav-item">
-                                    <a th:href="@{/index}" class="nav-link align-middle px-0">
-                                        <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Inicio</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-                                        <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">Reportes</span> </a>
-                                    <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
-                                        <li class="w-100">
-                                            <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Reporte Finanzas</span></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Reporte Ventas</span></a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a th:href="@{/inventory}" class="nav-link px-0 align-middle">
-                                        <i class="fa-solid fa-boxes-stacked"></i> <span class="ms-1 d-none d-sm-inline">Inventario</span></a>
-                                </li>
-                                <li>
-                                    <a th:href="@{/adminGarage}" class="nav-link px-0 align-middle">
-                                        <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Órdenes Reparación</span></a>
-                                </li>
-                                <li>
-                                    <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">
-                                        <i class="fs-4 bi-cash-coin"></i> <span class="ms-1 d-none d-sm-inline">Finanzas</span></a>
-                                    <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
-                                        <li class="w-100">
-                                            <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Ingresos</span></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Egresos</span></a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#submenu3" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-                                        <i class="fs-4 bi-grid"></i> <span class="ms-1 d-none d-sm-inline">Productoss</span> </a>
-                                    <ul class="collapse nav flex-column ms-1" id="submenu3" data-bs-parent="#menu">
-                                        <li class="w-100">
-                                            <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Llantas</span></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Aceites</span></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Terminales</span></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Accesorios</span></a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a th:href="@{/users}" class="nav-link px-0 align-middle">
-                                        <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Empleados</span> </a>
-                                </li>
-                            </ul>
-                            <hr>
-                                <div class="dropdown pb-4">
-                                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img src="https://github.com/mdo.png" alt="hugenerd" width="30" height="30" class="rounded-circle">
-                                            <span class="d-none d-sm-inline mx-1">Diego</span>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                                        <li><a class="dropdown-item" href="#">Nueva órden reparación</a></li>
-                                        <li><a class="dropdown-item" href="#">Configuraciones</a></li>
-                                        <li><a class="dropdown-item" href="#">Perfil</a></li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
-                                    </ul>
-                                </div>
+                        <div class="mb-4">
+                            <label for="editEmail" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+                            <input type="email" id="editEmail" class="mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
                         </div>
-                    </div>
-                    <div class="col py-2">
-                        <section th:replace="~{users/fragments :: users}"/>
-                    </div>
+                        <div class="mb-4">
+                            <label for="editPassword" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                            <input type="password" id="editPassword" class="mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
+                        </div>
+                        <div class="flex justify-end space-x-2">
+                            <button type="button" onclick="closeModal()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md text-sm">Cerrar</button>
+                            <button type="submit" class="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-md text-sm">Guardar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </section>

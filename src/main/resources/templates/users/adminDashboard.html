@@ -7,8 +7,11 @@
         <meta charset="UTF-8"/>
     </head>
     <body>
-        <section th:replace="~{users/fragments :: sidebar-users}"/>
-        <!-- Core theme JS-->
+        <section th:replace="~{layout/layoutAdmin :: sidebar}"/>
+        <section th:replace="~{layout/layoutAdmin :: header}"/>
+        <section th:replace="~{users/fragments :: users}"/>
+
+
         <script src="js/scripts.js"></script>
     </body>
 </html>
