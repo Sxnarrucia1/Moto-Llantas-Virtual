@@ -33,8 +33,8 @@ public class RepairOrder {
     @JoinColumn(name = "id_usuario")
     private User user;
 
-    private String clientName;
-    private String identificacion;
+    private String fullName;
+    private String identification;
     private String brand;
     private String modelName;
     private int year;
@@ -57,6 +57,10 @@ public class RepairOrder {
     private OrderPriority priority = OrderPriority.BAJA;
 
     private String problemDescription;
+    
+    public Long getId_orden(){
+        return id_orden;
+    }
 
     public User getUser() {
         return user;
@@ -67,19 +71,19 @@ public class RepairOrder {
     }
 
     public String getClientName() {
-        return clientName;
+        return fullName;
     }
 
     public void setClientName(String clientName) {
-        this.clientName = clientName;
+        this.fullName = clientName;
     }
 
     public String getIdentificacion() {
-        return identificacion;
+        return identification;
     }
 
     public void setIdentificacion(String identificacion) {
-        this.identificacion = identificacion;
+        this.identification = identificacion;
     }
 
     public String getModelName() {

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+    <head th:fragment="head">
+        <meta charset="UTF-8"/>
+        <title th:text="${title}">Moto Llantas</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="bg-gray-100 min-h-screen">
+        <header th:fragment="header">
+            <nav class="bg-gray-800 text-white px-4 py-3 flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <img src="/images/logo-icon.png" alt="Logo" class="h-8 w-8">
+                        <span class="text-lg font-semibold">Moto Llantas</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="#" class="hover:text-gray-300">Buscar</a>
+                    <a href="#" class="hover:text-gray-300">Mensajes</a>
+                    <a href="#" class="hover:text-gray-300">Notificaciones</a>
+                    <div class="relative group">
+                        <img src="/images/user.jpg" alt="User" class="h-8 w-8 rounded-full">
+                            <div class="absolute right-0 mt-2 w-48 bg-white text-black rounded shadow-lg hidden group-hover:block">
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Perfil</a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Configuración</a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Salir</a>
+                            </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <aside th:fragment="sidebar" class="w-64 bg-gray-800 text-white shadow-md h-screen fixed top-0 left-0 z-40">
+            <div class="p-4 border-b">
+                <h2 class="text-xl font-semibold text-white">Menú</h2>
+            </div>
+            <nav class="p-4">
+                <ul class="space-y-2">
+                    <li><a href="/" class="block p-2 text-white hover:bg-gray-100 rounded">Inicio</a></li>
+                    <li><a href="#" class="block p-2 text-white hover:bg-gray-100 rounded">Opción 1</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="ml-64 p-6">
+            <section th:fragment="content">
+            </section>
+        </main>
+        <script th:src="@{/js/scripts.js}"></script>
+    </body>
+</html>
