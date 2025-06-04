@@ -12,7 +12,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.motollantas.MotoLlantasVirtual.Service.OpeningHourService;
 import com.motollantas.MotoLlantasVirtual.Service.RepairOrderService;
-import java.time.Duration;
+import com.motollantas.MotoLlantasVirtual.domain.ServiceType;
 import org.springframework.stereotype.Component;
 
 /**
@@ -49,8 +49,7 @@ public class DateValidator {
                 && !hour.isBefore(startTime) && !hour.isAfter(endTime);
     }
 
-    public boolean isSlotAvailable(LocalDateTime appointmentDate) {
-        Duration defaultDuration = Duration.ofMinutes(30); // duración por defecto
-        return !repairService.hasOverlappingAppointment(appointmentDate, defaultDuration);
+    public boolean isSlotAvailable(LocalDateTime appointmentDate, ServiceType serviceType) {
+        return !repairService.hasOverlappingAppointment(appointmentDate, serviceType);
     }
 }

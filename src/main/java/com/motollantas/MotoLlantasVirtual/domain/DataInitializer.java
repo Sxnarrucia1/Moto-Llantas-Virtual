@@ -10,6 +10,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.motollantas.MotoLlantasVirtual.dao.OpeningHoursDao;
+import com.motollantas.MotoLlantasVirtual.dao.ServiceTypeDao;
+import java.time.Duration;
 
 /**
  *
@@ -17,18 +19,30 @@ import com.motollantas.MotoLlantasVirtual.dao.OpeningHoursDao;
  */
 @Configuration
 public class DataInitializer {
-    
+
     @Bean
-    public CommandLineRunner initHorarios(OpeningHoursDao dao){
+    public CommandLineRunner initHorarios(OpeningHoursDao dao) {
         return args -> {
-        if (dao.count() == 0){
-            dao.save(new OpeningHour(DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(16, 30)));
-            dao.save(new OpeningHour(DayOfWeek.TUESDAY, LocalTime.of(9, 0), LocalTime.of(16, 30)));
-            dao.save(new OpeningHour(DayOfWeek.WEDNESDAY, LocalTime.of(9, 0), LocalTime.of(16, 30)));
-            dao.save(new OpeningHour(DayOfWeek.THURSDAY, LocalTime.of(9, 0), LocalTime.of(16, 30)));
-            dao.save(new OpeningHour(DayOfWeek.FRIDAY, LocalTime.of(9, 0), LocalTime.of(16, 30)));
-            dao.save(new OpeningHour(DayOfWeek.SATURDAY, LocalTime.of(9, 0), LocalTime.of(13, 30)));
-        }
+            if (dao.count() == 0) {
+                dao.save(new OpeningHour(DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(16, 30)));
+                dao.save(new OpeningHour(DayOfWeek.TUESDAY, LocalTime.of(9, 0), LocalTime.of(16, 30)));
+                dao.save(new OpeningHour(DayOfWeek.WEDNESDAY, LocalTime.of(9, 0), LocalTime.of(16, 30)));
+                dao.save(new OpeningHour(DayOfWeek.THURSDAY, LocalTime.of(9, 0), LocalTime.of(16, 30)));
+                dao.save(new OpeningHour(DayOfWeek.FRIDAY, LocalTime.of(9, 0), LocalTime.of(16, 30)));
+                dao.save(new OpeningHour(DayOfWeek.SATURDAY, LocalTime.of(9, 0), LocalTime.of(13, 30)));
+            }
+        };
+    }
+
+    @Bean
+    public CommandLineRunner initServiceTypes(ServiceTypeDao serviceTypeRepository) {
+        return args -> {
+            if (serviceTypeRepository.count() == 0) {
+                serviceTypeRepository.save(new ServiceType("Cambio de aceite", Duration.ofMinutes(45)));
+                serviceTypeRepository.save(new ServiceType("Cambio Llantas", Duration.ofMinutes(45)));
+                serviceTypeRepository.save(new ServiceType("Balanceo", Duration.ofMinutes(15)));
+                serviceTypeRepository.save(new ServiceType("Revisión general", Duration.ofMinutes(30)));
+            }
         };
     }
 }

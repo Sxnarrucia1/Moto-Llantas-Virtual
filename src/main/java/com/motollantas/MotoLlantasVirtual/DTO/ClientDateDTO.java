@@ -44,8 +44,10 @@ public class ClientDateDTO {
     @Future(message = "La fecha debe ser en futuro")
     private LocalDateTime appointmentDate;
 
-    @NotBlank(message = "Debe seleccionar un tipo de servicio")
-    private String serviceType;
+    @NotNull(message = "Debe seleccionar un tipo de servicio")
+    private Long serviceTypeId;
+
+    private String serviceTypeName;
 
     private String formattedAppointmentDate;
 
@@ -89,12 +91,12 @@ public class ClientDateDTO {
         this.appointmentDate = appointmentDate;
     }
 
-    public String getServiceType() {
-        return serviceType;
+    public Long getServiceTypeId() {
+        return serviceTypeId;
     }
 
-    public void setServiceType(String serviceType) {
-        this.serviceType = serviceType;
+    public void setServiceTypeId(Long serviceType) {
+        this.serviceTypeId = serviceType;
     }
 
     public String getBrand() {
@@ -127,6 +129,14 @@ public class ClientDateDTO {
 
     public void setFormattedAppointmentDate(String formattedAppointmentDate) {
         this.formattedAppointmentDate = formattedAppointmentDate;
+    }
+
+    public String getServiceTypeName() {
+        return serviceTypeName;
+    }
+
+    public void setServiceTypeName(String serviceTypeName) {
+        this.serviceTypeName = serviceTypeName;
     }
 
 }

@@ -6,9 +6,12 @@ package com.motollantas.MotoLlantasVirtual.controller;
 
 import com.motollantas.MotoLlantasVirtual.DTO.ClientDateDTO;
 import com.motollantas.MotoLlantasVirtual.Service.RepairOrderService;
+import com.motollantas.MotoLlantasVirtual.Service.ServiceTypeService;
 import com.motollantas.MotoLlantasVirtual.ServiceImpl.DateValidator;
+import com.motollantas.MotoLlantasVirtual.dao.ServiceTypeDao;
 import com.motollantas.MotoLlantasVirtual.dao.UserDao;
 import com.motollantas.MotoLlantasVirtual.domain.RepairOrder;
+import com.motollantas.MotoLlantasVirtual.domain.ServiceType;
 import com.motollantas.MotoLlantasVirtual.domain.User;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -46,6 +49,9 @@ public class ClientDateController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    ServiceTypeService serviceTypeService;
+
     @GetMapping("/userGarage")
     public String newClientDate(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -57,6 +63,7 @@ public class ClientDateController {
         model.addAttribute("clientDateDTO", new ClientDateDTO());
         model.addAttribute("fullName", usuario.getFullName());
         model.addAttribute("identification", usuario.getIdentification());
+        model.addAttribute("serviceTypes", serviceTypeService.findAll());
 
         return "garage/userGarage";
     }
@@ -81,7 +88,9 @@ public class ClientDateController {
             return "redirect:/garage/userGarage";
         }
 
-        if (!dateValidator.isSlotAvailable(appointmentDate)) {
+        ServiceType serviceType = serviceTypeService.findById(clientDateDTO.getServiceTypeId());
+
+        if (!dateValidator.isSlotAvailable(appointmentDate, serviceType)) {
             redirectAttributes.addFlashAttribute("mensajeError", "Ya existe una cita registrada en ese horario.");
             return "redirect:/garage/userGarage";
         }
@@ -129,6 +138,7 @@ public class ClientDateController {
         model.addAttribute("clientDateDTO", dto);
         model.addAttribute("fullName", usuario.getFullName());
         model.addAttribute("identification", usuario.getIdentification());
+        model.addAttribute("serviceTypes", serviceTypeService.findAll());
         return "garage/userGarage";
     }
 
