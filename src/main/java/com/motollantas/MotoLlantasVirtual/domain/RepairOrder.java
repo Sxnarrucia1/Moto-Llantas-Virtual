@@ -47,8 +47,10 @@ public class RepairOrder {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus = OrderStatus.NUEVO;
-
-    private String serviceType;
+    
+    
+    @ManyToOne
+    private ServiceType serviceType;
 
     @ManyToOne
     private Employee mechanic;
@@ -158,11 +160,11 @@ public class RepairOrder {
         this.orderStatus = orderStatus;
     }
 
-    public String getServiceType() {
+    public ServiceType getServiceType() {
         return serviceType;
     }
 
-    public void setServiceType(String serviceType) {
+    public void setServiceType(ServiceType serviceType) {
         this.serviceType = serviceType;
     }
 

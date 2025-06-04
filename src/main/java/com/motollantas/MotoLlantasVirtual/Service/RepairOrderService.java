@@ -6,6 +6,7 @@ package com.motollantas.MotoLlantasVirtual.Service;
 
 import com.motollantas.MotoLlantasVirtual.DTO.ClientDateDTO;
 import com.motollantas.MotoLlantasVirtual.domain.RepairOrder;
+import com.motollantas.MotoLlantasVirtual.domain.ServiceType;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,7 +22,7 @@ public interface RepairOrderService {
     
     public boolean existsByAppointmentDate (LocalDateTime dateTime);
     
-    public boolean hasOverlappingAppointment (LocalDateTime start, Duration duration);
+    public boolean hasOverlappingAppointment (LocalDateTime start, ServiceType serviceType);
     
     public List<ClientDateDTO> getAppointmentbyUser (Long userId);
     

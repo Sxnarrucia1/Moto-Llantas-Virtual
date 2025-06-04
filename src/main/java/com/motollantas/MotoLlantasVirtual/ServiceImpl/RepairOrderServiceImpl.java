@@ -6,9 +6,11 @@ package com.motollantas.MotoLlantasVirtual.ServiceImpl;
 
 import com.motollantas.MotoLlantasVirtual.DTO.ClientDateDTO;
 import com.motollantas.MotoLlantasVirtual.Service.RepairOrderService;
+import com.motollantas.MotoLlantasVirtual.Service.ServiceTypeService;
 import com.motollantas.MotoLlantasVirtual.dao.RepairOrderDao;
 import com.motollantas.MotoLlantasVirtual.dao.UserDao;
 import com.motollantas.MotoLlantasVirtual.domain.RepairOrder;
+import com.motollantas.MotoLlantasVirtual.domain.ServiceType;
 import com.motollantas.MotoLlantasVirtual.domain.User;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -37,6 +39,9 @@ public class RepairOrderServiceImpl implements RepairOrderService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    ServiceTypeService serviceTypeService;
+
     @Override
     public void createDateClient(ClientDateDTO clientDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -44,6 +49,7 @@ public class RepairOrderServiceImpl implements RepairOrderService {
 
         User client = user.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Usuario No encontrado"));
+        ServiceType serviceType = serviceTypeService.findById(clientDto.getServiceTypeId());
 
         RepairOrder orden = new RepairOrder();
         orden.setUser(client);
@@ -52,7 +58,7 @@ public class RepairOrderServiceImpl implements RepairOrderService {
         orden.setModelName(clientDto.getModelName());
         orden.setLicensePlate(clientDto.getLicensePlate());
         orden.setAppointmentDate(clientDto.getAppointmentDate());
-        orden.setServiceType(clientDto.getServiceType());
+        orden.setServiceType(serviceType);
         orden.setBrand(clientDto.getBrand());
         orden.setYear(clientDto.getYear());
 
@@ -65,7 +71,8 @@ public class RepairOrderServiceImpl implements RepairOrderService {
     }
 
     @Override
-    public boolean hasOverlappingAppointment(LocalDateTime start, Duration duration) {
+    public boolean hasOverlappingAppointment(LocalDateTime start, ServiceType serviceType) {
+        Duration duration = serviceType.getDuration();
         LocalDateTime end = start.plus(duration);
         return repair.hasOverlappingAppointments(start, end);
     }
@@ -73,9 +80,13 @@ public class RepairOrderServiceImpl implements RepairOrderService {
     @Override
     public List<ClientDateDTO> getAppointmentbyUser(Long userId) {
         List<RepairOrder> orders = repair.findByUserId(userId);
-        return orders.stream()
-                .map(orden -> modelMapper.map(orden, ClientDateDTO.class))
-                .collect(Collectors.toList());
+        return orders.stream().map(order -> {
+            ClientDateDTO dto = modelMapper.map(order, ClientDateDTO.class);
+            if (order.getServiceType() != null) {
+                dto.setServiceTypeName(order.getServiceType().getServiceName());
+            }
+            return dto;
+        }).collect(Collectors.toList());
     }
 
     @Override
@@ -92,12 +103,13 @@ public class RepairOrderServiceImpl implements RepairOrderService {
                 .orElseThrow(() -> new RuntimeException("Usuario No encontrado"));
         RepairOrder orden = repair.findById(dto.getId())
                 .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
+        ServiceType serviceType = serviceTypeService.findById(dto.getServiceTypeId());
 
         orden.setUser(client);
         orden.setClientName(client.getFullName());
         orden.setIdentificacion(client.getIdentification());
         orden.setAppointmentDate(dto.getAppointmentDate());
-        orden.setServiceType(dto.getServiceType());
+        orden.setServiceType(serviceType);
         orden.setBrand(dto.getBrand());
         orden.setModelName(dto.getModelName());
         orden.setYear(dto.getYear());

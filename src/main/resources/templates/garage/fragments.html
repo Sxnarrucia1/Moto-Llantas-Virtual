@@ -48,17 +48,16 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="mb-4 pb-2">
-                                                        <select th:field="*{serviceType}" class="form-select form-select-lg" required>
-                                                            <option value="0">Tipo Cita</option>
-                                                            <option value="2">Mantenimiento Preventivo</option>
-                                                            <option value="3">Reparación</option>
-                                                            <option value="4">Instalación Accesorios</option>
-                                                            <option value="5">Instalación Llantas</option>
+                                                        <select th:field="*{serviceTypeId}" class="form-select form-select-lg" required>
+                                                            <option value="" disabled selected>Seleccione un tipo de servicio</option>
+                                                            <option th:each="type : ${serviceTypes}"
+                                                                    th:value="${type.id}"
+                                                                    th:text="${type.serviceName}">
+                                                            </option>
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <p th:text="${clientDateDTO.appointmentDate}"></p>
                                         </div>
                                         <div class="col-lg-6 bg-custom-orange bg-gradient text-white">
                                             <div class="p-5">
@@ -127,7 +126,7 @@
                     <tbody>
                         <tr th:each="clientDates : ${appointments}" class="border-t hover:bg-gray-100">
                             <td class="px-6 py-4 text-center" th:text="${#temporals.format(clientDates.appointmentDate, 'dd/MM/yyyy HH:mm')}"></td>
-                            <td class="px-6 py-4 text-center" th:text="${clientDates.serviceType}"></td>
+                            <td class="px-6 py-4 text-center" th:text="${clientDates.serviceTypeName}"></td>
                             <td class="px-6 py-4 text-center" th:text="${clientDates.brand}"></td>
                             <td class="px-6 py-4 text-center" th:text="${clientDates.modelName}"></td>
                             <td class="px-6 py-4 text-center" th:text="${clientDates.year}"></td>
