@@ -95,3 +95,17 @@ function openModal() {
         modal.classList.add('hidden');
         modal.classList.remove('flex');
     }
+
+
+// Script to hidde layout/layoutAdmin
+ document.getElementById('mobile-menu-button').addEventListener('click', function () {
+        const menu = document.getElementById('mobile-menu');
+        menu.classList.toggle('hidden');
+    });
+
+
+
+
+
+
+

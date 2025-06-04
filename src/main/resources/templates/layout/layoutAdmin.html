@@ -10,39 +10,65 @@
     </head>
     <body class="bg-gray-100 min-h-screen">
         <header th:fragment="header">
-            <nav class="bg-gray-800 text-white px-6 py-3 flex justify-between items-center shadow">
-                <!-- Logo -->
-                <div class="flex items-center space-x-3">
-                    <img src="/images/logo-icon.png" alt="Logo" class="h-9 w-9">
-                    <span class="text-xl font-semibold tracking-wide">Moto Llantas</span>
+            <nav class="bg-gray-800 text-white px-4 py-3 shadow">
+                <div class="flex justify-between items-center">
+                    <!-- Logo -->
+                    <div class="flex items-center space-x-3">
+                        <img src="/images/logo-icon.png" alt="Logo" class="h-9 w-9">
+                        <span class="text-xl font-semibold tracking-wide">Moto Llantas</span>
+                    </div>
+
+
+                    <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+                             viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+
+                    <!-- Menu -->
+                    <div class="hidden md:flex items-center space-x-6">
+                        <a href="#" class="hover:text-gray-300 transition">🔍 Buscar</a>
+                        <a href="#" class="hover:text-gray-300 transition">💬 Mensajes</a>
+                        <a href="#" class="hover:text-gray-300 transition">🔔 Notificaciones</a>
+
+                        <!-- Dropdown user -->
+                        <div class="relative group">
+                            <button class="flex items-center space-x-2 focus:outline-none" id="userMenuButton">
+                                <img src="/images/user.jpg" alt="User"
+                                     class="h-9 w-9 rounded-full border-2 border-white shadow">
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2"
+                                     viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </button>
+
+                            <div id="userDropdown"
+                                    class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-200 z-50">
+                                <a href="#" class="block px-4 py-3 hover:bg-gray-100">👤 Perfil</a>
+                                <a href="#" class="block px-4 py-3 hover:bg-gray-100">⚙️ Configuración</a>
+                                <a href="/" class="block px-4 py-3 hover:bg-gray-100">🚪 Salir del panel</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- right menu -->
-                <div class="flex items-center space-x-6">
-                    <a href="#" class="hover:text-gray-300 transition">🔍 Buscar</a>
-                    <a href="#" class="hover:text-gray-300 transition">💬 Mensajes</a>
-                    <a href="#" class="hover:text-gray-300 transition">🔔 Notificaciones</a>
-
-                    <!-- Dropdown user -->
-                    <div class="relative">
-                        <button class="flex items-center space-x-2 focus:outline-none" id="userMenuButton">
-                            <img src="/images/user.jpg" alt="User" class="h-9 w-9 rounded-full border-2 border-white shadow">
-                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2"
-                                 viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-
-                        <div id="userDropdown"
-                             class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-200 z-50">
-                            <a href="#" class="block px-4 py-3 hover:bg-gray-100">👤 Perfil</a>
-                            <a href="#" class="block px-4 py-3 hover:bg-gray-100">⚙️ Configuración</a>
-                            <a href="#" class="block px-4 py-3 hover:bg-gray-100">🚪 Salir</a>
-                        </div>
+                <!-- phone menu -->
+                <div id="mobile-menu" class="mt-4 space-y-3 md:hidden hidden">
+                    <a href="#" class="block text-white hover:text-gray-300">🔍 Buscar</a>
+                    <a href="#" class="block text-white hover:text-gray-300">💬 Mensajes</a>
+                    <a href="#" class="block text-white hover:text-gray-300">🔔 Notificaciones</a>
+                    <div class="border-t border-gray-700 pt-3">
+                        <a href="#" class="block text-white hover:text-gray-300">👤 Perfil</a>
+                        <a href="#" class="block text-white hover:text-gray-300">⚙️ Configuración</a>
+                        <a href="/index" class="block text-white hover:text-gray-300">🚪 Salir del panel</a>
                     </div>
                 </div>
             </nav>
         </header>
+
+
         <aside th:fragment="sidebar" class="w-64 bg-gray-800 text-white shadow-md h-screen fixed top-0 left-0 z-40">
             <a href="/dashboard" class="block p-4 border-b hover:bg-gray-700 transition">
                 <h2 class="text-xl font-semibold text-white">Menú</h2>
@@ -105,6 +131,9 @@
 
 
         </aside>
+
+
+
         <main class="ml-64 p-6">
             <section th:fragment="content">
             </section>
