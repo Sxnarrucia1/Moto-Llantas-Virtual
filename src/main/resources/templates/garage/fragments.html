@@ -135,7 +135,7 @@
                                 <a th:href="@{'/garage/edit/' + ${clientDates.id}}" 
                                    class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">Editar</a>
                                 <button type="button"
-                                        th:attr="onclick=|openModal('${clientDates.id}')|"
+                                        th:attr="onclick=|openModalU('${clientDates.id}')|"
                                         class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">
                                     Cancelar
                                 </button>
@@ -148,7 +148,7 @@
                                         <h3 class="text-lg font-semibold text-gray-800 mb-4">¿Cancelar esta cita?</h3>
                                         <p class="text-gray-600 mb-6">Esta acción no se puede deshacer.</p>
                                         <div class="flex justify-end space-x-4">
-                                            <button th:attr="onclick=|closeModal('${clientDates.id}')|"
+                                            <button th:attr="onclick=|closeModalU('${clientDates.id}')|"
                                                     class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded">
                                                 Cancelar
                                             </button>
@@ -168,357 +168,16 @@
                 </table>
             </div>
         </section>
-        <section th:fragment="garage-jobs">
-            <div class="container-fluid py-1">
-                <div class="row">
-                    <div class="col">
-                        <ul id="mobile-kanban-menu" class="nav nav-underline border-bottom border-1 mb-3 px-2 justify-content-between px-sm-3 d-md-none" role="tablist">
-                            <li class="nav-item" role="presentation"><button id="queue-tab" class="nav-link active" data-bs-toggle="tab" data-bs-target="#queue-panel" type="button" role="tab" aria-controls="queue-panel" aria-selected="true">Nuevos</button></li>
-                            <li class="nav-item"><button id="serving-tab" class="nav-link" data-bs-toggle="tab" data-bs-target="#serving-panel" type="button" role="tab" aria-controls="serving-panel" aria-selected="false">En Proceso</button></li>
-                            <li class="nav-item"><button id="completed-tab" class="nav-link" data-bs-toggle="tab" data-bs-target="#completed-panel" type="button" role="tab" aria-controls="completed-panel" aria-selected="false">Completados</button></li>
-                            <li class="nav-item"><button id="cancelled-tab" class="nav-link" data-bs-toggle="tab" data-bs-target="#cancelled-panel" type="button" role="tab" aria-controls="cancelled-panel" aria-selected="false">Cancelados</button></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="row gx-0 gy-1 gx-md-3 row-cols-1 row-cols-md-4 tab-content d-md-flex" style="height: 90vh;">
-                    <div id="queue-panel" class="droppable-container col align-items-stretch tab-pane show pe-0 fade d-md-flex active kanban-col" role="tabpanel" tabindex="0">
-                        <div class="card border-0 pb-3 w-100">
-                            <div class="card-body p-0">
-                                <div class="justify-content-between m-3 mb-4 d-none d-md-flex">
-                                    <h6 class="fs-5 fw-normal text-dark mb-2">Nuevos</h6><svg class="bi bi-three-dots-vertical" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
-                                        <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"></path>
-                                    </svg>
-                                </div>
-                                <div class="px-md-2 kanban-column pt-2 me-0 pe-1 me-md-1" style="/*max-height: calc(100vh - 150px);*//*overflow-y: auto;*/">
-                                    <div class="card mb-2 kanban-card" draggable="true" data-id="1">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <h5 class="text-muted mb-2">Honda CB650R</h5>
-                                                <div class="dropdown"><button class="btn btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" aria-haspopup="true"></button>
-                                                    <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Mover a En Progreso</a><a class="dropdown-item" href="#">Mover a Completado</a><a class="dropdown-item" href="#">Mover a Cancelado</a>
-                                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><strong>Detalles</strong></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="info mb-2"><span class="badge bg-secondary me-2">1/3</span><span>Ingresado hace 10 minutos </span></div>
-                                            <div class="bg-secondary-subtle border rounded-pill d-flex align-items-center" style="padding: 2px;width: fit-content;"><img class="rounded-circle" src="https://randomuser.me/api/portraits/men/13.jpg" width="22" style="margin: 1px;" /><span class="text-secondary ms-1 me-3" style="font-size: 0.9em;">Rodrigo Montero</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-2 kanban-card" draggable="true" data-id="2">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <h5 class="text-muted mb-0">Kawasaki ZX6R</h5>
-                                                <div class="dropdown"><button class="btn btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" aria-haspopup="true"></button>
-                                                    <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Mover a En Progreso</a><a class="dropdown-item" href="#">Mover a Completado</a><a class="dropdown-item" href="#">Mover a Cancelado</a>
-                                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><strong>Detalles</strong></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="info mb-2"><span>Ingresado hace 25 minutos </span></div>
-                                            <div class="bg-secondary-subtle border rounded-pill d-flex align-items-center" style="padding: 2px;width: fit-content;"><img class="rounded-circle" src="https://randomuser.me/api/portraits/men/26.jpg" width="22" style="margin: 1px;" /><span class="text-secondary ms-1 me-3" style="font-size: 0.9em;">Josué Soto</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-2 kanban-card" draggable="true" data-id="3" >
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <h5 class="text-muted mb-2">Freedom ZS200</h5>
-                                                <div class="dropdown"><button class="btn btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" aria-haspopup="true"></button>
-                                                    <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Mover a En Progreso</a><a class="dropdown-item" href="#">Mover a Completado</a><a class="dropdown-item" href="#">Mover a Cancelado</a>
-                                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><strong>Detalles</strong></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="info mb-2"><span>Ingresado hace 30 minutos </span></div>
-                                            <div class="bg-secondary-subtle border rounded-pill d-flex align-items-center" style="padding: 2px;width: fit-content;"><img class="rounded-circle" src="https://randomuser.me/api/portraits/men/26.jpg" width="22" style="margin: 1px;" /><span class="text-secondary ms-1 me-3" style="font-size: 0.9em;">Josué Soto</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-2 kanban-card" draggable="true" data-id="4" >
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <h5 class="text-muted mb-2">Honda CBR500</h5>
-                                                <div class="dropdown"><button class="btn btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" aria-haspopup="true"></button>
-                                                    <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Mover a En Progreso</a><a class="dropdown-item" href="#">Mover a Completado</a><a class="dropdown-item" href="#">Mover a Cancelado</a>
-                                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><strong>Detalles</strong></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="info mb-2"><span>Ingresado hace 5 minutos </span></div>
-                                            <div class="bg-secondary-subtle border rounded-pill d-flex align-items-center" style="padding: 2px;width: fit-content;"><img class="rounded-circle" src="https://randomuser.me/api/portraits/men/11.jpg" width="22" style="margin: 1px;" /><span class="text-secondary ms-1 me-3" style="font-size: 0.9em;">Josué Soto</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-2 kanban-card" draggable="true" data-id="5" >
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <h5 class="text-muted mb-2">Yamaha R3</h5>
-                                                <div class="dropdown"><button class="btn btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" aria-haspopup="true"></button>
-                                                    <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Mover a En Progreso</a><a class="dropdown-item" href="#">Mover a Completado</a><a class="dropdown-item" href="#">Mover a Cancelado</a>
-                                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><strong>Detalles</strong></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="info mb-2"><span>Ingresado hace 2 minutos </span></div>
-                                            <div class="bg-secondary-subtle border rounded-pill d-flex align-items-center" style="padding: 2px;width: fit-content;"><img class="rounded-circle" src="https://randomuser.me/api/portraits/men/11.jpg" width="22" style="margin: 1px;" /><span class="text-secondary ms-1 me-3" style="font-size: 0.9em;">Michael Solano</span></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="serving-panel" class="droppable-container col align-items-stretch tab-pane fade d-md-flex kanban-col pe-0" role="tabpanel" tabindex="0">
-                        <div class="card border-0 pb-3 w-100">
-                            <div class="card-body p-0">
-                                <div class="justify-content-between m-3 mb-4 d-none d-md-flex">
-                                    <h6 class="fs-5 fw-normal text-dark mb-2">En Progreso</h6><svg class="bi bi-three-dots-vertical" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
-                                        <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"></path>
-                                    </svg>
-                                </div>
-                                <div class="px-md-2 kanban-column pt-2 me-0 pe-1 me-md-1" style="/*max-height: calc(100vh - 150px);*//*overflow-y: auto;*/">
-                                    <div class="card mb-2 kanban-card" draggable="true" data-id="7">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <h5 class="text-muted mb-0">Yamaha R1</h5>
-                                                <div class="dropdown"><button class="btn btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" aria-haspopup="true"></button>
-                                                    <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Mover a En Progreso</a><a class="dropdown-item" href="#">Mover a Completado</a><a class="dropdown-item" href="#">Mover a Cancelado</a>
-                                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><strong>Detalles</strong></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="info mb-2"><span>Ingresado hace 35 minutos </span></div>
-                                            <div class="bg-secondary-subtle border rounded-pill d-flex align-items-center" style="padding: 2px;width: fit-content;"><img class="rounded-circle" src="https://randomuser.me/api/portraits/men/26.jpg" width="22" style="margin: 1px;" /><span class="text-secondary ms-1 me-3" style="font-size: 0.9em;">Josué Soto</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-2 kanban-card" draggable="true" data-id="6">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <h5 class="text-muted mb-2">Hero Hunk 200</h5>
-                                                <div class="dropdown"><button class="btn btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" aria-haspopup="true"></button>
-                                                    <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Mover a En Progreso</a><a class="dropdown-item" href="#">Mover a Completado</a><a class="dropdown-item" href="#">Mover a Cancelado</a>
-                                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><strong>Detalles</strong></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="info mb-2"><span class="badge bg-secondary me-2">2/3</span><span>Ingresado 45 minutos </span></div>
-                                            <div class="bg-secondary-subtle border rounded-pill d-flex align-items-center" style="padding: 2px;width: fit-content;"><img class="rounded-circle" src="https://randomuser.me/api/portraits/men/13.jpg" width="22" style="margin: 1px;" /><span class="text-secondary ms-1 me-3" style="font-size: 0.9em;">Rodrigo Montero</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-2 kanban-card" draggable="true" data-id="8">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <h5 class="text-muted mb-2">Aprilia RS 660</h5>
-                                                <div class="dropdown"><button class="btn btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" aria-haspopup="true"></button>
-                                                    <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Mover a En Progreso</a><a class="dropdown-item" href="#">Mover a Completado</a><a class="dropdown-item" href="#">Mover a Cancelado</a>
-                                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><strong>Detalles</strong></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="info mb-2"><span>Ingresado hace 50 minutos </span></div>
-                                            <div class="bg-secondary-subtle border rounded-pill d-flex align-items-center" style="padding: 2px;width: fit-content;"><img class="rounded-circle" src="https://randomuser.me/api/portraits/men/26.jpg" width="22" style="margin: 1px;" /><span class="text-secondary ms-1 me-3" style="font-size: 0.9em;">Josué Soto</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-2 kanban-card" draggable="true" data-id="9">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <h5 class="text-muted mb-2">Kawasaki Z400</h5>
-                                                <div class="dropdown"><button class="btn btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" aria-haspopup="true"></button>
-                                                    <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Mover a En Progreso</a><a class="dropdown-item" href="#">Mover a Completado</a><a class="dropdown-item" href="#">Mover a Cancelado</a>
-                                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><strong>Detalles</strong></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="info mb-2"><span>Ingresado hace 60 minutos </span></div>
-                                            <div class="bg-secondary-subtle border rounded-pill d-flex align-items-center" style="padding: 2px;width: fit-content;"><img class="rounded-circle" src="https://randomuser.me/api/portraits/men/11.jpg" width="22" style="margin: 1px;" /><span class="text-secondary ms-1 me-3" style="font-size: 0.9em;">Josué Soto</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-2 kanban-card" draggable="true" data-id="10">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <h5 class="text-muted mb-2">Ducati Monster 821</h5>
-                                                <div class="dropdown"><button class="btn btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" aria-haspopup="true"></button>
-                                                    <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Mover a En Progreso</a><a class="dropdown-item" href="#">Mover a Completado</a><a class="dropdown-item" href="#">Mover a Cancelado</a>
-                                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><strong>Detalles</strong></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="info mb-2"><span>Ingresado hace 5 minutos </span></div>
-                                            <div class="bg-secondary-subtle border rounded-pill d-flex align-items-center" style="padding: 2px;width: fit-content;"><img class="rounded-circle" src="https://randomuser.me/api/portraits/men/11.jpg" width="22" style="margin: 1px;" /><span class="text-secondary ms-1 me-3" style="font-size: 0.9em;">Michael Solano</span></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="completed-panel" class="droppable-container col align-items-stretch tab-pane fade d-md-flex kanban-col pe-0" role="tabpanel" tabindex="0">
-                        <div class="card border-0 pb-3 w-100">
-                            <div class="card-body p-0">
-                                <div class="justify-content-between m-3 mb-4 d-none d-md-flex">
-                                    <h6 class="fs-5 fw-normal text-dark mb-2">Completado</h6><svg class="bi bi-three-dots-vertical" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
-                                        <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"></path>
-                                    </svg>
-                                </div>
-                                <div class="px-md-2 kanban-column pt-2 me-0 pe-1 me-md-1" style="/*max-height: calc(100vh - 150px);*//*overflow-y: auto;*/">
-                                    <div class="card mb-2 kanban-card" draggable="true" data-id="15">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <h5 class="text-muted mb-2">Benelli TNT 250</h5>
-                                                <div class="dropdown"><button class="btn btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" aria-haspopup="true"></button>
-                                                    <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Mover a En Progreso</a><a class="dropdown-item" href="#">Mover a Completado</a><a class="dropdown-item" href="#">Mover a Cancelado</a>
-                                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><strong>Detalles</strong></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="info mb-2"><span>Finalizado hace 12 minutos </span></div>
-                                            <div class="bg-secondary-subtle border rounded-pill d-flex align-items-center" style="padding: 2px;width: fit-content;"><img class="rounded-circle" src="https://randomuser.me/api/portraits/men/11.jpg" width="22" style="margin: 1px;" /><span class="text-secondary ms-1 me-3" style="font-size: 0.9em;">Michael Solano</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-2 kanban-card" draggable="true" data-id="11">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <h5 class="text-muted mb-2">KTM Duke 200</h5>
-                                                <div class="dropdown"><button class="btn btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" aria-haspopup="true"></button>
-                                                    <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Mover a En Progreso</a><a class="dropdown-item" href="#">Mover a Completado</a><a class="dropdown-item" href="#">Mover a Cancelado</a>
-                                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><strong>Detalles</strong></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="info mb-2"><span class="badge bg-secondary me-2">3/3</span><span>Finalizado hace 20 minutos </span></div>
-                                            <div class="bg-secondary-subtle border rounded-pill d-flex align-items-center" style="padding: 2px;width: fit-content;"><img class="rounded-circle" src="https://randomuser.me/api/portraits/men/13.jpg" width="22" style="margin: 1px;" /><span class="text-secondary ms-1 me-3" style="font-size: 0.9em;">Rodrigo Montero</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-2 kanban-card" draggable="true" data-id="12">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <h5 class="text-muted mb-0">Suzuki Gixxer 155</h5>
-                                                <div class="dropdown"><button class="btn btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" aria-haspopup="true"></button>
-                                                    <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Mover a En Progreso</a><a class="dropdown-item" href="#">Mover a Completado</a><a class="dropdown-item" href="#">Mover a Cancelado</a>
-                                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><strong>Detalles</strong></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="info mb-2"><span>Finalizado hace 10 minutos </span></div>
-                                            <div class="bg-secondary-subtle border rounded-pill d-flex align-items-center" style="padding: 2px;width: fit-content;"><img class="rounded-circle" src="https://randomuser.me/api/portraits/men/26.jpg" width="22" style="margin: 1px;" /><span class="text-secondary ms-1 me-3" style="font-size: 0.9em;">Josué Soto</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-2 kanban-card" draggable="true" data-id="13">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <h5 class="text-muted mb-2">Husqvarna 701</h5>
-                                                <div class="dropdown"><button class="btn btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" aria-haspopup="true"></button>
-                                                    <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Mover a En Progreso</a><a class="dropdown-item" href="#">Mover a Completado</a><a class="dropdown-item" href="#">Mover a Cancelado</a>
-                                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><strong>Detalles</strong></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="info mb-2"><span>Finalizado hace 5 minutos </span></div>
-                                            <div class="bg-secondary-subtle border rounded-pill d-flex align-items-center" style="padding: 2px;width: fit-content;"><img class="rounded-circle" src="https://randomuser.me/api/portraits/men/26.jpg" width="22" style="margin: 1px;" /><span class="text-secondary ms-1 me-3" style="font-size: 0.9em;">Josué Soto</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-2 kanban-card" draggable="true" data-id="14">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <h5 class="text-muted mb-2">Triumph Daytona 675R</h5>
-                                                <div class="dropdown"><button class="btn btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" aria-haspopup="true"></button>
-                                                    <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Mover a En Progreso</a><a class="dropdown-item" href="#">Mover a Completado</a><a class="dropdown-item" href="#">Mover a Cancelado</a>
-                                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><strong>Detalles</strong></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="info mb-2"><span>Finalizado hace 2 minutos </span></div>
-                                            <div class="bg-secondary-subtle border rounded-pill d-flex align-items-center" style="padding: 2px;width: fit-content;"><img class="rounded-circle" src="https://randomuser.me/api/portraits/men/11.jpg" width="22" style="margin: 1px;" /><span class="text-secondary ms-1 me-3" style="font-size: 0.9em;">Josué Soto</span></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="cancelled-panel" class="droppable-container col align-items-stretch tab-pane fade d-md-flex kanban-col" tabindex="0" role="tabpanel">
-                        <div class="card border-0 pb-3 w-100">
-                            <div class="card-body p-0">
-                                <div class="justify-content-between m-3 mb-4 d-none d-md-flex">
-                                    <h6 class="fs-5 fw-normal text-dark mb-2">Cancelado</h6><svg class="bi bi-three-dots-vertical" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
-                                        <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"></path>
-                                    </svg>
-                                </div>
-                                <div class="px-md-2 kanban-column pt-2 me-0 pe-1 me-md-1" style="/*max-height: calc(100vh - 150px);*//*overflow-y: auto;*/">
-                                    <div class="card mb-2 kanban-card" draggable="true" data-id="16">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <h5 class="text-muted mb-2">Aprilia RSV4</h5>
-                                                <div class="dropdown"><button class="btn btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" aria-haspopup="true"></button>
-                                                    <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Mover a En Progreso</a><a class="dropdown-item" href="#">Mover a Completado</a><a class="dropdown-item" href="#">Mover a Cancelado</a>
-                                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><strong>Detalles</strong></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="info mb-2"><span>Cancelado hace 20 minutos </span></div>
-                                            <div class="bg-secondary-subtle border rounded-pill d-flex align-items-center" style="padding: 2px;width: fit-content;"><img class="rounded-circle" src="https://randomuser.me/api/portraits/men/13.jpg" width="22" style="margin: 1px;" /><span class="text-secondary ms-1 me-3" style="font-size: 0.9em;">Rodrigo Montero</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-2 kanban-card" draggable="true" data-id="17">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <h5 class="text-muted mb-0">CFMoto NK400</h5>
-                                                <div class="dropdown"><button class="btn btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" aria-haspopup="true"></button>
-                                                    <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Mover a En Progreso</a><a class="dropdown-item" href="#">Mover a Completado</a><a class="dropdown-item" href="#">Mover a Cancelado</a>
-                                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><strong>Detalles</strong></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="info mb-2"><span>Cancelado hace 10 minutos </span></div>
-                                            <div class="bg-secondary-subtle border rounded-pill d-flex align-items-center" style="padding: 2px;width: fit-content;"><img class="rounded-circle" src="https://randomuser.me/api/portraits/men/26.jpg" width="22" style="margin: 1px;" /><span class="text-secondary ms-1 me-3" style="font-size: 0.9em;">Josué Soto</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-2 kanban-card" draggable="true" data-id="18">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <h5 class="text-muted mb-2">GAS GAS 700</h5>
-                                                <div class="dropdown"><button class="btn btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" aria-haspopup="true"></button>
-                                                    <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Mover a En Progreso</a><a class="dropdown-item" href="#">Mover a Completado</a><a class="dropdown-item" href="#">Mover a Cancelado</a>
-                                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><strong>Detalles</strong></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="info mb-2"><span>Cancelado hace 5 minutos </span></div>
-                                            <div class="bg-secondary-subtle border rounded-pill d-flex align-items-center" style="padding: 2px;width: fit-content;"><img class="rounded-circle" src="https://randomuser.me/api/portraits/men/26.jpg" width="22" style="margin: 1px;" /><span class="text-secondary ms-1 me-3" style="font-size: 0.9em;">Josué Soto</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-2 kanban-card" draggable="true" data-id="19">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <h5 class="text-muted mb-2">BMW GS 1200</h5>
-                                                <div class="dropdown"><button class="btn btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" aria-haspopup="true"></button>
-                                                    <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Mover a En Progreso</a><a class="dropdown-item" href="#">Mover a Completado</a><a class="dropdown-item" href="#">Mover a Cancelado</a>
-                                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><strong>Detalles</strong></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="info mb-2"><span>Cancelado hace 23 minutos </span></div>
-                                            <div class="bg-secondary-subtle border rounded-pill d-flex align-items-center" style="padding: 2px;width: fit-content;"><img class="rounded-circle" src="https://randomuser.me/api/portraits/men/26.jpg" width="22" style="margin: 1px;" /><span class="text-secondary ms-1 me-3" style="font-size: 0.9em;">Josué Soto</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-2 kanban-card" draggable="true" data-id="20">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <h5 class="text-muted mb-2">Ducati Multistrada V4</h5>
-                                                <div class="dropdown"><button class="btn btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" aria-haspopup="true"></button>
-                                                    <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Mover a En Progreso</a><a class="dropdown-item" href="#">Mover a Completado</a><a class="dropdown-item" href="#">Mover a Cancelado</a>
-                                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><strong>Detalles</strong></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="info mb-2"><span>Cancelado hace 60 minutos </span></div>
-                                            <div class="bg-secondary-subtle border rounded-pill d-flex align-items-center" style="padding: 2px;width: fit-content;"><img class="rounded-circle" src="https://randomuser.me/api/portraits/men/11.jpg" width="22" style="margin: 1px;" /><span class="text-secondary ms-1 me-3" style="font-size: 0.9em;">Michael Solano</span></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
         <section th:fragment="jira-example">
+            <!-- Encabezado y botón para crear cita -->
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-800">Gestión de Citas</h2>
+                <button onclick="openCreateModal()" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded shadow">
+                    + Crear Cita
+                </button>
+            </div>
             <div class="container mx-auto py-4">
-                <!-- Botones de filtro (opcional) -->
+                <!-- Botones de filtro -->
                 <div class="flex justify-between mb-4">
                     <button class="bg-blue-500 text-white px-4 py-2 rounded">Nuevo</button>
                     <button class="bg-green-500 text-white px-4 py-2 rounded">En Proceso</button>
@@ -579,6 +238,37 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Modal para crear cita -->
+            <div id="createAppointmentModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl relative">
+                    <button onclick="closeCreateModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Crear Nueva Cita</h3>
+                    <form th:action="@{/admin/appointments/create}" method="post" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <input type="text" name="fullName" placeholder="Nombre completo" class="border p-2 rounded w-full" required/>
+                            <input type="text" name="identification" placeholder="Identificación" class="border p-2 rounded w-full" required/>
+                            <input type="text" name="brand" placeholder="Marca" class="border p-2 rounded w-full" required/>
+                            <input type="text" name="modelName" placeholder="Modelo" class="border p-2 rounded w-full" required/>
+                            <input type="number" name="year" placeholder="Año" class="border p-2 rounded w-full" required/>
+                            <input type="text" name="licensePlate" placeholder="Placa" class="border p-2 rounded w-full" required/>
+                            <input type="datetime-local" name="appointmentDate" class="border p-2 rounded w-full" required/>
+                            <select name="serviceTypeId" class="border p-2 rounded w-full" required>
+                                <option value="">Seleccionar servicio</option>
+                                <option th:each="service : ${services}" th:value="${service.id}" th:text="${service.serviceTypeName}"></option>
+                            </select>
+                        </div>
+                        <div class="flex justify-end space-x-4 pt-4">
+                            <button type="button" onclick="closeCreateModal()" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded">
+                                Cancelar
+                            </button>
+                            <button type="submit" class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded">
+                                Guardar
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </section>
