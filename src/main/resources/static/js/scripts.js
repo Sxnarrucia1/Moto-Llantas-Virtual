@@ -48,11 +48,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-function openModal(id) {
+function openModalU(id) {
     document.getElementById(`modal-${id}`).classList.remove('hidden');
 }
 
-function closeModal(id) {
+function closeModalU(id) {
     document.getElementById(`modal-${id}`).classList.add('hidden');
 }
 
@@ -66,46 +66,63 @@ function toggleSubmenu(id) {
 
 
 // script for dropdown user in layout/layoutAdmin
-const button = document.getElementById('userMenuButton');
+// script for dropdown user in layout/layoutAdmin
+document.addEventListener('DOMContentLoaded', () => {
+    const button = document.getElementById('userMenuButton');
     const dropdown = document.getElementById('userDropdown');
 
-    button.addEventListener('click', (e) => {
-      e.stopPropagation();
-      dropdown.classList.toggle('opacity-0');
-      dropdown.classList.toggle('invisible');
-    });
+    if (button && dropdown) {
+        button.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.classList.toggle('opacity-0');
+            dropdown.classList.toggle('invisible');
+        });
 
-    document.addEventListener('click', (e) => {
-      if (!button.contains(e.target)) {
-        dropdown.classList.add('opacity-0');
-        dropdown.classList.add('invisible');
-      }
-    });
+        document.addEventListener('click', (e) => {
+            if (!button.contains(e.target)) {
+                dropdown.classList.add('opacity-0');
+                dropdown.classList.add('invisible');
+            }
+        });
+    }
+});
+
 
 
 //script for modal in users/fragments
 function openModal() {
-        const modal = document.getElementById('editUserModal');
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-    }
+    const modal = document.getElementById('editUserModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
 
-    function closeModal() {
-        const modal = document.getElementById('editUserModal');
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-    }
+function closeModal() {
+    const modal = document.getElementById('editUserModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
 
 
 // Script to hidde layout/layoutAdmin
- document.getElementById('mobile-menu-button').addEventListener('click', function () {
-        const menu = document.getElementById('mobile-menu');
-        menu.classList.toggle('hidden');
-    });
+document.addEventListener('DOMContentLoaded', () => {
+    const button = document.getElementById('mobile-menu-button');
+    const menu = document.getElementById('mobile-menu');
+
+    if (button && menu) {
+        button.addEventListener('click', function () {
+            menu.classList.toggle('hidden');
+        });
+    }
+});
 
 
 
+function openCreateModal() {
+    document.getElementById('createAppointmentModal').classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+}
 
-
-
-
+function closeCreateModal() {
+    document.getElementById('createAppointmentModal').classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+}
