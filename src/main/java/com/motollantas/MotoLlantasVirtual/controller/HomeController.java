@@ -74,11 +74,4 @@ public class HomeController {
         return "marketing/marketing";
     }
 
-    @GetMapping("/adminGarage")
-    public String garageAdmin() {
-        return "garage/adminGarage";
-    }
-
-
-
 }

@@ -9,11 +9,13 @@ import com.motollantas.MotoLlantasVirtual.Service.RepairOrderService;
 import com.motollantas.MotoLlantasVirtual.Service.ServiceTypeService;
 import com.motollantas.MotoLlantasVirtual.dao.RepairOrderDao;
 import com.motollantas.MotoLlantasVirtual.dao.UserDao;
+import com.motollantas.MotoLlantasVirtual.domain.OrderStatus;
 import com.motollantas.MotoLlantasVirtual.domain.RepairOrder;
 import com.motollantas.MotoLlantasVirtual.domain.ServiceType;
 import com.motollantas.MotoLlantasVirtual.domain.User;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -53,7 +55,7 @@ public class RepairOrderServiceImpl implements RepairOrderService {
 
         RepairOrder orden = new RepairOrder();
         orden.setUser(client);
-        orden.setClientName(client.getFullName());
+        orden.setFullName(client.getFullName());
         orden.setIdentificacion(client.getIdentification());
         orden.setModelName(clientDto.getModelName());
         orden.setLicensePlate(clientDto.getLicensePlate());
@@ -71,10 +73,24 @@ public class RepairOrderServiceImpl implements RepairOrderService {
     }
 
     @Override
-    public boolean hasOverlappingAppointment(LocalDateTime start, ServiceType serviceType) {
-        Duration duration = serviceType.getDuration();
-        LocalDateTime end = start.plus(duration);
-        return repair.hasOverlappingAppointments(start, end);
+    public boolean hasOverlappingAppointment(LocalDateTime newStart, ServiceType serviceType) {
+        LocalDateTime newEnd = newStart.plus(serviceType.getDuration());
+
+        LocalDateTime startOfDay = newStart.toLocalDate().atStartOfDay();
+        LocalDateTime endOfDay = newStart.toLocalDate().atTime(LocalTime.MAX);
+
+        List<RepairOrder> appointments = repair.findAppointmentsInDay(startOfDay, endOfDay);
+
+        for (RepairOrder r : appointments) {
+            LocalDateTime existingStart = r.getAppointmentDate();
+            LocalDateTime existingEnd = existingStart.plus(r.getServiceType().getDuration());
+
+            if (newStart.isBefore(existingEnd) && newEnd.isAfter(existingStart)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
@@ -106,7 +122,7 @@ public class RepairOrderServiceImpl implements RepairOrderService {
         ServiceType serviceType = serviceTypeService.findById(dto.getServiceTypeId());
 
         orden.setUser(client);
-        orden.setClientName(client.getFullName());
+        orden.setFullName(client.getFullName());
         orden.setIdentificacion(client.getIdentification());
         orden.setAppointmentDate(dto.getAppointmentDate());
         orden.setServiceType(serviceType);
@@ -121,6 +137,11 @@ public class RepairOrderServiceImpl implements RepairOrderService {
     @Override
     public void deleteById(Long id) {
         repair.deleteById(id);
+    }
+
+    @Override
+    public List<RepairOrder> findByStatus(OrderStatus status) {
+        return repair.findByOrderStatus(status);
     }
 
 }
