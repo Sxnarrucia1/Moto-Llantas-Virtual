@@ -4,6 +4,7 @@
  */
 package com.motollantas.MotoLlantasVirtual.dao;
 
+import com.motollantas.MotoLlantasVirtual.domain.OrderStatus;
 import com.motollantas.MotoLlantasVirtual.domain.RepairOrder;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,12 +20,12 @@ public interface RepairOrderDao extends JpaRepository<RepairOrder, Long> {
 
     boolean existsByAppointmentDate(LocalDateTime appointmentDate);
 
-    @Query("SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END FROM RepairOrder r "
-            + "WHERE (r.appointmentDate BETWEEN :start AND :end) "
-            + "OR (:start BETWEEN r.appointmentDate AND r.appointmentDate + r.serviceType.duration)")
-    boolean hasOverlappingAppointments(@Param("start") LocalDateTime start,
-            @Param("end") LocalDateTime end);
+    @Query("SELECT r FROM RepairOrder r WHERE r.appointmentDate BETWEEN :startOfDay AND :endOfDay")
+    List<RepairOrder> findAppointmentsInDay(@Param("startOfDay") LocalDateTime startOfDay,
+            @Param("endOfDay") LocalDateTime endOfDay);
 
     List<RepairOrder> findByUserId(Long userId);
+
+    List<RepairOrder> findByOrderStatus(OrderStatus status);
 
 }

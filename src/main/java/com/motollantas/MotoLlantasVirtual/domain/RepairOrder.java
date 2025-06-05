@@ -47,8 +47,7 @@ public class RepairOrder {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus = OrderStatus.NUEVO;
-    
-    
+
     @ManyToOne
     private ServiceType serviceType;
 
@@ -59,8 +58,8 @@ public class RepairOrder {
     private OrderPriority priority = OrderPriority.BAJA;
 
     private String problemDescription;
-    
-    public Long getId_orden(){
+
+    public Long getId_orden() {
         return id_orden;
     }
 
@@ -72,12 +71,12 @@ public class RepairOrder {
         this.user = user;
     }
 
-    public String getClientName() {
+    public String getFullName() {
         return fullName;
     }
 
-    public void setClientName(String clientName) {
-        this.fullName = clientName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getIdentificacion() {
