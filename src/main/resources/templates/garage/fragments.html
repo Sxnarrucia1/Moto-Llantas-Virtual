@@ -168,7 +168,7 @@
                 </table>
             </div>
         </section>
-        <section th:fragment="jira-example">
+        <section th:fragment="adminGarageImpl">
             <!-- Encabezado y botón para crear cita -->
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl font-bold text-gray-800">Gestión de Citas</h2>
@@ -191,24 +191,24 @@
                     <div class="bg-gray-100 p-4 rounded shadow">
                         <h2 class="text-lg font-semibold mb-2">Nuevos</h2>
                         <div class="space-y-2">
-                            <div class="bg-white p-4 rounded shadow">
-                                <h3 class="font-semibold text-gray-800">Orden #1001</h3>
-                                <p class="text-sm text-gray-600">Cliente: Juan Pérez</p>
-                                <p class="text-sm text-gray-600">Vehículo: Honda CB650R</p>
-                                <p class="text-sm text-gray-500 mt-2">Cambio de aceite y revisión general.</p>
+                            <div th:each="orden : ${nuevas}" class="bg-white p-4 rounded shadow">
+                                <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.id_orden}"></h3>
+                                <p class="text-sm text-gray-600" th:text="'Cliente: ' + ${orden.fullName}"></p>
+                                <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.brand} + ' ' + ${orden.modelName}"></p>
+                                <p class="text-sm text-gray-500 mt-2" th:text="${orden.serviceType.serviceName}"></p>
                             </div>
                         </div>
                     </div>
 
                     <!-- EN PROCESO -->
                     <div class="bg-gray-100 p-4 rounded shadow">
-                        <h2 class="text-lg font-semibold mb-2">En Proceso</h2>
+                        <h2 class="text-lg font-semibold mb-2">En Progreso</h2>
                         <div class="space-y-2">
-                            <div class="bg-white p-4 rounded shadow">
-                                <h3 class="font-semibold text-gray-800">Orden #1002</h3>
-                                <p class="text-sm text-gray-600">Cliente: María López</p>
-                                <p class="text-sm text-gray-600">Vehículo: Kawasaki ZX6R</p>
-                                <p class="text-sm text-gray-500 mt-2">Reparación de frenos.</p>
+                            <div th:each="orden : ${enProgreso}" class="bg-white p-4 rounded shadow">
+                                <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.id_orden}"></h3>
+                                <p class="text-sm text-gray-600" th:text="'Cliente: ' + ${orden.fullName}"></p>
+                                <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.brand} + ' ' + ${orden.modelName}"></p>
+                                <p class="text-sm text-gray-500 mt-2" th:text="${orden.serviceType.serviceName}"></p>
                             </div>
                         </div>
                     </div>
@@ -217,11 +217,11 @@
                     <div class="bg-gray-100 p-4 rounded shadow">
                         <h2 class="text-lg font-semibold mb-2">Completados</h2>
                         <div class="space-y-2">
-                            <div class="bg-white p-4 rounded shadow">
-                                <h3 class="font-semibold text-gray-800">Orden #1003</h3>
-                                <p class="text-sm text-gray-600">Cliente: Carlos Ruiz</p>
-                                <p class="text-sm text-gray-600">Vehículo: Yamaha R3</p>
-                                <p class="text-sm text-gray-500 mt-2">Instalación llantas.</p>
+                            <div th:each="orden : ${completadas}" class="bg-white p-4 rounded shadow">
+                                <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.id_orden}"></h3>
+                                <p class="text-sm text-gray-600" th:text="'Cliente: ' + ${orden.fullName}"></p>
+                                <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.brand} + ' ' + ${orden.modelName}"></p>
+                                <p class="text-sm text-gray-500 mt-2" th:text="${orden.serviceType.serviceName}"></p>
                             </div>
                         </div>
                     </div>
@@ -230,11 +230,11 @@
                     <div class="bg-gray-100 p-4 rounded shadow">
                         <h2 class="text-lg font-semibold mb-2">Cancelados</h2>
                         <div class="space-y-2">
-                            <div class="bg-white p-4 rounded shadow">
-                                <h3 class="font-semibold text-gray-800">Orden #1004</h3>
-                                <p class="text-sm text-gray-600">Cliente: Ana Torres</p>
-                                <p class="text-sm text-gray-600">Vehículo: CFMoto 300SR</p>
-                                <p class="text-sm text-gray-500 mt-2">Orden cancelada por el cliente.</p>
+                            <div th:each="orden : ${canceladas}" class="bg-white p-4 rounded shadow">
+                                <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.id_orden}"></h3>
+                                <p class="text-sm text-gray-600" th:text="'Cliente: ' + ${orden.fullName}"></p>
+                                <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.brand} + ' ' + ${orden.modelName}"></p>
+                                <p class="text-sm text-gray-500 mt-2" th:text="${orden.serviceType.serviceName}"></p>
                             </div>
                         </div>
                     </div>
