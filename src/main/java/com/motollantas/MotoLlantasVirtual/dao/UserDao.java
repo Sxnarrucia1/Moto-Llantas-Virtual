@@ -15,4 +15,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface UserDao extends JpaRepository<User, Long>{
     
     Optional <User> findByEmail(String email);
+
+    void deleteByEmail(String email);
 }

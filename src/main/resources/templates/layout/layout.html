@@ -54,10 +54,11 @@
                 <!-- buttons auth -->
                 <div class="flex items-center space-x-4" sec:authorize="isAuthenticated()">
 
-                    <div class="flex items-center space-x-2 bg-gray-100 px-3 py-1 rounded-full">
+                    <a th:href="@{/userProfile}" class="flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full transition duration-150">
                         <i class="fa-solid fa-user text-gray-700 text-lg"></i>
                         <span sec:authentication="name" class="text-gray-800 text-sm font-medium"></span>
-                    </div>
+                    </a>
+
                     <!--  dashboard Admin -->
                     <a sec:authorize="hasRole('ADMIN')"
                        th:href="@{/dashboard}"
