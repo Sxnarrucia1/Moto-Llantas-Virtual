@@ -69,23 +69,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-function mostrarToast(mensaje, tipo = "success") {
-    const toastContainer = document.getElementById("toastContainer");
-    const toast = document.createElement("div");
-
-    toast.className = `toast-message px-4 py-3 rounded shadow-lg mb-4 animate-fade-in-out ${
-            tipo === "success" ? "bg-green-500 text-white" : "bg-red-500 text-white"
-            }`;
-
-    toast.innerHTML = `<p>${mensaje}</p>`;
-    toastContainer.appendChild(toast);
-
-    // Eliminar el toast después de unos segundos
-    setTimeout(() => {
-        toast.remove();
-    }, 4000);
-}
-
 //script for modal in users/fragments
 function openModal() {
     const modal = document.getElementById('editUserModal');
@@ -221,6 +204,22 @@ function activarToasts()
     });
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+    const mensaje = localStorage.getItem("mensajeExito");
+    if (mensaje) {
+        const toastContainer = document.getElementById("toastContainer");
+        const toast = document.createElement("div");
+
+        toast.className = "toast-message bg-green-500 text-white px-4 py-3 rounded shadow-lg mb-4";
+        toast.innerHTML = `<p>${mensaje}</p>`;
+        toastContainer.appendChild(toast);
+
+        activarToasts();
+        localStorage.removeItem("mensajeExito");
+    }
+});
+
+
 
 function openEditModal(orderId) {
     fetch(`/garage/editAdmin/${orderId}`)
@@ -234,6 +233,12 @@ function openEditModal(orderId) {
             });
 }
 
+function closeEditModal()
+{
+    document.getElementById('editOrderModal').classList.add('hidden');
+    document.getElementById('modalContent').innerHTML = '';
+}
+
 
 document.addEventListener('submit', function (e) {
     if (e.target && e.target.id === 'editOrderForm') {
@@ -244,16 +249,23 @@ document.addEventListener('submit', function (e) {
 
         fetch(form.action, {
             method: 'POST',
+            headers: {
+                'Accept': 'application/json'
+            },
             body: formData
         })
                 .then(response => {
-                    if (response.redirected) {
-                        // Éxito: cerrar modal y redirigir o actualizar vista
-                        closeEditModal();
-                        window.location.href = response.url;
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.includes("application/json")) {
+                        return response.json().then(data => {
+                            if (data.redirectUrl) {
+                                localStorage.setItem("mensajeExito", data.mensajeExito);
+                                closeEditModal();
+                                window.location.href = data.redirectUrl;
+                            }
+                        });
                     } else {
                         return response.text().then(html => {
-                            // Error: recargar fragmento con mensajes
                             document.getElementById('modalContent').innerHTML = html;
                             activarToasts();
                         });
@@ -262,12 +274,6 @@ document.addEventListener('submit', function (e) {
                 .catch(error => {
                     console.error('Error al enviar el formulario:', error);
                 });
+
     }
 });
-
-
-function closeEditModal()
-{
-    document.getElementById('editOrderModal').classList.add('hidden');
-    document.getElementById('modalContent').innerHTML = '';
-}

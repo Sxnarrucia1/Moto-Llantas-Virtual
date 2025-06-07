@@ -27,6 +27,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import jakarta.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
+import org.springframework.http.ResponseEntity;
 
 /**
  *
@@ -47,7 +51,7 @@ public class RepairOrderController {
 
     @Autowired
     private EmpleadoService employeeService;
-   
+
     @GetMapping("/adminGarage")
     public String mostrarOrdenes(Model model) {
         List<RepairOrder> nuevas = repairOrderService.findByStatusASC(OrderStatus.NUEVO);
@@ -104,10 +108,13 @@ public class RepairOrderController {
     }
 
     @PostMapping("/updateAdmin")
-    public String updateRepairOrder(@ModelAttribute RepairOrder repairOrder,
+    public Object updateRepairOrder(@ModelAttribute RepairOrder repairOrder,
             @RequestParam("formattedAppointmentDate") String formattedDate,
             Model model,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            HttpServletRequest request) {
+
+        boolean isAjax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
@@ -115,29 +122,31 @@ public class RepairOrderController {
             repairOrder.setAppointmentDate(parsedDate);
         } catch (DateTimeParseException e) {
             model.addAttribute("mensajeError", "Formato de fecha inválido.");
-            return reloadEditFragment(model, repairOrder);
+            return isAjax ? reloadEditFragment(model, repairOrder) : "garage/fragments :: editAdmin";
         }
 
         LocalDateTime appointmentDate = repairOrder.getAppointmentDate();
 
         if (appointmentDate.isBefore(LocalDateTime.now())) {
             model.addAttribute("mensajeError", "No se puede agendar una cita en el pasado.");
-            return reloadEditFragment(model, repairOrder);
+            return isAjax ? reloadEditFragment(model, repairOrder) : "garage/fragments :: editAdmin";
         }
 
         if (dateValidator.isClosedDay(appointmentDate)) {
             model.addAttribute("mensajeError", "El taller está cerrado ese día.");
-            return reloadEditFragment(model, repairOrder);
+            return isAjax ? reloadEditFragment(model, repairOrder) : "garage/fragments :: editAdmin";
         }
 
         if (!dateValidator.isWithinOpeningHours(appointmentDate)) {
             model.addAttribute("mensajeError", "La hora seleccionada está fuera del horario de atención.");
-            return reloadEditFragment(model, repairOrder);
+            return isAjax ? reloadEditFragment(model, repairOrder) : "garage/fragments :: editAdmin";
         }
 
         repairOrderService.updateFromAdmin(repairOrder);
-        redirectAttributes.addFlashAttribute("mensajeExito", "Cita creada exitosamente.");
-        return "redirect:/garage/adminGarage";
+        Map<String, String> response = new HashMap<>();
+        response.put("redirectUrl", "/garage/adminGarage");
+        response.put("mensajeExito", "Cita actualizada exitosamente.");
+        return ResponseEntity.ok(response);
     }
 
     private String reloadEditFragment(Model model, RepairOrder repairOrder) {
