@@ -4,6 +4,7 @@
  */
 package com.motollantas.MotoLlantasVirtual.Service;
 
+import com.motollantas.MotoLlantasVirtual.DTO.AdminDateDTO;
 import com.motollantas.MotoLlantasVirtual.DTO.ClientDateDTO;
 import com.motollantas.MotoLlantasVirtual.domain.OrderStatus;
 import com.motollantas.MotoLlantasVirtual.domain.RepairOrder;
@@ -33,5 +34,10 @@ public interface RepairOrderService {
     public void deleteById(Long id);
 
     List<RepairOrder> findByStatus(OrderStatus status);
+    
+    List<RepairOrder> findByStatusASC(OrderStatus status);
 
+    public void createFromAdmin(AdminDateDTO dto, ServiceType serviceType);
+    
+    public void updateFromAdmin(RepairOrder updatedOrder);
 }

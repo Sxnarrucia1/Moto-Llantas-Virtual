@@ -8,8 +8,7 @@
     </head>
 
     <body>
-        <div class="fixed top-5 right-5 z-50" id="toastContainer">
-            <!-- Aquí Thymeleaf sigue funcionando para mensajes del lado del servidor -->
+        <div class="fixed top-5 right-5 z-50">
             <div th:if="${mensajeError}" class="toast-message bg-red-500 text-white px-4 py-3 rounded shadow-lg mb-4 animate-fade-in-out">
                 <p th:text="${mensajeError}"></p>
             </div>
@@ -22,10 +21,9 @@
         <aside th:replace="~{layout/layoutAdmin :: sidebar}"/>
 
         <main class="ml-64 p-6">
-            <section th:replace="~{garage/fragments :: adminGarageImpl}"/>
+            <section th:replace="~{garage/fragments :: editAdmin}"/>
         </main>
         <script th:src="@{/js/scripts.js}"></script>
     </body>
 
 </html>
-

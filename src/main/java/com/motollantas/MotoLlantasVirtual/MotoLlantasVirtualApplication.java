@@ -24,7 +24,7 @@ public class MotoLlantasVirtualApplication {
             ModelMapper modelMapper = new ModelMapper();
 
             TypeMap<RepairOrder, ClientDateDTO> typeMap = modelMapper.createTypeMap(RepairOrder.class, ClientDateDTO.class);
-            typeMap.addMapping(RepairOrder::getId_orden, ClientDateDTO::setId);
+            typeMap.addMapping(RepairOrder::getIdOrden, ClientDateDTO::setId);
 
             return modelMapper;
         }

@@ -7,6 +7,7 @@
         <meta charset="UTF-8"/>
         <title th:text="${title}">Moto Llantas</title>
         <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
     </head>
     <body class="bg-gray-100 min-h-screen">
         <header th:fragment="header">
@@ -14,8 +15,8 @@
                 <div class="flex justify-between items-center">
                     <!-- Logo -->
                     <div class="flex items-center space-x-3">
-                        <img src="/images/logo-icon.png" alt="Logo" class="h-9 w-9">
-                        <span class="text-xl font-semibold tracking-wide">Moto Llantas</span>
+                        <img src="/images/logo-icon.png" alt="Logo" class="h-9 w-9"/>
+                            <span class="text-xl font-semibold tracking-wide">Moto Llantas</span>
                     </div>
 
 
@@ -38,14 +39,14 @@
                             <button class="flex items-center space-x-2 focus:outline-none" id="userMenuButton">
                                 <img src="/images/user.jpg" alt="User"
                                      class="h-9 w-9 rounded-full border-2 border-white shadow">
-                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2"
-                                     viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-                                </svg>
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2"
+                                         viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                                    </svg>
                             </button>
 
                             <div id="userDropdown"
-                                    class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-200 z-50">
+                                 class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-200 z-50">
                                 <a href="#" class="block px-4 py-3 hover:bg-gray-100">👤 Perfil</a>
                                 <a href="#" class="block px-4 py-3 hover:bg-gray-100">⚙️ Configuración</a>
                                 <a href="/" class="block px-4 py-3 hover:bg-gray-100">🚪 Salir del panel</a>
@@ -127,6 +128,5 @@
                 </ul>
             </nav>
         </aside>
-        <script th:src="@{/js/scripts.js}"></script>
     </body>
 </html>

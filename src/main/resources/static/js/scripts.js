@@ -1,27 +1,25 @@
-    document.addEventListener('DOMContentLoaded', function () {
-            const menuToggle = document.getElementById('menu-toggle');
-            const menu = document.getElementById('menu');
-
-            menuToggle.addEventListener('click', function () {
-                    menu.classList.toggle('hidden');
-            });
-    });
+document.addEventListener('DOMContentLoaded', function () {
+    const menuToggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('menu');
+    if (menuToggle && menu) {
+        menuToggle.addEventListener('click', function () {
+            menu.classList.toggle('hidden');
+        });
+    }
+});
 
 document.addEventListener("DOMContentLoaded", function () {
     const draggables = document.querySelectorAll("[draggable='true']");
     const containers = document.querySelectorAll(".droppable-container");
-
     draggables.forEach((draggable) => {
         draggable.addEventListener("dragstart", (e) => {
             e.dataTransfer.setData("text/plain", e.target.id);
         });
     });
-
     containers.forEach((container) => {
         container.addEventListener("drver", (e) => {
             e.preventDefault();
         });
-
         container.addEventListener("drop", (e) => {
             e.preventDefault();
             const id = e.dataTransfer.getData("text/plain");
@@ -30,7 +28,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
-
 document.addEventListener('DOMContentLoaded', function () {
     const toasts = document.querySelectorAll('.toast-message');
     toasts.forEach(toast => {
@@ -38,8 +35,6 @@ document.addEventListener('DOMContentLoaded', function () {
             toast.classList.add('opacity-0', 'transition-opacity', 'duration-500');
             setTimeout(() => {
                 toast.remove();
-
-                // Limpia el contenido del mensaje para evitar que se vuelva a renderizar
                 if (toast.parentNode) {
                     toast.parentNode.removeChild(toast);
                 }
@@ -47,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 4000);
     });
 });
-
 function openModalU(id) {
     document.getElementById(`modal-${id}`).classList.remove('hidden');
 }
@@ -67,27 +61,30 @@ function toggleSubmenu(id) {
 
 // script for dropdown user in layout/layoutAdmin
 // script for dropdown user in layout/layoutAdmin
-document.addEventListener('DOMContentLoaded', () => {
-    const button = document.getElementById('userMenuButton');
-    const dropdown = document.getElementById('userDropdown');
-
-    if (button && dropdown) {
-        button.addEventListener('click', (e) => {
-            e.stopPropagation();
-            dropdown.classList.toggle('opacity-0');
-            dropdown.classList.toggle('invisible');
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!button.contains(e.target)) {
-                dropdown.classList.add('opacity-0');
-                dropdown.classList.add('invisible');
-            }
-        });
+document.addEventListener("DOMContentLoaded", function () {
+    const mensaje = localStorage.getItem("mensajeExito");
+    if (mensaje) {
+        mostrarToast(mensaje, "success");
+        localStorage.removeItem("mensajeExito");
     }
 });
 
+function mostrarToast(mensaje, tipo = "success") {
+    const toastContainer = document.getElementById("toastContainer");
+    const toast = document.createElement("div");
 
+    toast.className = `toast-message px-4 py-3 rounded shadow-lg mb-4 animate-fade-in-out ${
+            tipo === "success" ? "bg-green-500 text-white" : "bg-red-500 text-white"
+            }`;
+
+    toast.innerHTML = `<p>${mensaje}</p>`;
+    toastContainer.appendChild(toast);
+
+    // Eliminar el toast después de unos segundos
+    setTimeout(() => {
+        toast.remove();
+    }, 4000);
+}
 
 //script for modal in users/fragments
 function openModal() {
@@ -107,16 +104,12 @@ function closeModal() {
 document.addEventListener('DOMContentLoaded', () => {
     const button = document.getElementById('mobile-menu-button');
     const menu = document.getElementById('mobile-menu');
-
     if (button && menu) {
         button.addEventListener('click', function () {
             menu.classList.toggle('hidden');
         });
     }
 });
-
-
-
 function openCreateModal() {
     document.getElementById('createAppointmentModal').classList.remove('hidden');
     document.body.classList.add('overflow-hidden');
@@ -129,45 +122,152 @@ function closeCreateModal() {
 
 
 
-
 // Script for pop up, basically alerts
-    function fadeInOut(id) {
-        const alert = document.getElementById(id);
-        if (alert) {
-            setTimeout(() => alert.classList.remove("opacity-0"), 100);
+function fadeInOut(id) {
+    const alert = document.getElementById(id);
+    if (alert) {
+        setTimeout(() => alert.classList.remove("opacity-0"), 100);
+        setTimeout(() => {
+            alert.classList.add("opacity-0");
+            setTimeout(() => alert.style.display = 'none', 500);
+        }, 3000);
+    }
+}
+
+
+fadeInOut("successAlert");
+fadeInOut("errorAlert");
+fadeInOut("deleteAlert");
+
+function closeAlert()
+{
+    const alert = document.getElementById("successAlert");
+    if (alert) {
+        alert.classList.add("opacity-0");
+        setTimeout(() => alert.style.display = "none", 500);
+    }
+}
+
+
+function closeErrorAlert() {
+    const alert = document.getElementById("errorAlert");
+    if (alert) {
+        alert.classList.add("opacity-0");
+        setTimeout(() => alert.style.display = "none", 500);
+    }
+}
+
+
+function closeDeleteAlert() {
+    const alert = document.getElementById("deleteAlert");
+    if (alert) {
+        alert.classList.add("opacity-0");
+        setTimeout(() => alert.style.display = "none", 500);
+    }
+}
+
+
+function buscarUsuarioPorIdentificacion() {
+    const identificacion = document.querySelector('input[name="identification"]').value;
+    fetch(`/api/users/search?identification=${identificacion}`)
+            .then(response => {
+                if (!response.ok)
+                    throw new Error("Usuario no encontrado");
+                return response.json();
+            })
+            .then(data => {
+                document.querySelector('input[name="fullName"]').value = data.fullName;
+            })
+            .catch(error => {
+                console.log("No se encontró el usuario:", error);
+                document.querySelector('input[name="fullName"]').value = "";
+            });
+}
+
+
+function toggleMenu(button) {
+    // Cierra todos los menús abiertos
+    document.querySelectorAll('.menuRO').forEach(menu => {
+        if (menu !== button.nextElementSibling) {
+            menu.classList.add('hidden');
+        }
+    });
+
+    // Alterna el menú actual
+    const menu = button.nextElementSibling;
+    menu.classList.toggle('hidden');
+}
+
+
+// Cierra el menú si se hace clic fuera
+document.addEventListener('click', function (event) {
+    const isMenuButton = event.target.closest('button');
+    const isMenu = event.target.closest('.menuRO');
+    if (!isMenuButton && !isMenu) {
+        document.querySelectorAll('.menuRO').forEach(menu => menu.classList.add('hidden'));
+    }
+});
+
+function activarToasts()
+{
+    const toasts = document.querySelectorAll('.toast-message');
+    toasts.forEach(toast => {
+        setTimeout(() => {
+            toast.classList.add('opacity-0', 'transition-opacity', 'duration-500');
             setTimeout(() => {
-                alert.classList.add("opacity-0");
-                setTimeout(() => alert.style.display = 'none', 500);
-            }, 3000);
-        }
+                toast.remove();
+            }, 500);
+        }, 4000);
+    });
+}
+
+
+function openEditModal(orderId) {
+    fetch(`/garage/editAdmin/${orderId}`)
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('modalContent').innerHTML = html;
+                document.getElementById('editOrderModal').classList.remove('hidden');
+            })
+            .catch(error => {
+                console.error('Error al cargar el formulario:', error);
+            });
+}
+
+
+document.addEventListener('submit', function (e) {
+    if (e.target && e.target.id === 'editOrderForm') {
+        e.preventDefault();
+
+        const form = e.target;
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: 'POST',
+            body: formData
+        })
+                .then(response => {
+                    if (response.redirected) {
+                        // Éxito: cerrar modal y redirigir o actualizar vista
+                        closeEditModal();
+                        window.location.href = response.url;
+                    } else {
+                        return response.text().then(html => {
+                            // Error: recargar fragmento con mensajes
+                            document.getElementById('modalContent').innerHTML = html;
+                            activarToasts();
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al enviar el formulario:', error);
+                });
     }
+});
 
-    fadeInOut("successAlert");
-    fadeInOut("errorAlert");
-    fadeInOut("deleteAlert");
 
-    function closeAlert() {
-        const alert = document.getElementById("successAlert");
-        if (alert) {
-            alert.classList.add("opacity-0");
-            setTimeout(() => alert.style.display = "none", 500);
-        }
-    }
-
-    function closeErrorAlert() {
-        const alert = document.getElementById("errorAlert");
-        if (alert) {
-            alert.classList.add("opacity-0");
-            setTimeout(() => alert.style.display = "none", 500);
-        }
-    }
-
-    function closeDeleteAlert() {
-        const alert = document.getElementById("deleteAlert");
-        if (alert) {
-            alert.classList.add("opacity-0");
-            setTimeout(() => alert.style.display = "none", 500);
-        }
-    }
-
-// --------------------------------------------------------------
+function closeEditModal()
+{
+    document.getElementById('editOrderModal').classList.add('hidden');
+    document.getElementById('modalContent').innerHTML = '';
+}

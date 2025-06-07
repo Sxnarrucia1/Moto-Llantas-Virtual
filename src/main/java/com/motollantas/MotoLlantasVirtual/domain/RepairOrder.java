@@ -13,21 +13,21 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import java.time.LocalDateTime;
-import lombok.Data;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
  * @author esteb
  */
 @Entity
-@Data
 @Table(name = "repair_orders")
 public class RepairOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_orden;
+    private Long idOrden;
 
     @ManyToOne
     @JoinColumn(name = "id_usuario")
@@ -59,8 +59,28 @@ public class RepairOrder {
 
     private String problemDescription;
 
-    public Long getId_orden() {
-        return id_orden;
+    @Transient
+    @SuppressWarnings("unused")
+    private String formattedAppointmentDate;
+
+    public String getFormattedAppointmentDate() {
+        if (appointmentDate != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+            return appointmentDate.format(formatter);
+        }
+        return null;
+    }
+
+    public void setFormattedAppointmentDate(String formattedAppointmentDate) {
+        this.formattedAppointmentDate = formattedAppointmentDate;
+    }
+
+    public Long getIdOrden() {
+        return idOrden;
+    }
+
+    public void setIdOrden(Long idOrden) {
+        this.idOrden = idOrden;
     }
 
     public User getUser() {
@@ -79,11 +99,11 @@ public class RepairOrder {
         this.fullName = fullName;
     }
 
-    public String getIdentificacion() {
+    public String getIdentification() {
         return identification;
     }
 
-    public void setIdentificacion(String identificacion) {
+    public void setIdentification(String identificacion) {
         this.identification = identificacion;
     }
 
