@@ -57,10 +57,26 @@ function toggleSubmenu(id) {
     icon.classList.toggle('rotate-180');
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const button = document.getElementById('userMenuButton');
+    const dropdown = document.getElementById('userDropdown');
 
+    if (button && dropdown) {
+        button.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.classList.toggle('opacity-0');
+            dropdown.classList.toggle('invisible');
+        });
 
-// script for dropdown user in layout/layoutAdmin
-// script for dropdown user in layout/layoutAdmin
+        document.addEventListener('click', (e) => {
+            if (!button.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.add('opacity-0');
+                dropdown.classList.add('invisible');
+            }
+        });
+    }
+});
+
 document.addEventListener("DOMContentLoaded", function () {
     const mensaje = localStorage.getItem("mensajeExito");
     if (mensaje) {
