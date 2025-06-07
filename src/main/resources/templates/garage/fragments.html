@@ -191,65 +191,137 @@
                     <div class="bg-gray-100 p-4 rounded shadow">
                         <h2 class="text-lg font-semibold mb-2">Nuevos</h2>
                         <div class="space-y-2">
-                            <div th:each="orden : ${nuevas}" class="bg-white p-4 rounded shadow">
-                                <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.id_orden}"></h3>
-                                <p class="text-sm text-gray-600" th:text="'Cliente: ' + ${orden.fullName}"></p>
-                                <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.brand} + ' ' + ${orden.modelName}"></p>
-                                <p class="text-sm text-gray-500 mt-2" th:text="${orden.serviceType.serviceName}"></p>
+                            <div th:each="orden : ${nuevas}" class="bg-white p-4 rounded shadow relative">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.idOrden}"></h3>
+                                        <p class="text-sm text-gray-600" th:text="'Cliente: ' + ${orden.fullName}"></p>
+                                        <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.brand} + ' ' + ${orden.modelName}"></p>
+                                        <p class="text-sm text-gray-600" th:text="'Cita: ' + ${#temporals.format(orden.appointmentDate, 'dd/MM/yyyy HH:mm')}"></p>
+                                        <p class="text-sm text-gray-500 mt-2" th:text="${orden.serviceType.serviceName}"></p>
+                                    </div>
+                                    <div class="relative">
+                                        <button class="text-gray-500 hover:text-gray-700 focus:outline-none" onclick="toggleMenu(this)">
+                                            <i class="fas fa-ellipsis-v text-xl"></i>
+                                        </button>
+                                        <div class="menuRO hidden absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded shadow-md z-10">
+                                            <a href="#"
+                                               th:attr="data-id=${orden.idOrden}"
+                                               onclick="openEditModal(this.getAttribute('data-id')); return false;"
+                                               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                Editar
+                                            </a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Eliminar</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
                     <!-- EN PROCESO -->
                     <div class="bg-gray-100 p-4 rounded shadow">
                         <h2 class="text-lg font-semibold mb-2">En Progreso</h2>
                         <div class="space-y-2">
-                            <div th:each="orden : ${enProgreso}" class="bg-white p-4 rounded shadow">
-                                <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.id_orden}"></h3>
-                                <p class="text-sm text-gray-600" th:text="'Cliente: ' + ${orden.fullName}"></p>
-                                <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.brand} + ' ' + ${orden.modelName}"></p>
-                                <p class="text-sm text-gray-500 mt-2" th:text="${orden.serviceType.serviceName}"></p>
+                            <div th:each="orden : ${enProgreso}" class="bg-white p-4 rounded shadow relative">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.idOrden}"></h3>
+                                        <p class="text-sm text-gray-600" th:text="'Cliente: ' + ${orden.fullName}"></p>
+                                        <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.brand} + ' ' + ${orden.modelName}"></p>
+                                        <p class="text-sm text-gray-600" th:text="'Cita: ' + ${#temporals.format(orden.appointmentDate, 'dd/MM/yyyy HH:mm')}"></p>
+                                        <p class="text-sm text-gray-500 mt-2" th:text="${orden.serviceType.serviceName}"></p>
+                                    </div>
+                                    <div class="relative">
+                                        <button class="text-gray-500 hover:text-gray-700 focus:outline-none" onclick="toggleMenu(this)">
+                                            <i class="fas fa-ellipsis-v text-xl"></i>
+                                        </button>
+                                        <div class="menuRO hidden absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded shadow-md z-10">
+                                            <a href="#"
+                                               th:attr="data-id=${orden.idOrden}"
+                                               onclick="openEditModal(this.getAttribute('data-id')); return false;"
+                                               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                Editar
+                                            </a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Eliminar</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
                     <!-- COMPLETADOS -->
                     <div class="bg-gray-100 p-4 rounded shadow">
                         <h2 class="text-lg font-semibold mb-2">Completados</h2>
                         <div class="space-y-2">
-                            <div th:each="orden : ${completadas}" class="bg-white p-4 rounded shadow">
-                                <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.id_orden}"></h3>
-                                <p class="text-sm text-gray-600" th:text="'Cliente: ' + ${orden.fullName}"></p>
-                                <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.brand} + ' ' + ${orden.modelName}"></p>
-                                <p class="text-sm text-gray-500 mt-2" th:text="${orden.serviceType.serviceName}"></p>
+                            <div th:each="orden : ${completadas}" class="bg-white p-4 rounded shadow relative">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.idOrden}"></h3>
+                                        <p class="text-sm text-gray-600" th:text="'Cliente: ' + ${orden.fullName}"></p>
+                                        <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.brand} + ' ' + ${orden.modelName}"></p>
+                                        <p class="text-sm text-gray-600" th:text="'Cita: ' + ${#temporals.format(orden.appointmentDate, 'dd/MM/yyyy HH:mm')}"></p>
+                                        <p class="text-sm text-gray-500 mt-2" th:text="${orden.serviceType.serviceName}"></p>
+                                    </div>
+                                    <div class="relative">
+                                        <button class="text-gray-500 hover:text-gray-700 focus:outline-none" onclick="toggleMenu(this)">
+                                            <i class="fas fa-ellipsis-v text-xl"></i>
+                                        </button>
+                                        <div class="menuRO hidden absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded shadow-md z-10">
+                                            <a href="#"
+                                               th:attr="data-id=${orden.idOrden}"
+                                               onclick="openEditModal(this.getAttribute('data-id')); return false;"
+                                               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                Editar
+                                            </a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Eliminar</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
                     <!-- CANCELADOS -->
                     <div class="bg-gray-100 p-4 rounded shadow">
                         <h2 class="text-lg font-semibold mb-2">Cancelados</h2>
                         <div class="space-y-2">
-                            <div th:each="orden : ${canceladas}" class="bg-white p-4 rounded shadow">
-                                <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.id_orden}"></h3>
-                                <p class="text-sm text-gray-600" th:text="'Cliente: ' + ${orden.fullName}"></p>
-                                <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.brand} + ' ' + ${orden.modelName}"></p>
-                                <p class="text-sm text-gray-500 mt-2" th:text="${orden.serviceType.serviceName}"></p>
+                            <div th:each="orden : ${canceladas}" class="bg-white p-4 rounded shadow relative">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.idOrden}"></h3>
+                                        <p class="text-sm text-gray-600" th:text="'Cliente: ' + ${orden.fullName}"></p>
+                                        <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.brand} + ' ' + ${orden.modelName}"></p>
+                                        <p class="text-sm text-gray-600" th:text="'Cita: ' + ${#temporals.format(orden.appointmentDate, 'dd/MM/yyyy HH:mm')}"></p>
+                                        <p class="text-sm text-gray-500 mt-2" th:text="${orden.serviceType.serviceName}"></p>
+                                    </div>
+                                    <div class="relative">
+                                        <button class="text-gray-500 hover:text-gray-700 focus:outline-none" onclick="toggleMenu(this)">
+                                            <i class="fas fa-ellipsis-v text-xl"></i>
+                                        </button>
+                                        <div class="menuRO hidden absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded shadow-md z-10">
+                                            <a href="#"
+                                               th:attr="data-id=${orden.idOrden}"
+                                               onclick="openEditModal(this.getAttribute('data-id')); return false;"
+                                               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                Editar
+                                            </a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Eliminar</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <!-- Modal para crear cita -->
             <div id="createAppointmentModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
                 <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl relative">
                     <button onclick="closeCreateModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">&times;</button>
                     <h3 class="text-xl font-semibold text-gray-800 mb-4">Crear Nueva Cita</h3>
-                    <form th:action="@{/admin/appointments/create}" method="post" class="space-y-4">
+                    <form th:action="@{/garage/create}" method="post" class="space-y-4">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <input type="text" name="fullName" placeholder="Nombre completo" class="border p-2 rounded w-full" required/>
-                            <input type="text" name="identification" placeholder="Identificación" class="border p-2 rounded w-full" required/>
+                            <input type="text" name="identification" placeholder="Identificación" class="border p-2 rounded w-full" required onblur="buscarUsuarioPorIdentificacion()" />
                             <input type="text" name="brand" placeholder="Marca" class="border p-2 rounded w-full" required/>
                             <input type="text" name="modelName" placeholder="Modelo" class="border p-2 rounded w-full" required/>
                             <input type="number" name="year" placeholder="Año" class="border p-2 rounded w-full" required/>
@@ -257,7 +329,7 @@
                             <input type="datetime-local" name="appointmentDate" class="border p-2 rounded w-full" required/>
                             <select name="serviceTypeId" class="border p-2 rounded w-full" required>
                                 <option value="">Seleccionar servicio</option>
-                                <option th:each="service : ${services}" th:value="${service.id}" th:text="${service.serviceTypeName}"></option>
+                                <option th:each="service : ${services}" th:value="${service.id}" th:text="${service.serviceName}"></option>
                             </select>
                         </div>
                         <div class="flex justify-end space-x-4 pt-4">
@@ -270,6 +342,114 @@
                         </div>
                     </form>
                 </div>
+            </div>
+            <div id="editOrderModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+                <div class="bg-white rounded-lg shadow-lg w-full max-w-4xl p-6 relative">
+                    <button onclick="closeEditModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800">&times;</button>
+                    <div id="modalContent">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section th:fragment="editAdmin">
+            <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-4xl mx-auto">
+                <div class="fixed top-5 right-5 z-50">
+                    <div th:if="${mensajeError}" class="toast-message bg-red-500 text-white px-4 py-3 rounded shadow-lg mb-4 animate-fade-in-out">
+                        <p th:text="${mensajeError}"></p>
+                    </div>
+                    <div th:if="${mensajeExito}" class="toast-message bg-green-500 text-white px-4 py-3 rounded shadow-lg animate-fade-in-out">
+                        <p th:text="${mensajeExito}"></p>
+                    </div>
+                </div>
+                <form id="editOrderForm" th:action="@{/garage/updateAdmin}" method="post" th:object="${repairOrder}" class="space-y-6">
+                    <input type="hidden" th:field="*{idOrden}" />
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Full Name</label>
+                            <input type="text" th:field="*{fullName}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" readonly/>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Identification</label>
+                            <input type="text" th:field="*{identification}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Brand</label>
+                            <input type="text" th:field="*{brand}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Model</label>
+                            <input type="text" th:field="*{modelName}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Year</label>
+                            <input type="number" th:field="*{year}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Displacement (cc)</label>
+                            <input type="number" th:field="*{displacement}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Kilometraje</label>
+                            <input type="number" th:field="*{kilometraje}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">License Plate</label>
+                            <input type="text" th:field="*{licensePlate}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Color</label>
+                            <input type="text" th:field="*{color}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Appointment Date</label>
+                            <input type="datetime-local" th:value="*{formattedAppointmentDate}" name="formattedAppointmentDate" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Order Status</label>
+                            <select th:field="*{orderStatus}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                <option th:each="status : ${orderStatuses}" th:value="${status}" th:text="${status}"></option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Priority</label>
+                            <select th:field="*{priority}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                <option th:each="priority : ${orderPriorities}" th:value="${priority}" th:text="${priority}"></option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Service Type</label>
+                            <select th:field="*{serviceType}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                <option th:each="type : ${services}" th:value="${type.id}" th:text="${type.serviceName}"></option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Mechanic</label>
+                            <select th:field="*{mechanic}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                <option th:each="mech : ${mechanics}" th:if="${mech != null}" th:value="${mech.id}" th:text="${mech.fullName}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Problem Description</label>
+                        <textarea th:field="*{problemDescription}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Update Order
+                        </button>
+                    </div>
+                </form>
             </div>
         </section>
     </body>

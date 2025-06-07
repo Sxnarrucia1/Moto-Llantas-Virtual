@@ -4,16 +4,18 @@
  */
 package com.motollantas.MotoLlantasVirtual.ServiceImpl;
 
+import com.motollantas.MotoLlantasVirtual.DTO.AdminDateDTO;
 import com.motollantas.MotoLlantasVirtual.DTO.ClientDateDTO;
 import com.motollantas.MotoLlantasVirtual.Service.RepairOrderService;
 import com.motollantas.MotoLlantasVirtual.Service.ServiceTypeService;
+import com.motollantas.MotoLlantasVirtual.Service.UserService;
 import com.motollantas.MotoLlantasVirtual.dao.RepairOrderDao;
 import com.motollantas.MotoLlantasVirtual.dao.UserDao;
+import com.motollantas.MotoLlantasVirtual.domain.OrderPriority;
 import com.motollantas.MotoLlantasVirtual.domain.OrderStatus;
 import com.motollantas.MotoLlantasVirtual.domain.RepairOrder;
 import com.motollantas.MotoLlantasVirtual.domain.ServiceType;
 import com.motollantas.MotoLlantasVirtual.domain.User;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -44,6 +46,9 @@ public class RepairOrderServiceImpl implements RepairOrderService {
     @Autowired
     ServiceTypeService serviceTypeService;
 
+    @Autowired
+    UserService userService;
+
     @Override
     public void createDateClient(ClientDateDTO clientDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -56,7 +61,7 @@ public class RepairOrderServiceImpl implements RepairOrderService {
         RepairOrder orden = new RepairOrder();
         orden.setUser(client);
         orden.setFullName(client.getFullName());
-        orden.setIdentificacion(client.getIdentification());
+        orden.setIdentification(client.getIdentification());
         orden.setModelName(clientDto.getModelName());
         orden.setLicensePlate(clientDto.getLicensePlate());
         orden.setAppointmentDate(clientDto.getAppointmentDate());
@@ -123,7 +128,7 @@ public class RepairOrderServiceImpl implements RepairOrderService {
 
         orden.setUser(client);
         orden.setFullName(client.getFullName());
-        orden.setIdentificacion(client.getIdentification());
+        orden.setIdentification(client.getIdentification());
         orden.setAppointmentDate(dto.getAppointmentDate());
         orden.setServiceType(serviceType);
         orden.setBrand(dto.getBrand());
@@ -142,6 +147,61 @@ public class RepairOrderServiceImpl implements RepairOrderService {
     @Override
     public List<RepairOrder> findByStatus(OrderStatus status) {
         return repair.findByOrderStatus(status);
+    }
+
+    @Override
+    public void createFromAdmin(AdminDateDTO dto, ServiceType serviceType) {
+        RepairOrder order = new RepairOrder();
+
+        // Buscar usuario por identificación
+        Optional<User> userOpt = userService.findByIdentification(dto.getIdentification());
+
+        // Si existe, asociarlo a la orden
+        userOpt.ifPresent(order::setUser);
+
+        order.setFullName(dto.getFullName());
+        order.setIdentification(dto.getIdentification());
+        order.setBrand(dto.getBrand());
+        order.setModelName(dto.getModelName());
+        order.setYear(dto.getYear());
+        order.setLicensePlate(dto.getLicensePlate());
+        order.setAppointmentDate(dto.getAppointmentDate());
+        order.setServiceType(serviceType);
+        order.setOrderStatus(OrderStatus.NUEVO);
+        order.setPriority(OrderPriority.BAJA);
+
+        repair.save(order);
+    }
+
+    @Override
+    public void updateFromAdmin(RepairOrder updatedOrder) {
+        RepairOrder existingOrder = repair.findById(updatedOrder.getIdOrden())
+                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+
+        System.out.println("ID recibido en servicio: " + updatedOrder.getIdOrden());
+
+        existingOrder.setFullName(updatedOrder.getFullName());
+        existingOrder.setIdentification(updatedOrder.getIdentification());
+        existingOrder.setBrand(updatedOrder.getBrand());
+        existingOrder.setModelName(updatedOrder.getModelName());
+        existingOrder.setYear(updatedOrder.getYear());
+        existingOrder.setDisplacement(updatedOrder.getDisplacement());
+        existingOrder.setKilometraje(updatedOrder.getKilometraje());
+        existingOrder.setLicensePlate(updatedOrder.getLicensePlate());
+        existingOrder.setColor(updatedOrder.getColor());
+        existingOrder.setAppointmentDate(updatedOrder.getAppointmentDate());
+        existingOrder.setOrderStatus(updatedOrder.getOrderStatus());
+        existingOrder.setServiceType(updatedOrder.getServiceType());
+        existingOrder.setMechanic(updatedOrder.getMechanic());
+        existingOrder.setPriority(updatedOrder.getPriority());
+        existingOrder.setProblemDescription(updatedOrder.getProblemDescription());
+
+        repair.save(existingOrder);
+    }
+
+    @Override
+    public List<RepairOrder> findByStatusASC(OrderStatus status) {
+        return repair.findByOrderStatusOrderByAppointmentDateAsc(status);
     }
 
 }

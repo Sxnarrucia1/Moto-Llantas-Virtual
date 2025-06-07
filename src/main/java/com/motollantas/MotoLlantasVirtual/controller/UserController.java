@@ -4,18 +4,17 @@ import com.motollantas.MotoLlantasVirtual.Service.UserService;
 import com.motollantas.MotoLlantasVirtual.domain.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Controller
 public class UserController {
@@ -33,14 +32,13 @@ public class UserController {
         return "users/userProfile"; //
     }
 
-
     @PostMapping("/user/update")
     public String updateUserProfile(@RequestParam("fullName") String fullName,
-                                    @RequestParam(value = "currentPassword", required = false) String currentPassword,
-                                    @RequestParam(value = "newPassword", required = false) String newPassword,
-                                    @RequestParam(value = "confirmNewPassword", required = false) String confirmNewPassword,
-                                    Principal principal,
-                                    Model model) {
+            @RequestParam(value = "currentPassword", required = false) String currentPassword,
+            @RequestParam(value = "newPassword", required = false) String newPassword,
+            @RequestParam(value = "confirmNewPassword", required = false) String confirmNewPassword,
+            Principal principal,
+            Model model) {
 
         User user = userService.findByEmail(principal.getName());
 
@@ -48,9 +46,9 @@ public class UserController {
         user.setFullName(fullName);
 
         // Si los campos de contraseña están presentes, se intenta cambiar la contraseña
-        if (currentPassword != null && !currentPassword.isBlank() &&
-                newPassword != null && !newPassword.isBlank() &&
-                confirmNewPassword != null && !confirmNewPassword.isBlank()) {
+        if (currentPassword != null && !currentPassword.isBlank()
+                && newPassword != null && !newPassword.isBlank()
+                && confirmNewPassword != null && !confirmNewPassword.isBlank()) {
 
             // Valida contraseña actual
             if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
@@ -66,7 +64,6 @@ public class UserController {
                 return "users/userProfile";
             }
 
-
             user.setPassword(passwordEncoder.encode(newPassword));
             model.addAttribute("success", "Contraseña actualizada correctamente.");
         } else {
@@ -78,20 +75,14 @@ public class UserController {
         return "users/userProfile";
     }
 
-
-
-
     @PostMapping("/user/delete")
     public String deleteUserAccount(Principal principal, HttpServletRequest request, HttpServletResponse response) {
         userService.deleteByEmail(principal.getName());
 
-
         SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
         logoutHandler.logout(request, response, SecurityContextHolder.getContext().getAuthentication());
 
-
         return "redirect:/login?logout";
     }
-
 
 }

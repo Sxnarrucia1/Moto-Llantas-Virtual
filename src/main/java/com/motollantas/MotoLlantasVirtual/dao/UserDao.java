@@ -8,13 +8,12 @@ import com.motollantas.MotoLlantasVirtual.domain.User;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-/**
- *
- * @author esteb
- */
-public interface UserDao extends JpaRepository<User, Long>{
-    
-    Optional <User> findByEmail(String email);
+public interface UserDao extends JpaRepository<User, Long> {
+
+    Optional<User> findByEmail(String email);
+
+    Optional<User> findByIdentification(String identification);
 
     void deleteByEmail(String email);
+
 }

@@ -28,4 +28,6 @@ public interface RepairOrderDao extends JpaRepository<RepairOrder, Long> {
 
     List<RepairOrder> findByOrderStatus(OrderStatus status);
 
+    List<RepairOrder> findByOrderStatusOrderByAppointmentDateAsc(OrderStatus status);
+
 }
