@@ -1,6 +1,7 @@
 package com.motollantas.MotoLlantasVirtual;
 
 
+import com.motollantas.MotoLlantasVirtual.handler.CustomLoginFailureHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,6 +12,12 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfig {
+
+    private final CustomLoginFailureHandler failureHandler;
+
+    public SecurityConfig(CustomLoginFailureHandler failureHandler) {
+        this.failureHandler = failureHandler;
+    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -26,7 +33,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/index", "/register", "/user/register", "/catalog", "/productDetails", "/cart", "/login", "/marketing", "/contabilidad", "/about", "/location", "/userGarage", "/css/**","/error**", "/errores/**", "/img/**","/js/**").permitAll()
+                        .requestMatchers("/", "/index", "/register", "/user/register", "/catalog", "/productDetails", "/cart", "/login", "/marketing", "/contabilidad", "/about", "/location", "/userGarage", "/user/update","/css/**","/error**", "/errores/**", "/img/**","/js/**").permitAll()
 
                         .requestMatchers("/users").hasRole("ADMIN")
                         .requestMatchers("/mecanico/**").hasRole("MECHANIC")
@@ -35,6 +42,7 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
+                        .failureHandler(failureHandler)
                         .defaultSuccessUrl("/", true)
                         .permitAll()
                 )

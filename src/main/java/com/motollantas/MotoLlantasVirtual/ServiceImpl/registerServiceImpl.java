@@ -23,6 +23,10 @@ public class registerServiceImpl implements registerService {
             throw new RuntimeException("El correo ya está registrado.");
         }
 
+        if (registerDao.existsByIdentification(user.getIdentification())) {
+            throw new RuntimeException("La identificación ya está registrada.");
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return registerDao.save(user);

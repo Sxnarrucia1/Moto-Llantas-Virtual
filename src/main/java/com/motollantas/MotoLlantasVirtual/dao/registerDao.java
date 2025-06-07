@@ -8,5 +8,6 @@ import java.util.Optional;
 public interface registerDao extends JpaRepository<User, Long> {
 
     public boolean existsByEmail(String email);
+    boolean existsByIdentification(String identification);
     Optional<User> findByEmail(String email);
 }

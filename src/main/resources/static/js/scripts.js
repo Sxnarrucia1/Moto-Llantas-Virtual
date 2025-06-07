@@ -126,3 +126,48 @@ function closeCreateModal() {
     document.getElementById('createAppointmentModal').classList.add('hidden');
     document.body.classList.remove('overflow-hidden');
 }
+
+
+
+
+// Script for pop up, basically alerts
+    function fadeInOut(id) {
+        const alert = document.getElementById(id);
+        if (alert) {
+            setTimeout(() => alert.classList.remove("opacity-0"), 100);
+            setTimeout(() => {
+                alert.classList.add("opacity-0");
+                setTimeout(() => alert.style.display = 'none', 500);
+            }, 3000);
+        }
+    }
+
+    fadeInOut("successAlert");
+    fadeInOut("errorAlert");
+    fadeInOut("deleteAlert");
+
+    function closeAlert() {
+        const alert = document.getElementById("successAlert");
+        if (alert) {
+            alert.classList.add("opacity-0");
+            setTimeout(() => alert.style.display = "none", 500);
+        }
+    }
+
+    function closeErrorAlert() {
+        const alert = document.getElementById("errorAlert");
+        if (alert) {
+            alert.classList.add("opacity-0");
+            setTimeout(() => alert.style.display = "none", 500);
+        }
+    }
+
+    function closeDeleteAlert() {
+        const alert = document.getElementById("deleteAlert");
+        if (alert) {
+            alert.classList.add("opacity-0");
+            setTimeout(() => alert.style.display = "none", 500);
+        }
+    }
+
+// --------------------------------------------------------------

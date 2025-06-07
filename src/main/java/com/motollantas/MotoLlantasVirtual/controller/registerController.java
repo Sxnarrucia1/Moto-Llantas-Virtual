@@ -20,10 +20,12 @@ public class registerController {
     public String registerUser(@ModelAttribute User user, Model model) {
         try {
             registerService.register(user);
+            model.addAttribute("success", "Usuario registrado correctamente.");
             return "redirect:/login";
         } catch (RuntimeException e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            return "redirect:/login/register";
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("user", user);
+            return "login/register";
         }
     }
 }
