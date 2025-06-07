@@ -2,8 +2,12 @@ package com.motollantas.MotoLlantasVirtual.controller;
 
 import com.motollantas.MotoLlantasVirtual.Service.UserService;
 import com.motollantas.MotoLlantasVirtual.domain.User;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,58 +36,62 @@ public class UserController {
 
     @PostMapping("/user/update")
     public String updateUserProfile(@RequestParam("fullName") String fullName,
-                                    @RequestParam("currentPassword") String currentPassword,
-                                    @RequestParam("newPassword") String newPassword,
-                                    @RequestParam("confirmNewPassword") String confirmNewPassword,
+                                    @RequestParam(value = "currentPassword", required = false) String currentPassword,
+                                    @RequestParam(value = "newPassword", required = false) String newPassword,
+                                    @RequestParam(value = "confirmNewPassword", required = false) String confirmNewPassword,
                                     Principal principal,
                                     Model model) {
 
-        // Buscar el usuario autenticado
         User user = userService.findByEmail(principal.getName());
 
-        // Validar contraseña actual
-        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
-            model.addAttribute("error", "La contraseña actual es incorrecta.");
-            model.addAttribute("user", user);
-            return "profile";
-        }
-
-        // Validar coincidencia entre nueva contraseña y confirmación
-        if (!newPassword.equals(confirmNewPassword)) {
-            model.addAttribute("error", "Las nuevas contraseñas no coinciden.");
-            model.addAttribute("user", user);
-            return "profile";
-        }
-
-        // Validar fuerza de la contraseña
-        if (!isPasswordStrong(newPassword)) {
-            model.addAttribute("error", "La nueva contraseña no cumple con los requisitos.");
-            model.addAttribute("user", user);
-            return "profile";
-        }
-
-        // Actualizar nombre y contraseña
+        // Actualizar nombre si es necesario
         user.setFullName(fullName);
-        user.setPassword(passwordEncoder.encode(newPassword));
+
+        // Si los campos de contraseña están presentes, se intenta cambiar la contraseña
+        if (currentPassword != null && !currentPassword.isBlank() &&
+                newPassword != null && !newPassword.isBlank() &&
+                confirmNewPassword != null && !confirmNewPassword.isBlank()) {
+
+            // Valida contraseña actual
+            if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+                model.addAttribute("error", "La contraseña actual no es correcta.");
+                model.addAttribute("user", user);
+                return "users/userProfile";
+            }
+
+            // Valida que la nueva y la confirmación coincidan
+            if (!newPassword.equals(confirmNewPassword)) {
+                model.addAttribute("error", "La nueva contraseña y su confirmación no coinciden.");
+                model.addAttribute("user", user);
+                return "users/userProfile";
+            }
+
+
+            user.setPassword(passwordEncoder.encode(newPassword));
+            model.addAttribute("success", "Contraseña actualizada correctamente.");
+        } else {
+            model.addAttribute("success", "Perfil actualizado correctamente.");
+        }
+
         userService.save(user);
-
-        model.addAttribute("success", "Perfil actualizado correctamente.");
         model.addAttribute("user", user);
-        return "profile";
+        return "users/userProfile";
     }
 
-    @DeleteMapping("/user/delete")
-    public String deleteUserAccount(Principal principal) {
+
+
+
+    @PostMapping("/user/delete")
+    public String deleteUserAccount(Principal principal, HttpServletRequest request, HttpServletResponse response) {
         userService.deleteByEmail(principal.getName());
-        return "redirect:/logout";
+
+
+        SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
+        logoutHandler.logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+
+
+        return "redirect:/login?logout";
     }
-
-    private boolean isPasswordStrong(String password) {
-        return password != null && password.length() >= 8;
-    }
-
-
-
 
 
 }

@@ -3,6 +3,7 @@ package com.motollantas.MotoLlantasVirtual.ServiceImpl;
 import com.motollantas.MotoLlantasVirtual.Service.UserService;
 import com.motollantas.MotoLlantasVirtual.dao.UserDao;
 import com.motollantas.MotoLlantasVirtual.domain.User;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,6 +32,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteByEmail(String email) {
         userDao.deleteByEmail(email);
     }
