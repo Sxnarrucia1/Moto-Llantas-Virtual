@@ -293,3 +293,24 @@ document.addEventListener('submit', function (e) {
 
     }
 });
+
+function openCreateEmployeeModal() {
+    document.getElementById('createEmployeeModal').classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+}
+
+function closeCreateEmployeeModal() {
+    document.getElementById('createEmployeeModal').classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+}
+
+function openEditEmployeeModal(id) {
+    document.getElementById('editEmployeeModal-' + id).classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+}
+
+function closeEditEmployeeModal(id) {
+    document.getElementById('editEmployeeModal-' + id).classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+}
+
