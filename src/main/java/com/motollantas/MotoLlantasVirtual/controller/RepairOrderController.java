@@ -5,7 +5,6 @@
 package com.motollantas.MotoLlantasVirtual.controller;
 
 import com.motollantas.MotoLlantasVirtual.DTO.AdminDateDTO;
-import com.motollantas.MotoLlantasVirtual.Service.EmpleadoService;
 import com.motollantas.MotoLlantasVirtual.Service.RepairOrderService;
 import com.motollantas.MotoLlantasVirtual.Service.ServiceTypeService;
 import com.motollantas.MotoLlantasVirtual.ServiceImpl.DateValidator;
@@ -31,6 +30,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
+import com.motollantas.MotoLlantasVirtual.Service.EmployeeService;
 
 /**
  *
@@ -50,7 +50,7 @@ public class RepairOrderController {
     private DateValidator dateValidator;
 
     @Autowired
-    private EmpleadoService employeeService;
+    private EmployeeService employeeService;
 
     @GetMapping("/adminGarage")
     public String mostrarOrdenes(Model model) {
@@ -102,7 +102,7 @@ public class RepairOrderController {
         model.addAttribute("services", serviceTypeService.findAll());
         model.addAttribute("orderStatuses", OrderStatus.values());
         model.addAttribute("orderPriorities", OrderPriority.values());
-        model.addAttribute("mechanics", employeeService.filtrarPorRol("MECANICO"));
+        model.addAttribute("mechanics", employeeService.filterByRole("MECANICO"));
 
         return "garage/fragments :: editAdmin";
     }
@@ -157,7 +157,7 @@ public class RepairOrderController {
         model.addAttribute("services", serviceTypeService.findAll());
         model.addAttribute("orderStatuses", OrderStatus.values());
         model.addAttribute("orderPriorities", OrderPriority.values());
-        model.addAttribute("mechanics", employeeService.filtrarPorRol("MECANICO"));
+        model.addAttribute("mechanics", employeeService.filterByRole("MECANICO"));
         return "garage/fragments :: editAdmin";
     }
 

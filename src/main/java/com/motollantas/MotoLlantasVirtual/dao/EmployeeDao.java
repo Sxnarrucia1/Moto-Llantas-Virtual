@@ -11,9 +11,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface EmpleadoRepository extends JpaRepository<Employee, Long> {
+public interface EmployeeDao extends JpaRepository<Employee, Long> {
 
-    List<Employee> findByCedulaContainingIgnoreCase(String cedula);
+    List<Employee> findByIdentificationContainingIgnoreCase(String cedula);
 
     List<Employee> findByRolesContaining(String rol);
+
+    List<Employee> findByActiveTrue();
+
+    List<Employee> findByActiveFalse();
 }
