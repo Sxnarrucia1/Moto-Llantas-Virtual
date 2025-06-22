@@ -5,161 +5,135 @@
   <title>Catálogo de Repuestos</title>
   <meta charset="UTF-8"/>
 </head>
-<body class="bg-light">
+<body>
+<section th:fragment="inventoryProducts" class="ml-64 p-6 bg-gray-100 min-h-screen transition-all duration-300">
 
-<div class="container py-5">
-  <div class="bg-white rounded-4 shadow p-4">
-    <section th:fragment="inventory">
+  <div class="bg-white rounded-2xl shadow-md p-6">
+    <!-- Title -->
+    <h2 class="text-3xl font-bold text-gray-800 mb-2 flex items-center gap-2">
+      Inventario
+    </h2>
 
-      <h1 class="mb-5 text-center fw-bold text-dark">Panel de Inventario</h1>
+    <!-- search -->
+    <form method="get" th:action="@{inventory/search}" class="relative w-full sm:w-72 mb-6">
+      <input type="text" name="keyword" placeholder="Buscar producto..."
+             class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+             th:value="${param.keyword}" />
+      <button type="submit"
+              class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-blue-600">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z" />
+        </svg>
+      </button>
+    </form>
 
-      <!-- Filtro y búsqueda -->
-      <form class="row g-3 mb-4 align-items-end" style="max-width: 900px; margin: 0 auto;">
-        <div class="col-md-4">
-          <label for="filtroNombre" class="form-label">Buscar por nombre</label>
-          <input type="text" class="form-control" placeholder="Ej. freno de disco" id="filtroNombre" style="padding-left: 10px;">
-        </div>
-        <div class="col-md-3">
-          <label for="filtroCategoria" class="form-label">Categoría</label>
-          <select class="form-select" id="filtroCategoria" style="padding-left: 10px;">
-            <option selected>Categoría</option>
-            <option value="Frenos">Frenos</option>
-            <option value="Suspension">Suspensión</option>
-            <option value="Motor">Motor</option>
-            <option value="Transmision">Transmisión</option>
-            <option value="Neumaticos">Neumáticos</option>
-            <option value="Iluminacion">Iluminación</option>
-          </select>
-        </div>
-        <div class="col-md-3">
-          <label for="filtroEstado" class="form-label">Estado</label>
-          <select class="form-select" id="filtroEstado" style="padding-left: 10px;">
-            <option selected>Estado</option>
-            <option value="Activo">Activo</option>
-            <option value="Inactivo">Inactivo</option>
-          </select>
-        </div>
-        <div class="col-md-2 d-grid">
-          <button class="btn btn-warning fw-semibold" type="button">Filtrar</button>
-        </div>
-      </form>
-
-      <!-- Botón para guardar -->
-      <div class="text-center mb-4">
-        <button class="btn btn-success fw-semibold" type="button" data-bs-toggle="modal" data-bs-target="#agregarProductoModal">
-          Agregar Producto Manualmentes
-        </button>
-      </div>
+    <a href="/inventory"
+       class="inline-block mt-2 mb-6 bg-red-100 text-red-700 font-semibold py-1.5 px-4 rounded-lg shadow-sm hover:bg-red-200 transition-all duration-200">
+      Limpiar
+    </a>
 
 
-      <!-- Tabla de productos -->
-      <div class="table-responsive">
-        <table class="table table-hover table-bordered align-middle">
-          <thead class="table-dark text-center">
-          <tr>
-            <th>Nombre</th>
-            <th>Categoría</th>
-            <th>Descripción</th>
-            <th>Precio</th>
-            <th>Stock</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-          </tr>
-          </thead>
-          <tbody id="tablaInventario" class="text-center">
-          <!-- Repuestos de ejemplo -->
-          <tr>
-            <td>Freno de disco hidráulico</td>
-            <td>Frenos</td>
-            <td>Sistema de freno hidráulico para motos deportivas</td>
-            <td>$85</td>
-            <td>10</td>
-            <td><span class="badge bg-success">Activo</span></td>
-            <td>
-              <div class="d-flex justify-content-center gap-2">
-                <button class="btn btn-sm btn-outline-warning">Editar</button>
-                <button class="btn btn-sm btn-outline-danger">Inactivar</button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>Amortiguador trasero</td>
-            <td>Suspensión</td>
-            <td>Amortiguador trasero para motocicletas deportivas</td>
-            <td>$120</td>
-            <td>8</td>
-            <td><span class="badge bg-success">Activo</span></td>
-            <td>
-              <div class="d-flex justify-content-center gap-2">
-                <button class="btn btn-sm btn-outline-warning">Editar</button>
-                <button class="btn btn-sm btn-outline-danger">Inactivar</button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>Filtro de aire K&N</td>
-            <td>Motor</td>
-            <td>Filtro de aire de alto rendimiento para motos</td>
-            <td>$45</td>
-            <td>25</td>
-            <td><span class="badge bg-success">Activo</span></td>
-            <td>
-              <div class="d-flex justify-content-center gap-2">
-                <button class="btn btn-sm btn-outline-warning">Editar</button>
-                <button class="btn btn-sm btn-outline-danger">Inactivar</button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>Cadena para motocicleta</td>
-            <td>Transmisión</td>
-            <td>Cadena de alta resistencia para motos deportivas</td>
-            <td>$30</td>
-            <td>12</td>
-            <td><span class="badge bg-success">Activo</span></td>
-            <td>
-              <div class="d-flex justify-content-center gap-2">
-                <button class="btn btn-sm btn-outline-warning">Editar</button>
-                <button class="btn btn-sm btn-outline-danger">Inactivar</button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>Faros LED</td>
-            <td>Iluminación</td>
-            <td>Faros LED para mejorar la visibilidad nocturna en motos</td>
-            <td>$75</td>
-            <td>15</td>
-            <td><span class="badge bg-secondary">Inactivo</span></td>
-            <td>
-              <div class="d-flex justify-content-center gap-2">
-                <button class="btn btn-sm btn-outline-warning">Editar</button>
-                <button class="btn btn-sm btn-outline-success">Reactivar</button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>Llanta 120/80-17</td>
-            <td>Neumáticos</td>
-            <td>Llanta de alta calidad para motocicletas deportivas</td>
-            <td>$95</td>
-            <td>20</td>
-            <td><span class="badge bg-success">Activo</span></td>
-            <td>
-              <div class="d-flex justify-content-center gap-2">
-                <button class="btn btn-sm btn-outline-warning">Editar</button>
-                <button class="btn btn-sm btn-outline-danger">Inactivar</button>
-              </div>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
+    <!-- table of products -->
+    <div th:if="${productos != null and productos.size() > 0}" class="overflow-x-auto">
+      <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
+        <thead class="bg-gray-200 text-gray-700 text-sm uppercase">
+        <tr>
+          <th class="py-3 px-4 text-left">Nombre</th>
+          <th class="py-3 px-4 text-left">Categoría</th>
+          <th class="py-3 px-4 text-left">Descripción</th>
+          <th class="py-3 px-4 text-left">Precio</th>
+          <th class="py-3 px-4 text-left">Stock</th>
+          <th class="py-3 px-4 text-left">Estado</th>
+          <th class="py-3 px-4 text-left">Detalles</th>
+          <th class="py-3 px-4 text-left">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${productos}" class="border-t hover:bg-gray-50">
+          <td class="py-2 px-4 font-medium text-gray-900" th:text="${p.name}"></td>
+          <td class="py-2 px-4 text-gray-700" th:text="${p.category}"></td>
+          <td class="py-2 px-4 text-gray-600" th:text="${p.description}"></td>
+          <td class="py-2 px-4 text-green-600 font-semibold" th:text="'₡' + ${p.price}"></td>
+          <td class="py-2 px-4" th:text="${p.stock}"></td>
+          <td class="py-2 px-4">
+            <span th:text="${p.status ? 'Activo' : 'Inactivo'}"
+                  th:classappend="${p.status} ? 'text-green-600 font-semibold' : 'text-red-600 font-semibold'"></span>
+          </td>
+          <td class="py-2 px-4">
+            <!-- Ver modal -->
+            <button type="button"
+                    th:attr="data-id=${p.id}"
+                    onclick="openModal([[${p.id}]])"
+                    class="inline-flex items-center gap-1 text-blue-600 hover:underline font-medium">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                   viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M2.458 12C3.732 7.943 7.522 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7s-8.268-2.943-9.542-7z"/>
+              </svg>
+              Ver
+            </button>
 
-      <div id="mensajeInventarioVacio" class="alert alert-warning d-none text-center">No hay repuestos en el inventario.</div>
-    </section>
 
-    <!-- Historial de cambios -->
+            
+          </td>
+
+          <td class="py-2 px-4 space-x-2">
+            <form th:action="@{/inventory/reactivate/{id}(id=${p.id})}" method="post"
+                  th:if="${!p.status}" class="inline-block">
+              <button type="submit"
+                      onclick="return confirm('¿Estás seguro de que deseas reactivar este producto?');"
+                      class="inline-flex items-center gap-1 text-green-700 hover:text-green-900 font-medium">
+                🔄 Reactivar
+              </button>
+            </form>
+
+
+            <form th:action="@{/inventory/deactivate/{id}(id=${p.id})}" method="post"
+                  th:if="${p.status}" class="inline-block">
+              <button type="submit"
+                      onclick="return confirm('¿Estás seguro de que deseas desactivar este producto?');"
+                      class="inline-flex items-center gap-1 text-red-700 hover:text-red-900 font-medium">
+                ⛔ Desactivar
+              </button>
+            </form>
+
+          </td>
+
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- msg if we dont have products -->
+    <div th:if="${productos == null or productos.size() == 0}"
+         class="mt-10 flex flex-col items-center justify-center bg-yellow-50 border border-yellow-200 p-6 rounded-lg shadow-sm">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-yellow-500 mb-3" fill="none"
+           viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z"/>
+      </svg>
+      <p class="text-yellow-800 font-semibold text-lg text-center">
+        No hay productos activos en el inventario.
+      </p>
+    </div>
+  </div>
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- Historial de cambios -->
     <section th:fragment="historyChanges" class="mt-5">
       <h2 class="mb-4 text-dark fw-bold">Historial de Cambios</h2>
       <div class="table-responsive">

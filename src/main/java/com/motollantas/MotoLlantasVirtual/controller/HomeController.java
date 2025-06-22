@@ -34,10 +34,6 @@ public class HomeController {
         return "cart/cart";
     }
 
-    @GetMapping("/inventory")
-    public String inventory() {
-        return "inventory/inventory";
-    }
 
     @GetMapping("/location")
     public String location() {
