@@ -7,13 +7,23 @@
   <meta charset="UTF-8"/>
 </head>
 <body>
-<header th:replace="~{layout/layout :: header}"/>
 
-<section th:replace="~{inventory/fragments :: inventory}"/>
+<header th:replace="~{layout/layoutAdmin :: header}"/>
+
+<section th:replace="~{inventory/fragments :: inventoryProducts}"/>
+
+
+
+
+<!--
 <section th:replace="~{inventory/fragments :: historyChanges}"/>
 <section th:replace="~{inventory/fragments :: expirationAlerts}"/>
+-->
 
-<footer th:replace="~{layout/layout :: footer}"/>
+
+
+
+<aside th:replace="~{layout/layoutAdmin :: sidebar}"/>
 
 <script src="js/scripts.js"></script>
 </body>
