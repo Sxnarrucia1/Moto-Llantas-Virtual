@@ -6,6 +6,7 @@ package com.motollantas.MotoLlantasVirtual.Service;
 
 import com.motollantas.MotoLlantasVirtual.DTO.AdminDateDTO;
 import com.motollantas.MotoLlantasVirtual.DTO.ClientDateDTO;
+import com.motollantas.MotoLlantasVirtual.domain.Employee;
 import com.motollantas.MotoLlantasVirtual.domain.OrderStatus;
 import com.motollantas.MotoLlantasVirtual.domain.RepairOrder;
 import com.motollantas.MotoLlantasVirtual.domain.ServiceType;
@@ -34,10 +35,14 @@ public interface RepairOrderService {
     public void deleteById(Long id);
 
     List<RepairOrder> findByStatus(OrderStatus status);
-    
+
     List<RepairOrder> findByStatusASC(OrderStatus status);
 
     public void createFromAdmin(AdminDateDTO dto, ServiceType serviceType);
-    
+
     public void updateFromAdmin(RepairOrder updatedOrder);
+
+    public List<RepairOrder> findByMechanicAndOrderStatusOrderByAppointmentDateAsc(Employee mechanic, OrderStatus status);
+
+    public void updateFromAdminOrMechanic(RepairOrder updatedOrder, Employee currentEmployee);
 }

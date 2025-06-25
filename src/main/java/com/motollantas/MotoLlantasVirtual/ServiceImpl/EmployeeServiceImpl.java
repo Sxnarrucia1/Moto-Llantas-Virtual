@@ -126,7 +126,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (userService.existsByIdentification(dto.getIdentification())) {
             throw new RuntimeException("La identificación ya está registrada.");
         }
-        
+
         String tempPassword = generateRandomPassword(10);
 
         User user = new User();
@@ -150,5 +150,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         save(employee);
 
         emailService.sendCredentialsEmail(user.getEmail(), tempPassword);
+    }
+
+    @Override
+    public Optional<Employee> findByUser(User user) {
+        return employeeDao.findByUser(user);
     }
 }

@@ -11,6 +11,7 @@ import com.motollantas.MotoLlantasVirtual.Service.ServiceTypeService;
 import com.motollantas.MotoLlantasVirtual.Service.UserService;
 import com.motollantas.MotoLlantasVirtual.dao.RepairOrderDao;
 import com.motollantas.MotoLlantasVirtual.dao.UserDao;
+import com.motollantas.MotoLlantasVirtual.domain.Employee;
 import com.motollantas.MotoLlantasVirtual.domain.OrderPriority;
 import com.motollantas.MotoLlantasVirtual.domain.OrderStatus;
 import com.motollantas.MotoLlantasVirtual.domain.RepairOrder;
@@ -178,8 +179,6 @@ public class RepairOrderServiceImpl implements RepairOrderService {
         RepairOrder existingOrder = repair.findById(updatedOrder.getIdOrden())
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
 
-        System.out.println("ID recibido en servicio: " + updatedOrder.getIdOrden());
-
         existingOrder.setFullName(updatedOrder.getFullName());
         existingOrder.setIdentification(updatedOrder.getIdentification());
         existingOrder.setBrand(updatedOrder.getBrand());
@@ -202,6 +201,56 @@ public class RepairOrderServiceImpl implements RepairOrderService {
     @Override
     public List<RepairOrder> findByStatusASC(OrderStatus status) {
         return repair.findByOrderStatusOrderByAppointmentDateAsc(status);
+    }
+
+    @Override
+    public List<RepairOrder> findByMechanicAndOrderStatusOrderByAppointmentDateAsc(Employee mechanic, OrderStatus status) {
+        return repair.findByMechanicAndOrderStatusOrderByAppointmentDateAsc(mechanic, status);
+    }
+
+    @Override
+    public void updateFromAdminOrMechanic(RepairOrder updatedOrder, Employee currentEmployee) {
+        RepairOrder existingOrder = repair.findById(updatedOrder.getIdOrden())
+                .orElseThrow(() -> new IllegalArgumentException("Orden no encontrada"));
+
+        boolean isAdmin = currentEmployee.getRoles().stream()
+                .anyMatch(role -> role.equalsIgnoreCase("ADMIN"));
+
+        boolean isMechanic = currentEmployee.getRoles().stream()
+                .anyMatch(role -> role.equalsIgnoreCase("MECANICO"));
+
+        if (isAdmin) {
+            existingOrder.setAppointmentDate(updatedOrder.getAppointmentDate());
+            existingOrder.setFullName(updatedOrder.getFullName());
+            existingOrder.setIdentification(updatedOrder.getIdentification());
+            existingOrder.setBrand(updatedOrder.getBrand());
+            existingOrder.setModelName(updatedOrder.getModelName());
+            existingOrder.setYear(updatedOrder.getYear());
+            existingOrder.setDisplacement(updatedOrder.getDisplacement());
+            existingOrder.setKilometraje(updatedOrder.getKilometraje());
+            existingOrder.setLicensePlate(updatedOrder.getLicensePlate());
+            existingOrder.setColor(updatedOrder.getColor());
+            existingOrder.setServiceType(updatedOrder.getServiceType());
+            existingOrder.setPriority(updatedOrder.getPriority());
+            existingOrder.setOrderStatus(updatedOrder.getOrderStatus());
+            existingOrder.setMechanic(updatedOrder.getMechanic());
+            existingOrder.setProblemDescription(updatedOrder.getProblemDescription());
+        } else if (isMechanic) {
+            existingOrder.setOrderStatus(updatedOrder.getOrderStatus());
+            existingOrder.setBrand(updatedOrder.getBrand());
+            existingOrder.setModelName(updatedOrder.getModelName());
+            existingOrder.setYear(updatedOrder.getYear());
+            existingOrder.setDisplacement(updatedOrder.getDisplacement());
+            existingOrder.setKilometraje(updatedOrder.getKilometraje());
+            existingOrder.setLicensePlate(updatedOrder.getLicensePlate());
+            existingOrder.setColor(updatedOrder.getColor());
+            existingOrder.setServiceType(updatedOrder.getServiceType());
+            existingOrder.setPriority(updatedOrder.getPriority());
+            existingOrder.setOrderStatus(updatedOrder.getOrderStatus());
+            existingOrder.setProblemDescription(updatedOrder.getProblemDescription());
+        }
+
+        repair.save(existingOrder);
     }
 
 }

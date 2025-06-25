@@ -31,6 +31,11 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import com.motollantas.MotoLlantasVirtual.Service.EmployeeService;
+import com.motollantas.MotoLlantasVirtual.Service.UserService;
+import com.motollantas.MotoLlantasVirtual.domain.Employee;
+import com.motollantas.MotoLlantasVirtual.domain.User;
+import java.security.Principal;
+import java.util.Optional;
 
 /**
  *
@@ -51,6 +56,9 @@ public class RepairOrderController {
 
     @Autowired
     private EmployeeService employeeService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/adminGarage")
     public String mostrarOrdenes(Model model) {
@@ -112,7 +120,8 @@ public class RepairOrderController {
             @RequestParam("formattedAppointmentDate") String formattedDate,
             Model model,
             RedirectAttributes redirectAttributes,
-            HttpServletRequest request) {
+            HttpServletRequest request,
+            Principal principal) {
 
         boolean isAjax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 
@@ -142,7 +151,12 @@ public class RepairOrderController {
             return isAjax ? reloadEditFragment(model, repairOrder) : "garage/fragments :: editAdmin";
         }
 
-        repairOrderService.updateFromAdmin(repairOrder);
+        User currentUser = userService.findByEmail(principal.getName());
+        employeeService.findByUser(currentUser).ifPresentOrElse(
+                employee -> repairOrderService.updateFromAdminOrMechanic(repairOrder, employee),
+                () -> repairOrderService.updateFromAdmin(repairOrder)
+        );
+
         Map<String, String> response = new HashMap<>();
         response.put("redirectUrl", "/garage/adminGarage");
         response.put("mensajeExito", "Cita actualizada exitosamente.");
