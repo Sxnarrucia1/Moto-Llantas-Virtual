@@ -18,4 +18,8 @@ package com.motollantas.MotoLlantasVirtual.Service ;
         void save(User user);
 
         void deleteByEmail(String email);
+        
+        public boolean existsByEmail(String email);
+        
+        public boolean existsByIdentification(String identification);
     }

@@ -1,12 +1,12 @@
 package com.motollantas.MotoLlantasVirtual.controller;
 
+import com.motollantas.MotoLlantasVirtual.DTO.EmployeeDTO;
 import com.motollantas.MotoLlantasVirtual.domain.Employee;
 import com.motollantas.MotoLlantasVirtual.domain.ChangeHistory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import com.motollantas.MotoLlantasVirtual.Service.EmployeeService;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -25,7 +25,7 @@ public class EmployeeController {
         List<Employee> employees;
 
         if (identification != null && !identification.isEmpty() && role != null && !role.isEmpty()) {
-            employees = employeeService.getAll().stream()
+            employees = employeeService.getActive().stream()
                     .filter(e -> e.getIdentification().toLowerCase().contains(identification.toLowerCase()))
                     .filter(e -> e.getRoles().contains(role))
                     .toList();
@@ -34,12 +34,13 @@ public class EmployeeController {
         } else if (role != null && !role.isEmpty()) {
             employees = employeeService.filterByRole(role);
         } else {
-            employees = employeeService.getAll();
+            employees = employeeService.getActive();
         }
         model.addAttribute("employees", employees);
         model.addAttribute("roles", employeeService.getAvailableRoles());
         model.addAttribute("selectedRole", role);
         model.addAttribute("identification", identification);
+        model.addAttribute("employeeDTO", new EmployeeDTO());
         return "employee/listEmployees";
     }
 
@@ -51,10 +52,15 @@ public class EmployeeController {
     }
 
     @PostMapping("/create")
-    public String createEmployee(@ModelAttribute Employee employee) {
-        employee.setActive(true); // Ensure the employee is active by default
-        employeeService.save(employee);
-        return "redirect:/employee/listEmployees";
+    public String createEmployee(@ModelAttribute EmployeeDTO employeeDTO, RedirectAttributes redirectAttributes) {
+        try {
+            employeeService.createEmployeeWithUser(employeeDTO);
+            redirectAttributes.addFlashAttribute("mensajeExito", "Empleado creado con usuario asignado.");
+            return "redirect:/employee/listEmployees";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("mensajeError", e.getMessage());
+            return "redirect:/employee/listEmployees";
+        }
     }
 
     @PostMapping("/update/{id}")

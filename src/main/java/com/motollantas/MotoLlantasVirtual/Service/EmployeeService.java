@@ -1,5 +1,6 @@
 package com.motollantas.MotoLlantasVirtual.Service;
 
+import com.motollantas.MotoLlantasVirtual.DTO.EmployeeDTO;
 import com.motollantas.MotoLlantasVirtual.domain.Employee;
 import com.motollantas.MotoLlantasVirtual.domain.ChangeHistory;
 
@@ -30,5 +31,7 @@ public interface EmployeeService {
     void restoreEmployee(Long id);
 
     void save(Employee employee);
+    
+    public void createEmployeeWithUser(EmployeeDTO dto);
 
 }

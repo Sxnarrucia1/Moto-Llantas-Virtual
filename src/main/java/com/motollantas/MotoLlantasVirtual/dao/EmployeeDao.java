@@ -5,10 +5,12 @@
 package com.motollantas.MotoLlantasVirtual.dao;
 
 import com.motollantas.MotoLlantasVirtual.domain.Employee;
+import com.motollantas.MotoLlantasVirtual.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface EmployeeDao extends JpaRepository<Employee, Long> {
@@ -20,4 +22,6 @@ public interface EmployeeDao extends JpaRepository<Employee, Long> {
     List<Employee> findByActiveTrue();
 
     List<Employee> findByActiveFalse();
+    
+    Optional<Employee> findByUser(User user);
 }
