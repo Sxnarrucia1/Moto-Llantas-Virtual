@@ -3,8 +3,10 @@ package com.motollantas.MotoLlantasVirtual.Service;
 import com.motollantas.MotoLlantasVirtual.DTO.EmployeeDTO;
 import com.motollantas.MotoLlantasVirtual.domain.Employee;
 import com.motollantas.MotoLlantasVirtual.domain.ChangeHistory;
+import com.motollantas.MotoLlantasVirtual.domain.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface EmployeeService {
 
@@ -31,7 +33,9 @@ public interface EmployeeService {
     void restoreEmployee(Long id);
 
     void save(Employee employee);
-    
+
     public void createEmployeeWithUser(EmployeeDTO dto);
+
+    public Optional<Employee> findByUser(User user);
 
 }

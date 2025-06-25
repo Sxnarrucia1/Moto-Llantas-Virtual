@@ -4,6 +4,7 @@
  */
 package com.motollantas.MotoLlantasVirtual.dao;
 
+import com.motollantas.MotoLlantasVirtual.domain.Employee;
 import com.motollantas.MotoLlantasVirtual.domain.OrderStatus;
 import com.motollantas.MotoLlantasVirtual.domain.RepairOrder;
 import java.time.LocalDateTime;
@@ -29,5 +30,7 @@ public interface RepairOrderDao extends JpaRepository<RepairOrder, Long> {
     List<RepairOrder> findByOrderStatus(OrderStatus status);
 
     List<RepairOrder> findByOrderStatusOrderByAppointmentDateAsc(OrderStatus status);
+    
+    List<RepairOrder> findByMechanicAndOrderStatusOrderByAppointmentDateAsc(Employee mechanic, OrderStatus status);
 
 }

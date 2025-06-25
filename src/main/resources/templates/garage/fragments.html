@@ -366,11 +366,11 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Full Name</label>
-                            <input type="text" th:field="*{fullName}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" readonly/>
+                            <input type="text" th:field="*{fullName}" th:readonly="${#authorization.expression('hasRole(''MECANICO'')')}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" readonly/>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Identification</label>
-                            <input type="text" th:field="*{identification}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                            <input type="text" th:field="*{identification}" th:readonly="${#authorization.expression('hasRole(''MECANICO'')')}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
                         </div>
 
                         <div>
@@ -406,7 +406,7 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Appointment Date</label>
-                            <input type="datetime-local" th:value="*{formattedAppointmentDate}" name="formattedAppointmentDate" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                            <input type="datetime-local" th:value="*{formattedAppointmentDate}" name="formattedAppointmentDate" th:readonly="${#authorization.expression('hasRole(''MECANICO'')')}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
                         </div>
 
                         <div>
@@ -432,7 +432,7 @@
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Mechanic</label>
-                            <select th:field="*{mechanic}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            <select th:field="*{mechanic}" th:disabled="${#authorization.expression('hasRole(''MECANICO'')')}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
                                 <option th:each="mech : ${mechanics}" th:if="${mech != null}" th:value="${mech.id}" th:text="${mech.fullName}"></option>
                             </select>
                         </div>
@@ -449,6 +449,151 @@
                         </button>
                     </div>
                 </form>
+            </div>
+        </section>
+        <section th:fragment="mechanicOrders">
+            <div class="container mx-auto py-4">
+                <!-- Botones de filtro -->
+                <div class="flex justify-between mb-4">
+                    <button class="bg-blue-500 text-white px-4 py-2 rounded">Nuevo</button>
+                    <button class="bg-green-500 text-white px-4 py-2 rounded">En Proceso</button>
+                    <button class="bg-yellow-500 text-white px-4 py-2 rounded">Completado</button>
+                    <button class="bg-red-500 text-white px-4 py-2 rounded">Cancelado</button>
+                </div>
+                <!-- Columnas del tablero -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <!-- NUEVOS -->
+                    <div class="bg-gray-100 p-4 rounded shadow">
+                        <h2 class="text-lg font-semibold mb-2">Nuevos</h2>
+                        <div class="space-y-2">
+                            <div th:each="orden : ${nuevas}" class="bg-white p-4 rounded shadow relative">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.idOrden}"></h3>
+                                        <p class="text-sm text-gray-600" th:text="'Cliente: ' + ${orden.fullName}"></p>
+                                        <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.brand} + ' ' + ${orden.modelName}"></p>
+                                        <p class="text-sm text-gray-600" th:text="'Cita: ' + ${#temporals.format(orden.appointmentDate, 'dd/MM/yyyy HH:mm')}"></p>
+                                        <p class="text-sm text-gray-500 mt-2" th:text="${orden.serviceType.serviceName}"></p>
+                                    </div>
+                                    <div class="relative">
+                                        <button class="text-gray-500 hover:text-gray-700 focus:outline-none" onclick="toggleMenu(this)">
+                                            <i class="fas fa-ellipsis-v text-xl"></i>
+                                        </button>
+                                        <div class="menuRO hidden absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded shadow-md z-10">
+                                            <a href="#"
+                                               th:attr="data-id=${orden.idOrden}"
+                                               onclick="openEditModal(this.getAttribute('data-id')); return false;"
+                                               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                Editar
+                                            </a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Eliminar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- EN PROCESO -->
+                    <div class="bg-gray-100 p-4 rounded shadow">
+                        <h2 class="text-lg font-semibold mb-2">En Progreso</h2>
+                        <div class="space-y-2">
+                            <div th:each="orden : ${enProgreso}" class="bg-white p-4 rounded shadow relative">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.idOrden}"></h3>
+                                        <p class="text-sm text-gray-600" th:text="'Cliente: ' + ${orden.fullName}"></p>
+                                        <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.brand} + ' ' + ${orden.modelName}"></p>
+                                        <p class="text-sm text-gray-600" th:text="'Cita: ' + ${#temporals.format(orden.appointmentDate, 'dd/MM/yyyy HH:mm')}"></p>
+                                        <p class="text-sm text-gray-500 mt-2" th:text="${orden.serviceType.serviceName}"></p>
+                                    </div>
+                                    <div class="relative">
+                                        <button class="text-gray-500 hover:text-gray-700 focus:outline-none" onclick="toggleMenu(this)">
+                                            <i class="fas fa-ellipsis-v text-xl"></i>
+                                        </button>
+                                        <div class="menuRO hidden absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded shadow-md z-10">
+                                            <a href="#"
+                                               th:attr="data-id=${orden.idOrden}"
+                                               onclick="openEditModal(this.getAttribute('data-id')); return false;"
+                                               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                Editar
+                                            </a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Eliminar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- COMPLETADOS -->
+                    <div class="bg-gray-100 p-4 rounded shadow">
+                        <h2 class="text-lg font-semibold mb-2">Completados</h2>
+                        <div class="space-y-2">
+                            <div th:each="orden : ${completadas}" class="bg-white p-4 rounded shadow relative">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.idOrden}"></h3>
+                                        <p class="text-sm text-gray-600" th:text="'Cliente: ' + ${orden.fullName}"></p>
+                                        <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.brand} + ' ' + ${orden.modelName}"></p>
+                                        <p class="text-sm text-gray-600" th:text="'Cita: ' + ${#temporals.format(orden.appointmentDate, 'dd/MM/yyyy HH:mm')}"></p>
+                                        <p class="text-sm text-gray-500 mt-2" th:text="${orden.serviceType.serviceName}"></p>
+                                    </div>
+                                    <div class="relative">
+                                        <button class="text-gray-500 hover:text-gray-700 focus:outline-none" onclick="toggleMenu(this)">
+                                            <i class="fas fa-ellipsis-v text-xl"></i>
+                                        </button>
+                                        <div class="menuRO hidden absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded shadow-md z-10">
+                                            <a href="#"
+                                               th:attr="data-id=${orden.idOrden}"
+                                               onclick="openEditModal(this.getAttribute('data-id')); return false;"
+                                               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                Editar
+                                            </a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Eliminar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- CANCELADOS -->
+                    <div class="bg-gray-100 p-4 rounded shadow">
+                        <h2 class="text-lg font-semibold mb-2">Cancelados</h2>
+                        <div class="space-y-2">
+                            <div th:each="orden : ${canceladas}" class="bg-white p-4 rounded shadow relative">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.idOrden}"></h3>
+                                        <p class="text-sm text-gray-600" th:text="'Cliente: ' + ${orden.fullName}"></p>
+                                        <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.brand} + ' ' + ${orden.modelName}"></p>
+                                        <p class="text-sm text-gray-600" th:text="'Cita: ' + ${#temporals.format(orden.appointmentDate, 'dd/MM/yyyy HH:mm')}"></p>
+                                        <p class="text-sm text-gray-500 mt-2" th:text="${orden.serviceType.serviceName}"></p>
+                                    </div>
+                                    <div class="relative">
+                                        <button class="text-gray-500 hover:text-gray-700 focus:outline-none" onclick="toggleMenu(this)">
+                                            <i class="fas fa-ellipsis-v text-xl"></i>
+                                        </button>
+                                        <div class="menuRO hidden absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded shadow-md z-10">
+                                            <a href="#"
+                                               th:attr="data-id=${orden.idOrden}"
+                                               onclick="openEditModal(this.getAttribute('data-id')); return false;"
+                                               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                Editar
+                                            </a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Eliminar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="editOrderModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+                <div class="bg-white rounded-lg shadow-lg w-full max-w-4xl p-6 relative">
+                    <button onclick="closeEditModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800">&times;</button>
+                    <div id="modalContent">
+                    </div>
+                </div>
             </div>
         </section>
     </body>
