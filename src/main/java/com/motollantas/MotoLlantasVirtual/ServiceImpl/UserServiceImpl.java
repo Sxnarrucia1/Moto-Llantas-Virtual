@@ -54,4 +54,14 @@ public class UserServiceImpl implements UserService {
         userDao.deleteByEmail(email);
     }
 
+    @Override
+    public boolean existsByEmail(String email) {
+        return userDao.existsByEmail(email);
+    }
+
+    @Override
+    public boolean existsByIdentification(String identification) {
+        return userDao.existsByIdentification(identification);
+    }
+
 }

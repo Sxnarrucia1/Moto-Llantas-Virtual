@@ -72,14 +72,14 @@
                 <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl relative">
                     <button onclick="closeCreateEmployeeModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">&times;</button>
                     <h3 class="text-xl font-semibold text-gray-800 mb-4">Crear Nuevo Empleado</h3>
-                    <form th:action="@{/employee/create}" method="post" class="space-y-4">
+                    <form th:action="@{/employee/create}" method="post" th:object="${employeeDTO}" class="space-y-4">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <input type="text" name="identification" placeholder="Cédula" class="border p-2 rounded w-full" required />
                             <input type="text" name="fullName" placeholder="Nombre Completo" class="border p-2 rounded w-full" required />
                             <input type="email" name="email" placeholder="Correo" class="border p-2 rounded w-full" required />
                             <input type="text" name="address" placeholder="Dirección" class="border p-2 rounded w-full" required />
                             <input type="date" name="hiringDate" class="border p-2 rounded w-full" required />
-                            <input type="number" name="salary" placeholder="Salario" class="border p-2 rounded w-full" required />
+                            <input type="number" name="salary" placeholder="Salario" class="border p-2 rounded w-full" step="100000" required />
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                                 <div th:each="role : ${roles}">
                                     <label class="inline-flex items-center space-x-2">
@@ -113,7 +113,7 @@
                                 <input type="email" name="email" th:value="${employee.email}" placeholder="Email" class="border p-2 rounded w-full" required />
                                 <input type="text" name="address" th:value="${employee.address}" placeholder="Address" class="border p-2 rounded w-full" required />
                                 <input type="date" name="hiringDate" th:value="${employee.hiringDate}" class="border p-2 rounded w-full" required />
-                                <input type="number" name="salary" th:value="${employee.salary}" placeholder="Salary" class="border p-2 rounded w-full" required />
+                                <input type="number" name="salary" th:value="${employee.salary}" placeholder="Salary" class="border p-2 rounded w-full" step="100000" required />
                                 <div th:each="role : ${roles}">
                                     <label class="inline-flex items-center space-x-2">
                                         <input type="checkbox"

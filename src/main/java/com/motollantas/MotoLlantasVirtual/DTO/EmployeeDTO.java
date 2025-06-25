@@ -1,61 +1,42 @@
-package com.motollantas.MotoLlantasVirtual.domain;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.motollantas.MotoLlantasVirtual.DTO;
 
-import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
-import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-public class Employee {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+/**
+ *
+ * @author esteb
+ */
+public class EmployeeDTO {
 
     private String fullName;
-
     private String identification;
-
     private String email;
-
     private String address;
-
     private LocalDate hiringDate;
-
     private BigDecimal salary;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> roles = new ArrayList<>();
+    private String userPassword;
 
-    private boolean active = true;
+    private List<String> roles;
 
-    @OneToOne(optional = true)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    private User user;
-
-    // Constructores
-    public Employee() {
+    public EmployeeDTO() {
     }
 
-    public Employee(String fullName, String identification, String email, String address, LocalDate hiringDate, BigDecimal salary, User user) {
+    public EmployeeDTO(String fullName, String identification, String email, String address, LocalDate hiringDate, BigDecimal salary, String userPassword, List<String> roles) {
         this.fullName = fullName;
         this.identification = identification;
         this.email = email;
         this.address = address;
         this.hiringDate = hiringDate;
         this.salary = salary;
-        this.user = user;
-    }
-
-    // Getters y Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        this.userPassword = userPassword;
+        this.roles = roles;
     }
 
     public String getFullName() {
@@ -106,28 +87,20 @@ public class Employee {
         this.salary = salary;
     }
 
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+
     public List<String> getRoles() {
         return roles;
     }
 
     public void setRoles(List<String> roles) {
         this.roles = roles;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
 }
