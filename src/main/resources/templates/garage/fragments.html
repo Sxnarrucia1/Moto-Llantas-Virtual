@@ -365,29 +365,29 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Full Name</label>
+                            <label class="block text-sm font-medium text-gray-700">Nombre Completo</label>
                             <input type="text" th:field="*{fullName}" th:readonly="${#authorization.expression('hasRole(''MECANICO'')')}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" readonly/>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Identification</label>
+                            <label class="block text-sm font-medium text-gray-700">Identificación</label>
                             <input type="text" th:field="*{identification}" th:readonly="${#authorization.expression('hasRole(''MECANICO'')')}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Brand</label>
+                            <label class="block text-sm font-medium text-gray-700">Marca</label>
                             <input type="text" th:field="*{brand}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Model</label>
+                            <label class="block text-sm font-medium text-gray-700">Modelo</label>
                             <input type="text" th:field="*{modelName}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Year</label>
+                            <label class="block text-sm font-medium text-gray-700">Año</label>
                             <input type="number" th:field="*{year}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Displacement (cc)</label>
+                            <label class="block text-sm font-medium text-gray-700">Cilindraje (cc)</label>
                             <input type="number" th:field="*{displacement}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
                         </div>
 
@@ -396,7 +396,7 @@
                             <input type="number" th:field="*{kilometraje}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">License Plate</label>
+                            <label class="block text-sm font-medium text-gray-700">Placa</label>
                             <input type="text" th:field="*{licensePlate}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
                         </div>
 
@@ -405,33 +405,33 @@
                             <input type="text" th:field="*{color}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Appointment Date</label>
+                            <label class="block text-sm font-medium text-gray-700">Fecha Cita</label>
                             <input type="datetime-local" th:value="*{formattedAppointmentDate}" name="formattedAppointmentDate" th:readonly="${#authorization.expression('hasRole(''MECANICO'')')}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Order Status</label>
+                            <label class="block text-sm font-medium text-gray-700">Estado Orden</label>
                             <select th:field="*{orderStatus}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
                                 <option th:each="status : ${orderStatuses}" th:value="${status}" th:text="${status}"></option>
                             </select>
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Priority</label>
+                            <label class="block text-sm font-medium text-gray-700">Prioridad</label>
                             <select th:field="*{priority}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
                                 <option th:each="priority : ${orderPriorities}" th:value="${priority}" th:text="${priority}"></option>
                             </select>
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Service Type</label>
+                            <label class="block text-sm font-medium text-gray-700">Tipo de Servicio</label>
                             <select th:field="*{serviceType}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
                                 <option th:each="type : ${services}" th:value="${type.id}" th:text="${type.serviceName}"></option>
                             </select>
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Mechanic</label>
+                            <label class="block text-sm font-medium text-gray-700">Mecánico</label>
                             <select th:field="*{mechanic}" th:disabled="${#authorization.expression('hasRole(''MECANICO'')')}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
                                 <option th:each="mech : ${mechanics}" th:if="${mech != null}" th:value="${mech.id}" th:text="${mech.fullName}"></option>
                             </select>
@@ -439,13 +439,13 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Problem Description</label>
+                        <label class="block text-sm font-medium text-gray-700">Descripción Problema</label>
                         <textarea th:field="*{problemDescription}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
                     </div>
 
                     <div class="flex justify-end">
                         <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                            Update Order
+                            Actualizar Orden
                         </button>
                     </div>
                 </form>

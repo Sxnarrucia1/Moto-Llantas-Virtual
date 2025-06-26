@@ -50,6 +50,7 @@
                                 <a href="#" class="block px-4 py-3 hover:bg-gray-100">👤 Perfil</a>
                                 <a href="#" class="block px-4 py-3 hover:bg-gray-100">⚙️ Configuración</a>
                                 <a href="/" class="block px-4 py-3 hover:bg-gray-100">🚪 Salir del panel</a>
+                                <a href="/logout" class="block px-4 py-3 hover:bg-gray-100">🔐 Cerrar Sesión</a>
                             </div>
                         </div>
                     </div>
@@ -64,6 +65,7 @@
                         <a href="#" class="block text-white hover:text-gray-300">👤 Perfil</a>
                         <a href="#" class="block text-white hover:text-gray-300">⚙️ Configuración</a>
                         <a href="/index" class="block text-white hover:text-gray-300">🚪 Salir del panel</a>
+                        <a href="/index" class="block text-white hover:text-gray-300">🔐 Cerrar Sesión</a>
                     </div>
                 </div>
             </nav>
@@ -81,19 +83,19 @@
                             🏠 <span>Inicio</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="/inventory" class="flex items-center gap-2 p-3 text-white hover:bg-gray-700 rounded transition duration-300">
+                    <li sec:authorize="hasAnyRole('ADMIN','BODEGUERO')">
+                        <a href="/inventory"  class="flex items-center gap-2 p-3 text-white hover:bg-gray-700 rounded transition duration-300">
                             📦 <span>Inventario</span>
                         </a>
                     </li>
                     <li>
-                        <a href="/garage/adminGarage" class="flex items-center gap-2 p-3 text-white hover:bg-gray-700 rounded transition duration-300">
+                        <a th:href="${#authorization.expression('hasRole(''ADMIN'')') ? '/garage/adminGarage' : '/garage/myOrders'}"
+                           class="flex items-center gap-2 p-3 text-white hover:bg-gray-700 rounded transition duration-300">
                             🔧 <span>Orden de reparaciones</span>
                         </a>
                     </li>
-
                     <!-- Reports -->
-                    <li class="group">
+                    <li sec:authorize="hasRole('ADMIN')" class="group">
                         <div class="flex items-center justify-between p-3 text-white hover:bg-gray-700 rounded transition duration-300 cursor-pointer">
                             <div class="flex items-center gap-2">
                                 📊 <span>Reportes</span>
@@ -110,17 +112,17 @@
                         </ul>
                     </li>
 
-                    <li>
+                    <li sec:authorize="hasRole('ADMIN')">
                         <a href="#" class="flex items-center gap-2 p-3 text-white hover:bg-gray-700 rounded transition duration-300">
                             💵 <span>Ingresos</span>
                         </a>
                     </li>
-                    <li>
+                    <li sec:authorize="hasRole('ADMIN')">
                         <a href="#" class="flex items-center gap-2 p-3 text-white hover:bg-gray-700 rounded transition duration-300">
                             📤 <span>Egresos</span>
                         </a>
                     </li>
-                    <li class="group">
+                    <li sec:authorize="hasRole('ADMIN')" class="group">
                         <div class="flex items-center justify-between p-3 text-white hover:bg-gray-700 rounded transition duration-300 cursor-pointer">
                             <div class="flex items-center gap-2">
                                 👨‍💼 <span>Empleados</span>
@@ -132,8 +134,6 @@
                         <ul class="hidden group-hover:block bg-gray-700 text-white rounded-lg overflow-hidden animate-fade-in-down">
                             <li><a href="/employee/listEmployees" class="block px-5 py-3 hover:bg-gray-600 transition duration-300">👨‍🔧 Empleados Activos</a></li>
                             <li><a href="/employee/listInactive" class="block px-5 py-3 hover:bg-gray-600 transition duration-300">👨‍💻 Empleados Inactivos</a></li>
-                            <li><a href="#" class="block px-5 py-3 hover:bg-gray-600 transition duration-300">👥 Reporte de Usuarios</a></li>
-                            <li><a href="#" class="block px-5 py-3 hover:bg-gray-600 transition duration-300">💰 Reporte Financiero</a></li>
                         </ul>
                     </li>
                 </ul>

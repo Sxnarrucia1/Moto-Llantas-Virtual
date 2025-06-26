@@ -1,6 +1,5 @@
 package com.motollantas.MotoLlantasVirtual;
 
-
 import com.motollantas.MotoLlantasVirtual.handler.CustomLoginFailureHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,22 +32,22 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/index", "/register", "/user/register", "/catalog", "/productDetails", "/cart", "/login", "/marketing", "/contabilidad", "/about", "/location", "/userGarage", "/user/update","/css/**","/error**", "/errores/**", "/img/**","/js/**").permitAll()
-
-                        .requestMatchers("/users", "/inventory").hasRole("ADMIN")
-                        .requestMatchers("/mecanico/**").hasRole("MECHANIC")
-                        .requestMatchers("/trabajador/**").hasRole("EMPLOYEE")
-                        .anyRequest().authenticated()
+                .requestMatchers("/", "/index", "/register", "/user/register", "/catalog", "/productDetails", "/cart", "/login",  "/about", "/location", "/css/**", "/error**", "/errores/**", "/img/**", "/js/**").permitAll()
+                .requestMatchers("/employee", "/inventory").hasRole("ADMIN")
+                .requestMatchers("/garage/mechanic*").hasRole("MECANICO")
+                .requestMatchers("/trabajador/**").hasRole("EMPLOYEE")
+                .requestMatchers("/garage/userGarage").hasRole("USER")
+                .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login")
-                        .failureHandler(failureHandler)
-                        .defaultSuccessUrl("/", true)
-                        .permitAll()
+                .loginPage("/login")
+                .failureHandler(failureHandler)
+                .defaultSuccessUrl("/", true)
+                .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/login?logout")
-                        .permitAll()
+                .logoutSuccessUrl("/login?logout")
+                .permitAll()
                 );
 
         return http.build();
