@@ -7,7 +7,7 @@
         <meta charset="UTF-8"/>
     </head>
 
-    <body sec:authorize="hasRole('EMPLOYEE')">
+    <body sec:authorize="hasRole('MECANICO')">
         <div class="fixed top-5 right-5 z-50" id="toastContainer">
             <!-- Aquí Thymeleaf sigue funcionando para mensajes del lado del servidor -->
             <div th:if="${mensajeError}" class="toast-message bg-red-500 text-white px-4 py-3 rounded shadow-lg mb-4 animate-fade-in-out">

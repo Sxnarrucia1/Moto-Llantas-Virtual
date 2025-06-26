@@ -1,7 +1,6 @@
 package com.motollantas.MotoLlantasVirtual.ServiceImpl;
 
 import com.motollantas.MotoLlantasVirtual.DTO.EmployeeDTO;
-import com.motollantas.MotoLlantasVirtual.Service.EmailService;
 import com.motollantas.MotoLlantasVirtual.domain.Employee;
 import com.motollantas.MotoLlantasVirtual.domain.ChangeHistory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +24,19 @@ public class EmployeeServiceImpl implements EmployeeService {
     private UserService userService;
 
     @Autowired
-    private EmailService emailService;
+    private EmailServiceImpl emailService;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    // Suponiendo que los roles disponibles son estáticos (puedes luego cambiarlos si están en una tabla)
     private final List<String> availableRoles = Arrays.asList("ADMIN", "MECANICO", "SERVICIO_CLIENTE", "BODEGUERO");
+
+    private static final List<String> ROLE_PRIORITY = List.of(
+            "ADMIN",
+            "MECANICO",
+            "SERVICIO_CLIENTE",
+            "BODEGUERO"
+    );
 
     public String generateRandomPassword(int length) {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%";
@@ -117,6 +122,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeDao.findByActiveTrue();
     }
 
+    private String determinePrimaryRole(List<String> roles) {
+        for (String priority : ROLE_PRIORITY) {
+            if (roles.contains(priority)) {
+                return priority;
+            }
+        }
+        return "EMPLEADO";
+    }
+
     @Override
     public void createEmployeeWithUser(EmployeeDTO dto) {
         if (userService.existsByEmail(dto.getEmail())) {
@@ -132,9 +146,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         User user = new User();
         user.setEmail(dto.getEmail());
         user.setPassword(passwordEncoder.encode(tempPassword));
-        user.setUserType("EMPLOYEE");
         user.setFullName(dto.getFullName());
         user.setIdentification(dto.getIdentification());
+        user.setUserType("EMPLOYEE");
         userService.save(user);
 
         Employee employee = new Employee();
@@ -148,6 +162,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setUser(user);
         employee.setActive(true);
         save(employee);
+
+        String primaryRole = determinePrimaryRole(dto.getRoles());
+        user.setUserType(primaryRole);
+        userService.save(user);
 
         emailService.sendCredentialsEmail(user.getEmail(), tempPassword);
     }
