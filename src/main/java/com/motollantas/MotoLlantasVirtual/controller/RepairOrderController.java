@@ -152,19 +152,29 @@ public class RepairOrderController {
         }
 
         User currentUser = userService.findByEmail(principal.getName());
-        employeeService.findByUser(currentUser).ifPresentOrElse(
-                employee -> repairOrderService.updateFromAdminOrMechanic(repairOrder, employee),
-                () -> repairOrderService.updateFromAdmin(repairOrder)
-        );
+        Optional<Employee> optionalEmployee = employeeService.findByUser(currentUser);
+
+        String redirectUrl;
+
+        if (optionalEmployee.isPresent()) {
+            Employee employee = optionalEmployee.get();
+            repairOrderService.updateFromAdminOrMechanic(repairOrder, employee);
+
+            boolean isAdmin = employee.getRoles().stream().anyMatch(r -> r.equalsIgnoreCase("ADMIN"));
+            redirectUrl = isAdmin ? "/garage/adminGarage" : "/garage/myOrders";
+        } else {
+            repairOrderService.updateFromAdmin(repairOrder);
+            redirectUrl = "/garage/adminGarage";
+        }
 
         Map<String, String> response = new HashMap<>();
-        response.put("redirectUrl", "/garage/adminGarage");
+        response.put("redirectUrl", redirectUrl);
         response.put("mensajeExito", "Cita actualizada exitosamente.");
         return ResponseEntity.ok(response);
     }
 
     private String reloadEditFragment(Model model, RepairOrder repairOrder) {
-        RepairOrder fullOrder = repairOrderService.findById(repairOrder.getIdOrden())
+        RepairOrder fullOrder = repairOrderService.findById(repairOrder.getId())
                 .orElse(repairOrder);
 
         model.addAttribute("repairOrder", fullOrder);

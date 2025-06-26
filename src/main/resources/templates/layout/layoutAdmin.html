@@ -50,7 +50,10 @@
                                 <a href="#" class="block px-4 py-3 hover:bg-gray-100">👤 Perfil</a>
                                 <a href="#" class="block px-4 py-3 hover:bg-gray-100">⚙️ Configuración</a>
                                 <a href="/" class="block px-4 py-3 hover:bg-gray-100">🚪 Salir del panel</a>
-                                <a href="/logout" class="block px-4 py-3 hover:bg-gray-100">🔐 Cerrar Sesión</a>
+                                <a href="#" onclick="document.getElementById('logoutForm').submit();" class="block px-4 py-3 hover:bg-gray-100">
+                                    🔐 Cerrar Sesión
+                                </a>
+                                <form id="logoutForm" th:action="@{/logout}" method="post" style="display: none;"></form>
                             </div>
                         </div>
                     </div>
@@ -65,7 +68,9 @@
                         <a href="#" class="block text-white hover:text-gray-300">👤 Perfil</a>
                         <a href="#" class="block text-white hover:text-gray-300">⚙️ Configuración</a>
                         <a href="/index" class="block text-white hover:text-gray-300">🚪 Salir del panel</a>
-                        <a href="/index" class="block text-white hover:text-gray-300">🔐 Cerrar Sesión</a>
+                        <a href="#" onclick="document.getElementById('logoutForm').submit();" class="block px-4 py-3 hover:bg-gray-100">
+                            🔐 Cerrar Sesión
+                        </a>
                     </div>
                 </div>
             </nav>
