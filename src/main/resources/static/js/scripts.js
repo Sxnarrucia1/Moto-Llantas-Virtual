@@ -219,20 +219,22 @@ function activarToasts()
     });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
     const mensaje = localStorage.getItem("mensajeExito");
     if (mensaje) {
-        const toastContainer = document.getElementById("toastContainer");
         const toast = document.createElement("div");
+        toast.className = "toast-message bg-green-500 text-white px-4 py-3 rounded shadow-lg fixed top-5 right-5 z-50 animate-fade-in-out";
+        toast.innerText = mensaje;
+        document.body.appendChild(toast);
 
-        toast.className = "toast-message bg-green-500 text-white px-4 py-3 rounded shadow-lg mb-4";
-        toast.innerHTML = `<p>${mensaje}</p>`;
-        toastContainer.appendChild(toast);
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
 
-        activarToasts();
         localStorage.removeItem("mensajeExito");
     }
 });
+
 
 
 
@@ -243,7 +245,7 @@ function openEditModal(id) {
                 const modalContainer = document.getElementById('modal-content');
                 modalContainer.innerHTML = html;
                 document.getElementById('editOrderModal').classList.remove('hidden');
-                attachFormListeners(); // ✅ Se llama después de insertar el HTML
+                attachAllModalFormListeners();
             })
             .catch(error => {
                 console.error('Error al cargar el formulario:', error);
@@ -255,90 +257,94 @@ function closeEditModal() {
     document.getElementById('modal-content').innerHTML = '';
 }
 
+function handleModalFormSubmit(form) {
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const expectsJson = form.dataset.response === "json";
 
-function attachFormListeners() {
-    const modalContent = document.getElementById('modal-content');
-    if (!modalContent) {
-        console.error("modal-content no encontrado en el DOM.");
-        return;
-    }
+        fetch(form.action, {
+            method: "POST",
+            headers: {
+                "X-Requested-With": "XMLHttpRequest",
+                "Accept": expectsJson ? "application/json" : "text/html"
+            },
+            body: formData
+        })
+        .then(response => {
+            const contentType = response.headers.get("content-type");
+            if (expectsJson && contentType && contentType.includes("application/json")) {
+                return response.json().then(data => {
+                    if (data.redirectUrl) {
+                        localStorage.setItem("mensajeExito", data.mensajeExito || "Operación exitosa.");
+                        closeEditModal();
 
-    const editForm = modalContent.querySelector('#editOrderForm');
-    const uploadForm = modalContent.querySelector('#uploadForm');
+                        const toast = document.createElement("div");
+                        toast.className = "toast-message bg-green-500 text-white px-4 py-3 rounded shadow-lg fixed top-5 right-5 z-50 animate-fade-in-out";
+                        toast.innerText = data.mensajeExito || "Operación exitosa.";
+                        document.body.appendChild(toast);
 
-    if (editForm) {
-        editForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const formData = new FormData(editForm);
-
-            fetch(editForm.action, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                body: formData
-            })
-                    .then(response => {
-                        const contentType = response.headers.get("content-type");
-                        if (contentType && contentType.includes("application/json")) {
-                            return response.json().then(data => {
-                                if (data.redirectUrl) {
-                                    localStorage.setItem("mensajeExito", data.mensajeExito || "Operación exitosa.");
-                                    closeEditModal();
-
-                                    // Mostrar toast antes de redirigir
-                                    const toast = document.createElement("div");
-                                    toast.className = "toast-message bg-green-500 text-white px-4 py-3 rounded shadow-lg fixed top-5 right-5 z-50 animate-fade-in-out";
-                                    toast.innerText = data.mensajeExito || "Operación exitosa.";
-                                    document.body.appendChild(toast);
-
-                                    setTimeout(() => {
-                                        window.location.href = data.redirectUrl;
-                                    }, 2000); // Espera 2 segundos antes de redirigir
-                                }
-                            });
-                        } else {
-                            return response.text().then(html => {
-                                modalContent.innerHTML = html;
-                                activarToasts();
-                                attachFormListeners(); // Reasignar listeners si se recarga el HTML
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error al enviar el formulario:', error);
-                        alert('Ocurrió un error al procesar la solicitud: ' + error.message);
-                    });
+                        setTimeout(() => {
+                            window.location.href = data.redirectUrl;
+                        }, 2000);
+                    }
+                });
+            } else {
+                return response.text().then(html => {
+                    const modalContent = document.getElementById("modal-content");
+                    modalContent.innerHTML = html;
+                    activarToasts();
+                    attachAllModalFormListeners();
+                });
+            }
+        })
+        .catch(error => {
+            console.error("Error al enviar el formulario:", error);
+            alert("Ocurrió un error al procesar la solicitud.");
         });
-    }
+    });
 
-    if (uploadForm) {
-        uploadForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const formData = new FormData(uploadForm);
+    // Si es un formulario de toggle-subtask, interceptar el cambio del checkbox
+    if (form.classList.contains("toggle-subtask-form")) {
+        const checkbox = form.querySelector("input[type='checkbox']");
+        if (checkbox) {
+            checkbox.addEventListener("change", function () {
+                const formData = new FormData(form);
 
-            fetch(uploadForm.action, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                body: formData
-            })
-                    .then(response => response.text())
-                    .then(html => {
-                        modalContent.innerHTML = html;
-                        activarToasts();
-                        attachFormListeners();
-                    })
-                    .catch(error => {
-                        console.error('Error al subir el archivo:', error);
-                        alert('Ocurrió un error al subir el archivo.');
-                    });
-        });
+                fetch(form.action, {
+                    method: "POST",
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest",
+                        "Accept": "text/html"
+                    },
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(html => {
+                    const modalContent = document.getElementById("modal-content");
+                    modalContent.innerHTML = html;
+                    activarToasts();
+                    attachAllModalFormListeners();
+                })
+                .catch(error => {
+                    console.error("Error al alternar subtarea:", error);
+                });
+            });
+        }
     }
 }
+
+
+
+function attachAllModalFormListeners() {
+    const modalContent = document.getElementById("modal-content");
+    if (!modalContent)
+        return;
+
+    const allForms = modalContent.querySelectorAll("form");
+    allForms.forEach(form => handleModalFormSubmit(form));
+}
+
 
 
 function openCreateEmployeeModal() {
@@ -360,6 +366,16 @@ function closeEditEmployeeModal(id) {
     document.getElementById('editEmployeeModal-' + id).classList.add('hidden');
     document.body.classList.remove('overflow-hidden');
 }
+
+document.addEventListener("click", function (e) {
+    const modal = document.getElementById("editOrderModal");
+    const content = document.getElementById("modal-content");
+
+    if (!modal.classList.contains("hidden") && !content.contains(e.target)) {
+        closeEditModal();
+    }
+});
+
 
 
 

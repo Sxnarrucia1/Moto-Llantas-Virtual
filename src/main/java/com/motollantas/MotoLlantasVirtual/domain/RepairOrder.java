@@ -70,6 +70,9 @@ public class RepairOrder {
     @OneToMany(mappedBy = "repairOrder", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RepairOrderFile> files = new ArrayList<>();
 
+    @OneToMany(mappedBy = "repairOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RepairSubtask> subtasks = new ArrayList<>();
+
     public String getFormattedAppointmentDate() {
         if (appointmentDate != null) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
@@ -225,5 +228,14 @@ public class RepairOrder {
     public void setFiles(List<RepairOrderFile> files) {
         this.files = files;
     }
+
+    public List<RepairSubtask> getSubtasks() {
+        return subtasks;
+    }
+
+    public void setSubtasks(List<RepairSubtask> subtasks) {
+        this.subtasks = subtasks;
+    }
+
     
 }

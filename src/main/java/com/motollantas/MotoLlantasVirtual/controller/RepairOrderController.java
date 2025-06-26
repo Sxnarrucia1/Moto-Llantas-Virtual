@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import com.motollantas.MotoLlantasVirtual.Service.EmployeeService;
+import com.motollantas.MotoLlantasVirtual.Service.RepairSubtaskService;
 import com.motollantas.MotoLlantasVirtual.Service.UserService;
 import com.motollantas.MotoLlantasVirtual.domain.Employee;
 import com.motollantas.MotoLlantasVirtual.domain.User;
@@ -59,6 +60,9 @@ public class RepairOrderController {
 
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private RepairSubtaskService repairSubtaskService;
 
     @GetMapping("/adminGarage")
     public String mostrarOrdenes(Model model) {
@@ -106,6 +110,7 @@ public class RepairOrderController {
         RepairOrder repairOrder = repairOrderService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid order ID: " + id));
 
+        model.addAttribute("subtasks", repairSubtaskService.getSubtasksByOrderId(repairOrder.getId()));
         model.addAttribute("repairOrder", repairOrder);
         model.addAttribute("services", serviceTypeService.findAll());
         model.addAttribute("orderStatuses", OrderStatus.values());
