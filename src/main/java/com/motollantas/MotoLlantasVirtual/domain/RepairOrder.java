@@ -4,6 +4,7 @@
  */
 package com.motollantas.MotoLlantasVirtual.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -12,10 +13,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -27,7 +31,7 @@ public class RepairOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idOrden;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "id_usuario")
@@ -63,6 +67,9 @@ public class RepairOrder {
     @SuppressWarnings("unused")
     private String formattedAppointmentDate;
 
+    @OneToMany(mappedBy = "repairOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RepairOrderFile> files = new ArrayList<>();
+
     public String getFormattedAppointmentDate() {
         if (appointmentDate != null) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
@@ -75,12 +82,12 @@ public class RepairOrder {
         this.formattedAppointmentDate = formattedAppointmentDate;
     }
 
-    public Long getIdOrden() {
-        return idOrden;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdOrden(Long idOrden) {
-        this.idOrden = idOrden;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public User getUser() {
@@ -211,4 +218,12 @@ public class RepairOrder {
         this.problemDescription = problemDescription;
     }
 
+    public List<RepairOrderFile> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<RepairOrderFile> files) {
+        this.files = files;
+    }
+    
 }

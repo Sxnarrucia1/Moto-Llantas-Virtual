@@ -176,7 +176,7 @@ public class RepairOrderServiceImpl implements RepairOrderService {
 
     @Override
     public void updateFromAdmin(RepairOrder updatedOrder) {
-        RepairOrder existingOrder = repair.findById(updatedOrder.getIdOrden())
+        RepairOrder existingOrder = repair.findById(updatedOrder.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
 
         existingOrder.setFullName(updatedOrder.getFullName());
@@ -210,7 +210,7 @@ public class RepairOrderServiceImpl implements RepairOrderService {
 
     @Override
     public void updateFromAdminOrMechanic(RepairOrder updatedOrder, Employee currentEmployee) {
-        RepairOrder existingOrder = repair.findById(updatedOrder.getIdOrden())
+        RepairOrder existingOrder = repair.findById(updatedOrder.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Orden no encontrada"));
 
         boolean isAdmin = currentEmployee.getRoles().stream()

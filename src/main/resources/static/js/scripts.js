@@ -80,8 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener("DOMContentLoaded", function () {
     const mensaje = localStorage.getItem("mensajeExito");
     if (mensaje) {
-        mostrarToast(mensaje, "success");
-        localStorage.removeItem("mensajeExito");
+        activarToasts();
     }
 });
 
@@ -237,62 +236,110 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-function openEditModal(orderId) {
-    fetch(`/garage/editAdmin/${orderId}`)
+function openEditModal(id) {
+    fetch(`/garage/editAdmin/${id}`)
             .then(response => response.text())
             .then(html => {
-                document.getElementById('modalContent').innerHTML = html;
+                const modalContainer = document.getElementById('modal-content');
+                modalContainer.innerHTML = html;
                 document.getElementById('editOrderModal').classList.remove('hidden');
+                attachFormListeners(); // ✅ Se llama después de insertar el HTML
             })
             .catch(error => {
                 console.error('Error al cargar el formulario:', error);
             });
 }
 
-function closeEditModal()
-{
+function closeEditModal() {
     document.getElementById('editOrderModal').classList.add('hidden');
-    document.getElementById('modalContent').innerHTML = '';
+    document.getElementById('modal-content').innerHTML = '';
 }
 
 
-document.addEventListener('submit', function (e) {
-    if (e.target && e.target.id === 'editOrderForm') {
-        e.preventDefault();
-
-        const form = e.target;
-        const formData = new FormData(form);
-
-        fetch(form.action, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json'
-            },
-            body: formData
-        })
-                .then(response => {
-                    const contentType = response.headers.get("content-type");
-                    if (contentType && contentType.includes("application/json")) {
-                        return response.json().then(data => {
-                            if (data.redirectUrl) {
-                                localStorage.setItem("mensajeExito", data.mensajeExito);
-                                closeEditModal();
-                                window.location.href = data.redirectUrl;
-                            }
-                        });
-                    } else {
-                        return response.text().then(html => {
-                            document.getElementById('modalContent').innerHTML = html;
-                            activarToasts();
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error('Error al enviar el formulario:', error);
-                });
-
+function attachFormListeners() {
+    const modalContent = document.getElementById('modal-content');
+    if (!modalContent) {
+        console.error("modal-content no encontrado en el DOM.");
+        return;
     }
-});
+
+    const editForm = modalContent.querySelector('#editOrderForm');
+    const uploadForm = modalContent.querySelector('#uploadForm');
+
+    if (editForm) {
+        editForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(editForm);
+
+            fetch(editForm.action, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: formData
+            })
+                    .then(response => {
+                        const contentType = response.headers.get("content-type");
+                        if (contentType && contentType.includes("application/json")) {
+                            return response.json().then(data => {
+                                if (data.redirectUrl) {
+                                    localStorage.setItem("mensajeExito", data.mensajeExito || "Operación exitosa.");
+                                    closeEditModal();
+
+                                    // Mostrar toast antes de redirigir
+                                    const toast = document.createElement("div");
+                                    toast.className = "toast-message bg-green-500 text-white px-4 py-3 rounded shadow-lg fixed top-5 right-5 z-50 animate-fade-in-out";
+                                    toast.innerText = data.mensajeExito || "Operación exitosa.";
+                                    document.body.appendChild(toast);
+
+                                    setTimeout(() => {
+                                        window.location.href = data.redirectUrl;
+                                    }, 2000); // Espera 2 segundos antes de redirigir
+                                }
+                            });
+                        } else {
+                            return response.text().then(html => {
+                                modalContent.innerHTML = html;
+                                activarToasts();
+                                attachFormListeners(); // Reasignar listeners si se recarga el HTML
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error al enviar el formulario:', error);
+                        alert('Ocurrió un error al procesar la solicitud: ' + error.message);
+                    });
+        });
+    }
+
+    if (uploadForm) {
+        uploadForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(uploadForm);
+
+            fetch(uploadForm.action, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: formData
+            })
+                    .then(response => response.text())
+                    .then(html => {
+                        modalContent.innerHTML = html;
+                        activarToasts();
+                        attachFormListeners();
+                    })
+                    .catch(error => {
+                        console.error('Error al subir el archivo:', error);
+                        alert('Ocurrió un error al subir el archivo.');
+                    });
+        });
+    }
+}
+
 
 function openCreateEmployeeModal() {
     document.getElementById('createEmployeeModal').classList.remove('hidden');
