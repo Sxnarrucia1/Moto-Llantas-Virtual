@@ -14,7 +14,6 @@
             <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg">
                 <h2 class="text-xl font-bold mb-4">Detalles de la Orden</h2>
                 <div id="modalContent" class="space-y-2 text-gray-700">
-                    <!-- Aquí se llenará dinámicamente -->
                 </div>
                 <div class="mt-4 text-right">
                     <button onclick="closeModal()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Cerrar</button>
@@ -28,6 +27,16 @@
 
         <main class="ml-64 p-6">
             <h1 class="text-2xl font-bold text-gray-800 mb-4">Calendario de Órdenes de Reparación</h1>
+            <div class="mb-4">
+                <label for="serviceTypeFilter" class="block text-sm font-medium text-gray-700">Filtrar por tipo de servicio:</label>
+                <select id="serviceTypeFilter" class="mt-1 block w-64 rounded-md border-gray-300 shadow-sm">
+                    <option value="">Todos</option>
+                    <option th:each="type : ${serviceTypes}"
+                            th:value="${type.serviceName}"
+                            th:text="${type.serviceName}">
+                    </option>
+                </select>
+            </div>
             <div id="calendar" class="bg-white rounded-lg shadow p-4"></div>
         </main>
 
@@ -57,37 +66,46 @@
             }
             document.addEventListener('DOMContentLoaded', function () {
                 const calendarEl = document.getElementById('calendar');
-                if (calendarEl && typeof FullCalendar !== 'undefined') {
-                    const calendar = new FullCalendar.Calendar(calendarEl, {
-                        locale: 'es',
-                        initialView: 'dayGridMonth',
-                        headerToolbar: {
-                            left: 'prev,next today',
-                            center: 'title',
-                            right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                        },
-                        events: '/calendar/events',
-                        eventColor: '#1d4ed8',
-                        eventTextColor: '#fff',
-                        eventClick: function (info) {
-                            const event = info.event.extendedProps;
-                            openModal({
-                                title: info.event.title,
-                                fullName: event.fullName,
-                                start: info.event.start,
-                                model: event.modelName,
-                                serviceType: event.serviceType,
-                                licensePlate: event.licensePlate,
-                                color: event.color,
-                                problemDescription: event.problemDescription,
-                                status: event.status
-                            });
-                        }
-                    });
-                    calendar.render();
-                } else {
-                    console.error("FullCalendar no está definido o el elemento #calendar no existe.");
-                }
+                const serviceTypeFilter = document.getElementById('serviceTypeFilter');
+
+                const calendar = new FullCalendar.Calendar(calendarEl, {
+                    locale: 'es',
+                    initialView: 'dayGridMonth',
+                    headerToolbar: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    },
+                    events: function (fetchInfo, successCallback, failureCallback) {
+                        const serviceType = serviceTypeFilter.value;
+                        const url = serviceType ? `/calendar/events?serviceType=${encodeURIComponent(serviceType)}` : '/calendar/events';
+
+                        fetch(url)
+                                .then(response => response.json())
+                                .then(data => successCallback(data))
+                                .catch(error => failureCallback(error));
+                    },
+                    eventClick: function (info) {
+                        const props = info.event.extendedProps;
+                        openModal({
+                            fullName: props.fullName,
+                            start: info.event.start,
+                            brand: props.brand,
+                            modelName: props.modelName,
+                            serviceType: props.serviceType,
+                            licensePlate: props.licensePlate,
+                            color: props.color,
+                            problemDescription: props.problemDescription,
+                            status: props.status
+                        });
+                    }
+                });
+
+                calendar.render();
+
+                serviceTypeFilter.addEventListener('change', function () {
+                    calendar.refetchEvents();
+                });
             });
         </script>
     </body>
