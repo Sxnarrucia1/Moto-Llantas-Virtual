@@ -253,4 +253,9 @@ public class RepairOrderServiceImpl implements RepairOrderService {
         repair.save(existingOrder);
     }
 
+    @Override
+    public List<RepairOrder> findAll() {
+        return repair.findAll();
+    }
+
 }

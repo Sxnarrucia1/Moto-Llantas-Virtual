@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:replace="~{layout/layout :: head}">
+        <title>Calendario de Órdenes</title>
+        <meta charset="UTF-8"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.css"/>
+        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
+    </head>
+
+    <body>
+        <div id="orderModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+            <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg">
+                <h2 class="text-xl font-bold mb-4">Detalles de la Orden</h2>
+                <div id="modalContent" class="space-y-2 text-gray-700">
+                    <!-- Aquí se llenará dinámicamente -->
+                </div>
+                <div class="mt-4 text-right">
+                    <button onclick="closeModal()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Cerrar</button>
+                </div>
+            </div>
+        </div>
+        <div class="fixed top-5 right-5 z-50" id="toastContainer"></div>
+
+        <header th:replace="~{layout/layoutAdmin :: header}"></header>
+        <aside th:replace="~{layout/layoutAdmin :: sidebar}"></aside>
+
+        <main class="ml-64 p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-4">Calendario de Órdenes de Reparación</h1>
+            <div id="calendar" class="bg-white rounded-lg shadow p-4"></div>
+        </main>
+
+        <script th:src="@{/js/scripts.js}"></script>
+        <script>
+            function openModal(order) {
+                const modal = document.getElementById('orderModal');
+                const content = document.getElementById('modalContent');
+                content.innerHTML = `
+                <p><strong>Cliente:</strong> ${order.fullName}</p>
+                <p><strong>Fecha:</strong> ${new Date(order.start).toLocaleString()}</p>
+                <p><strong>Modelo:</strong> ${order.model}</p>
+                <p><strong>Tipo de servicio:</strong> ${order.serviceType}</p>
+                <p><strong>Placa:</strong> ${order.licensePlate}</p>
+                <p><strong>Color:</strong> ${order.color}</p>
+                <p><strong>Descripción:</strong> ${order.problemDescription}</p>
+                <p><strong>Estado:</strong> ${order.status}</p>
+                `;
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+
+            function closeModal() {
+                const modal = document.getElementById('orderModal');
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+            document.addEventListener('DOMContentLoaded', function () {
+                const calendarEl = document.getElementById('calendar');
+                if (calendarEl && typeof FullCalendar !== 'undefined') {
+                    const calendar = new FullCalendar.Calendar(calendarEl, {
+                        locale: 'es',
+                        initialView: 'dayGridMonth',
+                        headerToolbar: {
+                            left: 'prev,next today',
+                            center: 'title',
+                            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                        },
+                        events: '/calendar/events',
+                        eventColor: '#1d4ed8',
+                        eventTextColor: '#fff',
+                        eventClick: function (info) {
+                            const event = info.event.extendedProps;
+                            openModal({
+                                title: info.event.title,
+                                fullName: event.fullName,
+                                start: info.event.start,
+                                model: event.modelName,
+                                serviceType: event.serviceType,
+                                licensePlate: event.licensePlate,
+                                color: event.color,
+                                problemDescription: event.problemDescription,
+                                status: event.status
+                            });
+                        }
+                    });
+                    calendar.render();
+                } else {
+                    console.error("FullCalendar no está definido o el elemento #calendar no existe.");
+                }
+            });
+        </script>
+    </body>
+</html>
