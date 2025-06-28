@@ -34,9 +34,9 @@ public interface RepairOrderService {
 
     public void deleteById(Long id);
 
-    List<RepairOrder> findByStatus(OrderStatus status);
+    public List<RepairOrder> findByStatus(OrderStatus status);
 
-    List<RepairOrder> findByStatusASC(OrderStatus status);
+    public List<RepairOrder> findByStatusASC(OrderStatus status);
 
     public void createFromAdmin(AdminDateDTO dto, ServiceType serviceType);
 
@@ -46,6 +46,7 @@ public interface RepairOrderService {
 
     public void updateFromAdminOrMechanic(RepairOrder updatedOrder, Employee currentEmployee);
     
-    List<RepairOrder> findAll();
-
+    public List<RepairOrder> findAll();
+    
+    
 }

@@ -5,6 +5,9 @@
 package com.motollantas.MotoLlantasVirtual.controller;
 
 import com.motollantas.MotoLlantasVirtual.Service.RepairOrderService;
+import com.motollantas.MotoLlantasVirtual.Service.ServiceTypeService;
+import com.motollantas.MotoLlantasVirtual.domain.RepairOrder;
+import com.motollantas.MotoLlantasVirtual.domain.ServiceType;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -13,8 +16,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -27,16 +32,34 @@ public class CalendarController {
 
     @Autowired
     private RepairOrderService repairOrderService;
+    
+    @Autowired
+    private ServiceTypeService serviceTypeService;
 
     @GetMapping("/admin")
-    public String showAdminCalendar() {
-        return "calendar/admin";
+    public String showAdminCalendar(Model model) {
+        List<ServiceType> serviceTypes = serviceTypeService.findAll();
+        model.addAttribute("serviceTypes", serviceTypes);
+        return "/calendar/admin";
     }
 
     @ResponseBody
     @GetMapping("/events")
-    public List<Map<String, Object>> getCalendarEvents() {
-        return repairOrderService.findAll().stream().map(order -> {
+    public List<Map<String, Object>> getCalendarEvents(@RequestParam(required = false) String serviceType) {
+
+        List<RepairOrder> orders;
+
+        if (serviceType != null && !serviceType.isEmpty()) {
+            orders = repairOrderService.findAll().stream()
+                    .filter(order -> order.getServiceType() != null
+                    && serviceType.equalsIgnoreCase(order.getServiceType().getServiceName()))
+                    .collect(Collectors.toList());
+            System.out.println(orders);
+        } else {
+            orders = repairOrderService.findAll();
+        }
+
+        return orders.stream().map(order -> {
             Map<String, Object> event = new HashMap<>();
             event.put("id", order.getId());
             event.put("title", order.getFullName() + " - " + order.getLicensePlate());
