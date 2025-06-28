@@ -45,4 +45,7 @@ public interface RepairOrderService {
     public List<RepairOrder> findByMechanicAndOrderStatusOrderByAppointmentDateAsc(Employee mechanic, OrderStatus status);
 
     public void updateFromAdminOrMechanic(RepairOrder updatedOrder, Employee currentEmployee);
+    
+    List<RepairOrder> findAll();
+
 }
