@@ -7,6 +7,7 @@ package com.motollantas.MotoLlantasVirtual.Service;
 import com.motollantas.MotoLlantasVirtual.DTO.AdminDateDTO;
 import com.motollantas.MotoLlantasVirtual.DTO.ClientDateDTO;
 import com.motollantas.MotoLlantasVirtual.domain.Employee;
+import com.motollantas.MotoLlantasVirtual.domain.Motorcycle;
 import com.motollantas.MotoLlantasVirtual.domain.OrderStatus;
 import com.motollantas.MotoLlantasVirtual.domain.RepairOrder;
 import com.motollantas.MotoLlantasVirtual.domain.ServiceType;
@@ -48,5 +49,5 @@ public interface RepairOrderService {
     
     public List<RepairOrder> findAll();
     
-    
+    public List<RepairOrder> findByMotorcycle(Motorcycle motorcycle);
 }

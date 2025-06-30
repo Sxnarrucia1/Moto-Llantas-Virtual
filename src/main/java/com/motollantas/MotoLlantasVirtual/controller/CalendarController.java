@@ -62,7 +62,7 @@ public class CalendarController {
         return orders.stream().map(order -> {
             Map<String, Object> event = new HashMap<>();
             event.put("id", order.getId());
-            event.put("title", order.getFullName() + " - " + order.getLicensePlate());
+            event.put("title", order.getFullName() + " - " + order.getMotorcycle().getLicensePlate());
             event.put("start", order.getAppointmentDate().toString());
 
             Duration duration = order.getServiceType() != null
@@ -72,11 +72,11 @@ public class CalendarController {
             event.put("end", endDateTime.toString());
 
             event.put("fullName", order.getFullName());
-            event.put("modelName", order.getModelName());
-            event.put("brand", order.getBrand());
+            event.put("modelName", order.getMotorcycle().getModelName());
+            event.put("brand", order.getMotorcycle().getBrand());
             event.put("serviceType", order.getServiceType() != null ? order.getServiceType().getServiceName() : "N/A");
-            event.put("licensePlate", order.getLicensePlate());
-            event.put("color", order.getColor());
+            event.put("licensePlate", order.getMotorcycle().getLicensePlate());
+            event.put("color", order.getMotorcycle().getColor());
             event.put("problemDescription", order.getProblemDescription());
             event.put("status", order.getOrderStatus().name());
 

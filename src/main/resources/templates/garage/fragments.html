@@ -24,6 +24,7 @@
                                                         <div class="mb-4 pb-2">
                                                             <div data-mdb-input-init class="form-outline">
                                                                 <input type="text" th:value="${identification}" class="form-control form-control-lg" disabled />
+                                                                <input type="hidden" name="identification" th:value="${identification}" />
                                                                 <label class="form-label" for="form3Examplev4">Identificación</label>
                                                             </div>
                                                         </div>
@@ -82,10 +83,23 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-7 mb-4 pb-2">
-                                                        <div data-mdb-input-init class="form-outline form-white">
-                                                            <input type="text" th:field="*{licensePlate}" class="form-control form-control-lg" required/>
-                                                            <label class="form-label" for="form3Examplea5">Número de Placa</label>
+                                                        <div data-mdb-input-init class="form-outline form-white d-flex">
+                                                            <input type="text"
+                                                                   id="licensePlateSearch"
+                                                                   th:field="*{licensePlate}"
+                                                                   class="form-control form-control-lg rounded-start"
+                                                                   placeholder="Ej: ABC123"
+                                                                   required />
+                                                            <button type="button"
+                                                                    id="searchPlateBtn"
+                                                                    class="btn btn-light btn-lg ms-2" data-mdb-ripple-color="dark">
+                                                                Buscar
+                                                            </button>
                                                         </div>
+                                                        <label class="form-label mt-2" for="licensePlateSearch">Número de Placa</label>
+                                                        <small id="searchError" style="background-color: rgba(0, 0, 0, 0.7); color: white; padding: 4px 8px; border-radius: 4px;" class="mt-1 d-none">
+                                                            No se encontró una moto con esa placa.
+                                                        </small>
                                                     </div>
                                                 </div>
                                                 <button type="submit" class="btn btn-light btn-lg" data-mdb-ripple-color="dark">
@@ -195,7 +209,7 @@
                                     <div>
                                         <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.id}"></h3>
                                         <p class="text-sm text-gray-600" th:text="'Cliente: ' + ${orden.fullName}"></p>
-                                        <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.brand} + ' ' + ${orden.modelName}"></p>
+                                        <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.motorcycle.brand} + ' ' + ${orden.motorcycle.modelName}"></p>
                                         <p class="text-sm text-gray-600" th:text="'Cita: ' + ${#temporals.format(orden.appointmentDate, 'dd/MM/yyyy HH:mm')}"></p>
                                         <p class="text-sm text-gray-500 mt-2" th:text="${orden.serviceType.serviceName}"></p>
                                     </div>
@@ -226,7 +240,7 @@
                                     <div>
                                         <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.id}"></h3>
                                         <p class="text-sm text-gray-600" th:text="'Cliente: ' + ${orden.fullName}"></p>
-                                        <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.brand} + ' ' + ${orden.modelName}"></p>
+                                        <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.motorcycle.brand} + ' ' + ${orden.motorcycle.modelName}"></p>
                                         <p class="text-sm text-gray-600" th:text="'Cita: ' + ${#temporals.format(orden.appointmentDate, 'dd/MM/yyyy HH:mm')}"></p>
                                         <p class="text-sm text-gray-500 mt-2" th:text="${orden.serviceType.serviceName}"></p>
                                     </div>
@@ -257,7 +271,7 @@
                                     <div>
                                         <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.id}"></h3>
                                         <p class="text-sm text-gray-600" th:text="'Cliente: ' + ${orden.fullName}"></p>
-                                        <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.brand} + ' ' + ${orden.modelName}"></p>
+                                        <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.motorcycle.brand} + ' ' + ${orden.motorcycle.modelName}"></p>
                                         <p class="text-sm text-gray-600" th:text="'Cita: ' + ${#temporals.format(orden.appointmentDate, 'dd/MM/yyyy HH:mm')}"></p>
                                         <p class="text-sm text-gray-500 mt-2" th:text="${orden.serviceType.serviceName}"></p>
                                     </div>
@@ -288,7 +302,7 @@
                                     <div>
                                         <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.id}"></h3>
                                         <p class="text-sm text-gray-600" th:text="'Cliente: ' + ${orden.fullName}"></p>
-                                        <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.brand} + ' ' + ${orden.modelName}"></p>
+                                        <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.motorcycle.brand} + ' ' + ${orden.motorcycle.modelName}"></p>
                                         <p class="text-sm text-gray-600" th:text="'Cita: ' + ${#temporals.format(orden.appointmentDate, 'dd/MM/yyyy HH:mm')}"></p>
                                         <p class="text-sm text-gray-500 mt-2" th:text="${orden.serviceType.serviceName}"></p>
                                     </div>
@@ -324,7 +338,23 @@
                             <input type="text" name="brand" placeholder="Marca" class="border p-2 rounded w-full" required/>
                             <input type="text" name="modelName" placeholder="Modelo" class="border p-2 rounded w-full" required/>
                             <input type="number" name="year" placeholder="Año" class="border p-2 rounded w-full" required/>
-                            <input type="text" name="licensePlate" placeholder="Placa" class="border p-2 rounded w-full" required/>
+                            <div class="mb-4">
+                                <label for="licensePlateSearch" class="block text-sm font-medium text-gray-700">Placa</label>
+                                <div class="mt-1 flex rounded-md shadow-sm">
+                                    <input type="text"
+                                           id="licensePlateSearch"
+                                           name="licensePlate"
+                                           placeholder="Placa"
+                                           class="flex-1 block w-full rounded-l-md border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                           required />
+                                    <button type="button"
+                                            id="searchPlateBtnAdmin"
+                                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-r-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                        Buscar
+                                    </button>
+                                </div>
+                                <small id="searchErrorAdmin" class="text-red-600 mt-1 hidden">No se encontró una moto con esa placa.</small>
+                            </div>
                             <input type="datetime-local" name="appointmentDate" class="border p-2 rounded w-full" required/>
                             <select name="serviceTypeId" class="border p-2 rounded w-full" required>
                                 <option value="">Seleccionar servicio</option>
@@ -378,34 +408,33 @@
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Marca</label>
-                                <input type="text" th:field="*{brand}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                                <input type="text" th:field="*{motorcycle.brand}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Modelo</label>
-                                <input type="text" th:field="*{modelName}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                                <input type="text" th:field="*{motorcycle.modelName}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
                             </div>
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Año</label>
-                                <input type="number" th:field="*{year}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                                <input type="number" th:field="*{motorcycle.year}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Cilindraje (cc)</label>
-                                <input type="number" th:field="*{displacement}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                                <input type="number" th:field="*{motorcycle.displacement}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
                             </div>
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Kilometraje</label>
-                                <input type="number" th:field="*{kilometraje}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                                <input type="number" th:field="*{motorcycle.kilometraje}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Placa</label>
-                                <input type="text" th:field="*{licensePlate}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                                <input type="text" th:field="*{motorcycle.licensePlate}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
                             </div>
-
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Color</label>
-                                <input type="text" th:field="*{color}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                                <input type="text" th:field="*{motorcycle.color}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Fecha Cita</label>
@@ -468,6 +497,20 @@
                     <button class="bg-yellow-500 text-white px-4 py-2 rounded">Completado</button>
                     <button class="bg-red-500 text-white px-4 py-2 rounded">Cancelado</button>
                 </div>
+                <form th:action="@{/garage/search-history}" method="get" class="mb-6 flex flex-wrap items-center gap-4">
+                    <input type="text" name="licensePlate" th:value="${licensePlate}" placeholder="Buscar por placa"
+                           class="border p-2 rounded w-64" />
+
+                    <span class="text-gray-500">o</span>
+
+                    <input type="text" name="ownerId" th:value="${ownerId}" placeholder="Buscar por cédula del dueño"
+                           class="border p-2 rounded w-64" />
+
+                    <button type="submit"
+                            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                        Buscar
+                    </button>
+                </form>
                 <!-- Columnas del tablero -->
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <!-- NUEVOS -->
@@ -479,7 +522,7 @@
                                     <div>
                                         <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.id}"></h3>
                                         <p class="text-sm text-gray-600" th:text="'Cliente: ' + ${orden.fullName}"></p>
-                                        <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.brand} + ' ' + ${orden.modelName}"></p>
+                                        <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.motorcycle.brand} + ' ' + ${orden.motorcycle.modelName}"></p>
                                         <p class="text-sm text-gray-600" th:text="'Cita: ' + ${#temporals.format(orden.appointmentDate, 'dd/MM/yyyy HH:mm')}"></p>
                                         <p class="text-sm text-gray-500 mt-2" th:text="${orden.serviceType.serviceName}"></p>
                                     </div>
@@ -510,7 +553,7 @@
                                     <div>
                                         <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.id}"></h3>
                                         <p class="text-sm text-gray-600" th:text="'Cliente: ' + ${orden.fullName}"></p>
-                                        <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.brand} + ' ' + ${orden.modelName}"></p>
+                                        <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.motorcycle.brand} + ' ' + ${orden.motorcycle.modelName}"></p>
                                         <p class="text-sm text-gray-600" th:text="'Cita: ' + ${#temporals.format(orden.appointmentDate, 'dd/MM/yyyy HH:mm')}"></p>
                                         <p class="text-sm text-gray-500 mt-2" th:text="${orden.serviceType.serviceName}"></p>
                                     </div>
@@ -541,7 +584,7 @@
                                     <div>
                                         <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.id}"></h3>
                                         <p class="text-sm text-gray-600" th:text="'Cliente: ' + ${orden.fullName}"></p>
-                                        <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.brand} + ' ' + ${orden.modelName}"></p>
+                                        <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.motorcycle.brand} + ' ' + ${orden.motorcycle.modelName}"></p>
                                         <p class="text-sm text-gray-600" th:text="'Cita: ' + ${#temporals.format(orden.appointmentDate, 'dd/MM/yyyy HH:mm')}"></p>
                                         <p class="text-sm text-gray-500 mt-2" th:text="${orden.serviceType.serviceName}"></p>
                                     </div>
@@ -572,7 +615,7 @@
                                     <div>
                                         <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.id}"></h3>
                                         <p class="text-sm text-gray-600" th:text="'Cliente: ' + ${orden.fullName}"></p>
-                                        <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.brand} + ' ' + ${orden.modelName}"></p>
+                                        <p class="text-sm text-gray-600" th:text="'Vehículo: ' + ${orden.motorcycle.brand} + ' ' + ${orden.motorcycle.modelName}"></p>
                                         <p class="text-sm text-gray-600" th:text="'Cita: ' + ${#temporals.format(orden.appointmentDate, 'dd/MM/yyyy HH:mm')}"></p>
                                         <p class="text-sm text-gray-500 mt-2" th:text="${orden.serviceType.serviceName}"></p>
                                     </div>
@@ -639,6 +682,55 @@
                     </li>
 
                 </ul>
+            </div>
+        </section>
+        <section th:fragment="mechanicServices" class="bg-gray-100 p-6">
+
+            <div class="max-w-6xl mx-auto bg-white shadow-md rounded-lg p-6">
+                <h1 class="text-2xl font-bold mb-4">Historial de Servicios</h1>
+
+                <div th:if="${motorcycle != null}">
+                    <p><strong>Número Placa:</strong> <span th:text="${motorcycle.licensePlate}"></span></p>
+                    <p><strong>Dueño:</strong> <span th:text="${motorcycle.user.fullName}"></span></p>
+                    <p><strong>Marca:</strong> <span th:text="${motorcycle.brand}"></span></p>
+                    <p><strong>Modelo:</strong> <span th:text="${motorcycle.modelName}"></span></p>
+                </div>
+
+                <div th:if="${motorcycles != null}">
+                    <h2 class="text-xl font-semibold mt-4">Motocicleta encontrada</h2>
+                    <ul class="list-disc list-inside">
+                        <li th:each="moto : ${motorcycles}">
+                            <span th:text="${moto.licensePlate}"></span> - 
+                            <span th:text="${moto.brand} + ' ' + ${moto.modelName}"></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="mt-6">
+                    <h2 class="text-xl font-semibold mb-2">Órden de Reparación</h2>
+                    <table class="min-w-full bg-white border border-gray-300">
+                        <thead>
+                            <tr class="bg-gray-200 text-left">
+                                <th class="py-2 px-4 border-b">Fecha</th>
+                                <th class="py-2 px-4 border-b">Estado</th>
+                                <th class="py-2 px-4 border-b">Prioridad</th>
+                                <th class="py-2 px-4 border-b">Tipo de Servicio</th>
+                                <th class="py-2 px-4 border-b">Mecánico</th>
+                                <th class="py-2 px-4 border-b">Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="order : ${repairOrders}" class="hover:bg-gray-100">
+                                <td class="py-2 px-4 border-b" th:text="${#temporals.format(order.appointmentDate, 'yyyy-MM-dd HH:mm')}"></td>
+                                <td class="py-2 px-4 border-b" th:text="${order.orderStatus}"></td>
+                                <td class="py-2 px-4 border-b" th:text="${order.priority}"></td>
+                                <td class="py-2 px-4 border-b" th:text="${order.serviceType.serviceName}"></td>
+                                <td class="py-2 px-4 border-b" th:text="${order.mechanic != null ? order.mechanic.fullName : 'Unassigned'}"></td>
+                                <td class="py-2 px-4 border-b" th:text="${order.problemDescription}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
     </body>

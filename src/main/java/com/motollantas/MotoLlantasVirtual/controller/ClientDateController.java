@@ -115,6 +115,7 @@ public class ClientDateController {
 
         List<ClientDateDTO> clientDates
                 = repairOrderService.getAppointmentbyUser(user.getIdUser());
+        System.out.println(clientDates);
         model.addAttribute("appointments", clientDates);
         return "garage/myAppointments";
     }

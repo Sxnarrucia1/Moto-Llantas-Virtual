@@ -5,6 +5,8 @@
 package com.motollantas.MotoLlantasVirtual.controller;
 
 import com.motollantas.MotoLlantasVirtual.DTO.AdminDateDTO;
+import com.motollantas.MotoLlantasVirtual.DTO.AdminMotorcycleDTO;
+import com.motollantas.MotoLlantasVirtual.DTO.ClientMotorcycleDTO;
 import com.motollantas.MotoLlantasVirtual.Service.RepairOrderService;
 import com.motollantas.MotoLlantasVirtual.Service.ServiceTypeService;
 import com.motollantas.MotoLlantasVirtual.ServiceImpl.DateValidator;
@@ -31,12 +33,16 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import com.motollantas.MotoLlantasVirtual.Service.EmployeeService;
+import com.motollantas.MotoLlantasVirtual.Service.MotorcycleService;
 import com.motollantas.MotoLlantasVirtual.Service.RepairSubtaskService;
 import com.motollantas.MotoLlantasVirtual.Service.UserService;
 import com.motollantas.MotoLlantasVirtual.domain.Employee;
+import com.motollantas.MotoLlantasVirtual.domain.Motorcycle;
 import com.motollantas.MotoLlantasVirtual.domain.User;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Optional;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -60,9 +66,12 @@ public class RepairOrderController {
 
     @Autowired
     private UserService userService;
-    
+
     @Autowired
     private RepairSubtaskService repairSubtaskService;
+
+    @Autowired
+    private MotorcycleService motorcycleService;
 
     @GetMapping("/adminGarage")
     public String mostrarOrdenes(Model model) {
@@ -98,7 +107,6 @@ public class RepairOrderController {
             return "redirect:/garage/adminGarage";
         }
 
-        // Crear orden
         repairOrderService.createFromAdmin(dto, serviceType);
 
         redirectAttributes.addFlashAttribute("mensajeExito", "Cita creada exitosamente.");
@@ -190,4 +198,76 @@ public class RepairOrderController {
         return "garage/fragments :: editAdmin";
     }
 
+    @GetMapping("/search")
+    @ResponseBody
+    public ResponseEntity<?> searchByPlate(@RequestParam String plate, Principal principal) {
+        User user = userService.findByEmail(principal.getName());
+        Optional<Motorcycle> motorcycleOpt = motorcycleService.findByLicensePlateAndUser(plate, user);
+
+        return motorcycleOpt
+                .map(m -> new ClientMotorcycleDTO(
+                m.getBrand(),
+                m.getModelName(),
+                m.getYear(),
+                m.getLicensePlate()
+        ))
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/admin/search")
+    @ResponseBody
+    public ResponseEntity<?> searchByPlateAdmin(@RequestParam String plate) {
+        Optional<Motorcycle> motorcycleOpt = motorcycleService.findByLicensePlate(plate);
+
+        return motorcycleOpt
+                .map(m -> new AdminMotorcycleDTO(
+                m.getBrand(),
+                m.getModelName(),
+                m.getYear(),
+                m.getLicensePlate()
+        ))
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/search-history")
+    public String searchMotorcycleHistory(@RequestParam(required = false) String licensePlate,
+            @RequestParam(required = false) String ownerId,
+            Model model) {
+
+        List<RepairOrder> orders = new ArrayList<>();
+
+        if ((licensePlate == null || licensePlate.isBlank()) && (ownerId == null || ownerId.isBlank())) {
+            model.addAttribute("mensajeError", "Por favor, ingresa al menos un criterio de búsqueda: número de placa o cédula del dueño.");
+            return "garage/motorcycleHistory";
+        }
+
+        if (licensePlate != null && !licensePlate.isBlank()) {
+            motorcycleService.findByLicensePlate(licensePlate).ifPresentOrElse(moto -> {
+                orders.addAll(repairOrderService.findByMotorcycle(moto));
+                model.addAttribute("motorcycle", moto);
+            }, () -> model.addAttribute("mensajeError", "No se encontró ninguna motocicleta con esa placa."));
+        } else if (ownerId != null && !ownerId.isBlank()) {
+            List<Motorcycle> motorcycles = motorcycleService.findByOwnerIdentification(ownerId);
+            if (motorcycles.isEmpty()) {
+                model.addAttribute("mensajeError", "No se encontraron motocicletas asociadas a esa cédula.");
+            } else {
+                model.addAttribute("motorcycles", motorcycles);
+                for (Motorcycle moto : motorcycles) {
+                    orders.addAll(repairOrderService.findByMotorcycle(moto));
+                }
+            }
+        }
+
+        if (orders.isEmpty() && !model.containsAttribute("mensajeError")) {
+            model.addAttribute("mensajeError", "No se encontraron órdenes de reparación para los criterios ingresados.");
+        }
+
+        model.addAttribute("repairOrders", orders);
+        model.addAttribute("licensePlate", licensePlate);
+        model.addAttribute("ownerId", ownerId);
+
+        return "garage/motorcycleHistory";
+    }
 }
