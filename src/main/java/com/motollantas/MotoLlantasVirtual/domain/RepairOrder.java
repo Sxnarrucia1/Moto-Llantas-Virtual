@@ -33,19 +33,12 @@ public class RepairOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "id_usuario")
     private User user;
 
     private String fullName;
     private String identification;
-    private String brand;
-    private String modelName;
-    private int year;
-    private int displacement;
-    private int kilometraje;
-    private String licensePlate;
-    private String color;
 
     private LocalDateTime appointmentDate;
 
@@ -72,6 +65,10 @@ public class RepairOrder {
 
     @OneToMany(mappedBy = "repairOrder", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RepairSubtask> subtasks = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "motorcycle_id")
+    private Motorcycle motorcycle;
 
     public String getFormattedAppointmentDate() {
         if (appointmentDate != null) {
@@ -115,62 +112,6 @@ public class RepairOrder {
 
     public void setIdentification(String identificacion) {
         this.identification = identificacion;
-    }
-
-    public String getModelName() {
-        return modelName;
-    }
-
-    public void setModelName(String modelName) {
-        this.modelName = modelName;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public int getDisplacement() {
-        return displacement;
-    }
-
-    public void setDisplacement(int displacement) {
-        this.displacement = displacement;
-    }
-
-    public int getKilometraje() {
-        return kilometraje;
-    }
-
-    public void setKilometraje(int kilometraje) {
-        this.kilometraje = kilometraje;
-    }
-
-    public String getLicensePlate() {
-        return licensePlate;
-    }
-
-    public void setLicensePlate(String licensePlate) {
-        this.licensePlate = licensePlate;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
     }
 
     public LocalDateTime getAppointmentDate() {
@@ -237,5 +178,12 @@ public class RepairOrder {
         this.subtasks = subtasks;
     }
 
-    
+    public Motorcycle getMotorcycle() {
+        return motorcycle;
+    }
+
+    public void setMotorcycle(Motorcycle motorcycle) {
+        this.motorcycle = motorcycle;
+    }
+
 }

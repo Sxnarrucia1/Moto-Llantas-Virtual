@@ -6,12 +6,14 @@ package com.motollantas.MotoLlantasVirtual.ServiceImpl;
 
 import com.motollantas.MotoLlantasVirtual.DTO.AdminDateDTO;
 import com.motollantas.MotoLlantasVirtual.DTO.ClientDateDTO;
+import com.motollantas.MotoLlantasVirtual.Service.MotorcycleService;
 import com.motollantas.MotoLlantasVirtual.Service.RepairOrderService;
 import com.motollantas.MotoLlantasVirtual.Service.ServiceTypeService;
 import com.motollantas.MotoLlantasVirtual.Service.UserService;
 import com.motollantas.MotoLlantasVirtual.dao.RepairOrderDao;
 import com.motollantas.MotoLlantasVirtual.dao.UserDao;
 import com.motollantas.MotoLlantasVirtual.domain.Employee;
+import com.motollantas.MotoLlantasVirtual.domain.Motorcycle;
 import com.motollantas.MotoLlantasVirtual.domain.OrderPriority;
 import com.motollantas.MotoLlantasVirtual.domain.OrderStatus;
 import com.motollantas.MotoLlantasVirtual.domain.RepairOrder;
@@ -39,7 +41,7 @@ public class RepairOrderServiceImpl implements RepairOrderService {
     RepairOrderDao repair;
 
     @Autowired
-    UserDao user;
+    UserDao userDao;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -50,27 +52,44 @@ public class RepairOrderServiceImpl implements RepairOrderService {
     @Autowired
     UserService userService;
 
+    @Autowired
+    MotorcycleService motorcycleService;
+
     @Override
-    public void createDateClient(ClientDateDTO clientDto) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
+    public void createDateClient(ClientDateDTO dto) {
 
-        User client = user.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Usuario No encontrado"));
-        ServiceType serviceType = serviceTypeService.findById(clientDto.getServiceTypeId());
+        User user = userService.findByIdentification(dto.getIdentification())
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
 
-        RepairOrder orden = new RepairOrder();
-        orden.setUser(client);
-        orden.setFullName(client.getFullName());
-        orden.setIdentification(client.getIdentification());
-        orden.setModelName(clientDto.getModelName());
-        orden.setLicensePlate(clientDto.getLicensePlate());
-        orden.setAppointmentDate(clientDto.getAppointmentDate());
-        orden.setServiceType(serviceType);
-        orden.setBrand(clientDto.getBrand());
-        orden.setYear(clientDto.getYear());
+        Optional<Motorcycle> motorcycleOpt = motorcycleService.findByLicensePlateAndUser(dto.getLicensePlate(), user);
 
-        repair.save(orden);
+        Motorcycle motorcycle = motorcycleOpt.orElseGet(() -> {
+            Motorcycle newMoto = new Motorcycle();
+            newMoto.setUser(user);
+            newMoto.setBrand(dto.getBrand());
+            newMoto.setModelName(dto.getModelName());
+            newMoto.setYear(dto.getYear());
+            newMoto.setLicensePlate(dto.getLicensePlate());
+            return motorcycleService.save(newMoto);
+        });
+
+        ServiceType serviceType = serviceTypeService.findById(dto.getServiceTypeId());
+
+        RepairOrder order = new RepairOrder();
+        order.setUser(user);
+        order.setFullName(user.getFullName());
+        order.setIdentification(user.getIdentification());
+        order.setMotorcycle(motorcycle);
+        order.setAppointmentDate(dto.getAppointmentDate());
+        order.setServiceType(serviceType);
+        order.setOrderStatus(OrderStatus.NUEVO);
+        order.setPriority(OrderPriority.BAJA);
+
+        if (order.getUser() == null) {
+            throw new IllegalStateException("La orden no tiene un usuario asignado");
+        }
+
+        repair.save(order);
     }
 
     @Override
@@ -121,21 +140,32 @@ public class RepairOrderServiceImpl implements RepairOrderService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
 
-        User client = user.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Usuario No encontrado"));
+        User client = userDao.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
         RepairOrder orden = repair.findById(dto.getId())
                 .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
+
         ServiceType serviceType = serviceTypeService.findById(dto.getServiceTypeId());
+
+        Optional<Motorcycle> motorcycleOpt = motorcycleService.findByLicensePlateAndUser(dto.getLicensePlate(), client);
+
+        Motorcycle motorcycle = motorcycleOpt.orElseGet(() -> {
+            Motorcycle newMoto = new Motorcycle();
+            newMoto.setUser(client);
+            newMoto.setBrand(dto.getBrand());
+            newMoto.setModelName(dto.getModelName());
+            newMoto.setYear(dto.getYear());
+            newMoto.setLicensePlate(dto.getLicensePlate());
+            return motorcycleService.save(newMoto);
+        });
 
         orden.setUser(client);
         orden.setFullName(client.getFullName());
         orden.setIdentification(client.getIdentification());
         orden.setAppointmentDate(dto.getAppointmentDate());
         orden.setServiceType(serviceType);
-        orden.setBrand(dto.getBrand());
-        orden.setModelName(dto.getModelName());
-        orden.setYear(dto.getYear());
-        orden.setLicensePlate(dto.getLicensePlate());
+        orden.setMotorcycle(motorcycle);
 
         repair.save(orden);
     }
@@ -154,22 +184,36 @@ public class RepairOrderServiceImpl implements RepairOrderService {
     public void createFromAdmin(AdminDateDTO dto, ServiceType serviceType) {
         RepairOrder order = new RepairOrder();
 
-        // Buscar usuario por identificación
         Optional<User> userOpt = userService.findByIdentification(dto.getIdentification());
 
-        // Si existe, asociarlo a la orden
-        userOpt.ifPresent(order::setUser);
+        if (userOpt.isEmpty()) {
+            throw new IllegalArgumentException("Usuario no encontrado");
+        }
 
+        User user = userOpt.get();
+
+        Optional<Motorcycle> existingMoto = motorcycleService.findByLicensePlateAndUser(dto.getLicensePlate(), user);
+        if (existingMoto.isPresent()) {
+            throw new IllegalArgumentException("Ya existe una motocicleta registrada con esa placa para este usuario.");
+        }
+
+        Motorcycle newMoto = new Motorcycle();
+        newMoto.setUser(user);
+        newMoto.setBrand(dto.getBrand());
+        newMoto.setModelName(dto.getModelName());
+        newMoto.setYear(dto.getYear());
+        newMoto.setLicensePlate(dto.getLicensePlate());
+
+        Motorcycle savedMoto = motorcycleService.save(newMoto);
+
+        order.setUser(user);
         order.setFullName(dto.getFullName());
         order.setIdentification(dto.getIdentification());
-        order.setBrand(dto.getBrand());
-        order.setModelName(dto.getModelName());
-        order.setYear(dto.getYear());
-        order.setLicensePlate(dto.getLicensePlate());
         order.setAppointmentDate(dto.getAppointmentDate());
         order.setServiceType(serviceType);
         order.setOrderStatus(OrderStatus.NUEVO);
         order.setPriority(OrderPriority.BAJA);
+        order.setMotorcycle(savedMoto);
 
         repair.save(order);
     }
@@ -177,17 +221,33 @@ public class RepairOrderServiceImpl implements RepairOrderService {
     @Override
     public void updateFromAdmin(RepairOrder updatedOrder) {
         RepairOrder existingOrder = repair.findById(updatedOrder.getId())
-                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Orden no encontrada"));
+
+        Motorcycle updatedMoto = updatedOrder.getMotorcycle();
+        Motorcycle existingMoto = existingOrder.getMotorcycle();
+
+        if (!existingMoto.getLicensePlate().equalsIgnoreCase(updatedMoto.getLicensePlate())) {
+            boolean placaDuplicada = motorcycleService.findByLicensePlateAndUser(
+                    updatedMoto.getLicensePlate(), existingOrder.getUser()
+            ).isPresent();
+
+            if (placaDuplicada) {
+                throw new IllegalArgumentException("Ya existe una motocicleta con esa placa para este usuario.");
+            }
+        }
+
+        existingMoto.setBrand(updatedMoto.getBrand());
+        existingMoto.setModelName(updatedMoto.getModelName());
+        existingMoto.setYear(updatedMoto.getYear());
+        existingMoto.setDisplacement(updatedMoto.getDisplacement());
+        existingMoto.setKilometraje(updatedMoto.getKilometraje());
+        existingMoto.setLicensePlate(updatedMoto.getLicensePlate());
+        existingMoto.setColor(updatedMoto.getColor());
+
+        motorcycleService.save(existingMoto);
 
         existingOrder.setFullName(updatedOrder.getFullName());
         existingOrder.setIdentification(updatedOrder.getIdentification());
-        existingOrder.setBrand(updatedOrder.getBrand());
-        existingOrder.setModelName(updatedOrder.getModelName());
-        existingOrder.setYear(updatedOrder.getYear());
-        existingOrder.setDisplacement(updatedOrder.getDisplacement());
-        existingOrder.setKilometraje(updatedOrder.getKilometraje());
-        existingOrder.setLicensePlate(updatedOrder.getLicensePlate());
-        existingOrder.setColor(updatedOrder.getColor());
         existingOrder.setAppointmentDate(updatedOrder.getAppointmentDate());
         existingOrder.setOrderStatus(updatedOrder.getOrderStatus());
         existingOrder.setServiceType(updatedOrder.getServiceType());
@@ -219,35 +279,46 @@ public class RepairOrderServiceImpl implements RepairOrderService {
         boolean isMechanic = currentEmployee.getRoles().stream()
                 .anyMatch(role -> role.equalsIgnoreCase("MECANICO"));
 
+        Motorcycle updatedMoto = updatedOrder.getMotorcycle();
+        Motorcycle existingMoto = existingOrder.getMotorcycle();
+
         if (isAdmin) {
+            if (!existingMoto.getLicensePlate().equalsIgnoreCase(updatedMoto.getLicensePlate())) {
+                boolean placaDuplicada = motorcycleService.findByLicensePlateAndUser(
+                        updatedMoto.getLicensePlate(), existingOrder.getUser()
+                ).isPresent();
+
+                if (placaDuplicada) {
+                    throw new IllegalArgumentException("Ya existe una motocicleta con esa placa para este usuario.");
+                }
+            }
+
+            existingMoto.setBrand(updatedMoto.getBrand());
+            existingMoto.setModelName(updatedMoto.getModelName());
+            existingMoto.setYear(updatedMoto.getYear());
+            existingMoto.setDisplacement(updatedMoto.getDisplacement());
+            existingMoto.setKilometraje(updatedMoto.getKilometraje());
+            existingMoto.setLicensePlate(updatedMoto.getLicensePlate());
+            existingMoto.setColor(updatedMoto.getColor());
+            motorcycleService.save(existingMoto);
+
             existingOrder.setAppointmentDate(updatedOrder.getAppointmentDate());
             existingOrder.setFullName(updatedOrder.getFullName());
             existingOrder.setIdentification(updatedOrder.getIdentification());
-            existingOrder.setBrand(updatedOrder.getBrand());
-            existingOrder.setModelName(updatedOrder.getModelName());
-            existingOrder.setYear(updatedOrder.getYear());
-            existingOrder.setDisplacement(updatedOrder.getDisplacement());
-            existingOrder.setKilometraje(updatedOrder.getKilometraje());
-            existingOrder.setLicensePlate(updatedOrder.getLicensePlate());
-            existingOrder.setColor(updatedOrder.getColor());
             existingOrder.setServiceType(updatedOrder.getServiceType());
             existingOrder.setPriority(updatedOrder.getPriority());
             existingOrder.setOrderStatus(updatedOrder.getOrderStatus());
             existingOrder.setMechanic(updatedOrder.getMechanic());
             existingOrder.setProblemDescription(updatedOrder.getProblemDescription());
+
         } else if (isMechanic) {
             existingOrder.setOrderStatus(updatedOrder.getOrderStatus());
-            existingOrder.setBrand(updatedOrder.getBrand());
-            existingOrder.setModelName(updatedOrder.getModelName());
-            existingOrder.setYear(updatedOrder.getYear());
-            existingOrder.setDisplacement(updatedOrder.getDisplacement());
-            existingOrder.setKilometraje(updatedOrder.getKilometraje());
-            existingOrder.setLicensePlate(updatedOrder.getLicensePlate());
-            existingOrder.setColor(updatedOrder.getColor());
             existingOrder.setServiceType(updatedOrder.getServiceType());
             existingOrder.setPriority(updatedOrder.getPriority());
-            existingOrder.setOrderStatus(updatedOrder.getOrderStatus());
             existingOrder.setProblemDescription(updatedOrder.getProblemDescription());
+
+            existingMoto.setKilometraje(updatedMoto.getKilometraje());
+            motorcycleService.save(existingMoto);
         }
 
         repair.save(existingOrder);
@@ -256,6 +327,11 @@ public class RepairOrderServiceImpl implements RepairOrderService {
     @Override
     public List<RepairOrder> findAll() {
         return repair.findAll();
+    }
+
+    @Override
+    public List<RepairOrder> findByMotorcycle(Motorcycle motorcycle) {
+        return repair.findByMotorcycle(motorcycle);
     }
 
 }

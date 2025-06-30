@@ -6,8 +6,10 @@
         <title>Moto Llantas</title>
         <meta charset="UTF-8"/>
     </head>
-    <body class="flex flex-col min-h-screen">
-        <div class="fixed top-5 right-5 z-50">
+
+    <body sec:authorize="hasRole('MECANICO')">
+        <div class="fixed top-5 right-5 z-50" id="toastContainer">
+            <!-- Aquí Thymeleaf sigue funcionando para mensajes del lado del servidor -->
             <div th:if="${mensajeError}" class="toast-message bg-red-500 text-white px-4 py-3 rounded shadow-lg mb-4 animate-fade-in-out">
                 <p th:text="${mensajeError}"></p>
             </div>
@@ -15,11 +17,14 @@
                 <p th:text="${mensajeExito}"></p>
             </div>
         </div>
-        <header th:replace="~{layout/layout :: header}"/>
+        <header th:replace="~{layout/layoutAdmin :: header}"/>
 
-        <main class="container mx-auto px-4 py-6">
-            <section th:replace="~{garage/fragments :: appointmentsClient}"></section>
+        <aside th:replace="~{layout/layoutAdmin :: sidebar}"/>
+
+        <main class="ml-64 p-6">
+            <section th:replace="~{garage/fragments :: mechanicServices}"/>
         </main>
-        <footer th:replace="~{layout/layout :: footer}"/>
+        <script th:src="@{/js/scripts.js}"></script>
     </body>
+
 </html>

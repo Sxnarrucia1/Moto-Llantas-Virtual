@@ -98,7 +98,6 @@ function closeModal() {
 }
 
 
-// Script to hidde layout/layoutAdmin
 document.addEventListener('DOMContentLoaded', () => {
     const button = document.getElementById('mobile-menu-button');
     const menu = document.getElementById('mobile-menu');
@@ -271,37 +270,37 @@ function handleModalFormSubmit(form) {
             },
             body: formData
         })
-        .then(response => {
-            const contentType = response.headers.get("content-type");
-            if (expectsJson && contentType && contentType.includes("application/json")) {
-                return response.json().then(data => {
-                    if (data.redirectUrl) {
-                        localStorage.setItem("mensajeExito", data.mensajeExito || "Operación exitosa.");
-                        closeEditModal();
+                .then(response => {
+                    const contentType = response.headers.get("content-type");
+                    if (expectsJson && contentType && contentType.includes("application/json")) {
+                        return response.json().then(data => {
+                            if (data.redirectUrl) {
+                                localStorage.setItem("mensajeExito", data.mensajeExito || "Operación exitosa.");
+                                closeEditModal();
 
-                        const toast = document.createElement("div");
-                        toast.className = "toast-message bg-green-500 text-white px-4 py-3 rounded shadow-lg fixed top-5 right-5 z-50 animate-fade-in-out";
-                        toast.innerText = data.mensajeExito || "Operación exitosa.";
-                        document.body.appendChild(toast);
+                                const toast = document.createElement("div");
+                                toast.className = "toast-message bg-green-500 text-white px-4 py-3 rounded shadow-lg fixed top-5 right-5 z-50 animate-fade-in-out";
+                                toast.innerText = data.mensajeExito || "Operación exitosa.";
+                                document.body.appendChild(toast);
 
-                        setTimeout(() => {
-                            window.location.href = data.redirectUrl;
-                        }, 2000);
+                                setTimeout(() => {
+                                    window.location.href = data.redirectUrl;
+                                }, 2000);
+                            }
+                        });
+                    } else {
+                        return response.text().then(html => {
+                            const modalContent = document.getElementById("modal-content");
+                            modalContent.innerHTML = html;
+                            activarToasts();
+                            attachAllModalFormListeners();
+                        });
                     }
+                })
+                .catch(error => {
+                    console.error("Error al enviar el formulario:", error);
+                    alert("Ocurrió un error al procesar la solicitud.");
                 });
-            } else {
-                return response.text().then(html => {
-                    const modalContent = document.getElementById("modal-content");
-                    modalContent.innerHTML = html;
-                    activarToasts();
-                    attachAllModalFormListeners();
-                });
-            }
-        })
-        .catch(error => {
-            console.error("Error al enviar el formulario:", error);
-            alert("Ocurrió un error al procesar la solicitud.");
-        });
     });
 
     // Si es un formulario de toggle-subtask, interceptar el cambio del checkbox
@@ -319,16 +318,16 @@ function handleModalFormSubmit(form) {
                     },
                     body: formData
                 })
-                .then(response => response.text())
-                .then(html => {
-                    const modalContent = document.getElementById("modal-content");
-                    modalContent.innerHTML = html;
-                    activarToasts();
-                    attachAllModalFormListeners();
-                })
-                .catch(error => {
-                    console.error("Error al alternar subtarea:", error);
-                });
+                        .then(response => response.text())
+                        .then(html => {
+                            const modalContent = document.getElementById("modal-content");
+                            modalContent.innerHTML = html;
+                            activarToasts();
+                            attachAllModalFormListeners();
+                        })
+                        .catch(error => {
+                            console.error("Error al alternar subtarea:", error);
+                        });
             });
         }
     }
@@ -371,10 +370,66 @@ document.addEventListener("click", function (e) {
     const modal = document.getElementById("editOrderModal");
     const content = document.getElementById("modal-content");
 
-    if (!modal.classList.contains("hidden") && !content.contains(e.target)) {
+    if (modal && content && !modal.classList.contains("hidden") && !content.contains(e.target)) {
         closeEditModal();
     }
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const searchBtn = document.getElementById("searchPlateBtn") || document.getElementById("searchPlateBtnAdmin");
+
+    if (searchBtn) {
+        searchBtn.addEventListener("click", function () {
+            const plate = document.getElementById("licensePlateSearch").value;
+            const isAdmin = searchBtn.id === "searchPlateBtnAdmin";
+            const endpoint = isAdmin ? "/garage/admin/search" : "/garage/search";
+
+            const errorElement = document.getElementById("searchErrorAdmin");
+            if (errorElement)
+                errorElement.classList.add("hidden");
+
+            fetch(`${endpoint}?plate=${plate}`)
+                    .then(response => {
+                        if (!response.ok)
+                            throw new Error("Moto no encontrada");
+                        return response.json();
+                    })
+                    .then(data => {
+                        document.querySelector('[name="brand"]').value = data.brand;
+                        document.querySelector('[name="modelName"]').value = data.modelName;
+                        document.querySelector('[name="year"]').value = data.year;
+                        document.querySelector('[name="licensePlate"]').value = data.licensePlate;
+
+                        if (isAdmin) {
+                            document.querySelector('[name="brand"]').value = data.brand;
+                            document.querySelector('[name="modelName"]').value = data.modelName;
+                            document.querySelector('[name="year"]').value = data.year;
+                            document.querySelector('[name="licensePlate"]').value = data.licensePlate;
+                        }
+                    })
+                    .catch(error => {
+                        if (isAdmin && errorElement)
+                            errorElement.classList.remove("hidden");
+                        else
+                            alert("No se encontró una motocicleta con esa placa.");
+                    });
+        });
+    }
+
+});
+
+    function openDeleteModal(id) {
+        document.getElementById('modal-' + id).classList.remove('hidden');
+    }
+
+    function closeDeleteModal(id) {
+        document.getElementById('modal-' + id).classList.add('hidden');
+    }
+
+
+
+
+
 
 
 

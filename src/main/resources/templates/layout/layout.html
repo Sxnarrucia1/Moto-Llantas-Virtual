@@ -39,6 +39,7 @@
                     <a th:href="@{/garage/userGarage}" class="block py-2 md:py-0 hover:text-yellow-400">Agendar Cita</a>
                     <a th:href="@{/garage/myAppointments}" sec:authorize="isAuthenticated()" class="block py-2 md:py-0 hover:text-yellow-400">Mis Citas</a>
                     <a th:href="@{/location}" class="block py-2 md:py-0 hover:text-yellow-400">Ubicación</a>
+                    <a th:href="@{/motorcycle/myMotorcycle}" sec:authorize="isAuthenticated()" class="block py-2 md:py-0 hover:text-yellow-400">Mis Motos</a>
 
                     <!-- login button -->
                     <a th:href="@{/login}" sec:authorize="isAnonymous()" class="block py-2 md:py-0 hover:text-yellow-400 text-xl">

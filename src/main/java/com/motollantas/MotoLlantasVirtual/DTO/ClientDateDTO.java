@@ -9,15 +9,12 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  *
  * @author esteb
  */
-@Data
-@NoArgsConstructor
+
 public class ClientDateDTO {
 
     private Long id;
@@ -50,7 +47,7 @@ public class ClientDateDTO {
     private String serviceTypeName;
 
     private String formattedAppointmentDate;
-
+    
     public Long getId() {
         return id;
     }
@@ -137,6 +134,22 @@ public class ClientDateDTO {
 
     public void setServiceTypeName(String serviceTypeName) {
         this.serviceTypeName = serviceTypeName;
+    }
+
+    public ClientDateDTO() {
+    }
+
+    public ClientDateDTO(String fullName, String identification, String brand, int year, String modelName, String licensePlate, LocalDateTime appointmentDate, Long serviceTypeId, String serviceTypeName, String formattedAppointmentDate) {
+        this.fullName = fullName;
+        this.identification = identification;
+        this.brand = brand;
+        this.year = year;
+        this.modelName = modelName;
+        this.licensePlate = licensePlate;
+        this.appointmentDate = appointmentDate;
+        this.serviceTypeId = serviceTypeId;
+        this.serviceTypeName = serviceTypeName;
+        this.formattedAppointmentDate = formattedAppointmentDate;
     }
 
 }

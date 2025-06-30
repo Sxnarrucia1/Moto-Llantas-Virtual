@@ -27,6 +27,12 @@ public class MotoLlantasVirtualApplication {
 
             TypeMap<RepairOrder, ClientDateDTO> typeMap = modelMapper.createTypeMap(RepairOrder.class, ClientDateDTO.class);
             typeMap.addMapping(RepairOrder::getId, ClientDateDTO::setId);
+            typeMap.addMappings(mapper -> {
+                mapper.map(src -> src.getMotorcycle().getBrand(), ClientDateDTO::setBrand);
+                mapper.map(src -> src.getMotorcycle().getModelName(), ClientDateDTO::setModelName);
+                mapper.map(src -> src.getMotorcycle().getLicensePlate(), ClientDateDTO::setLicensePlate);
+                mapper.map(src -> src.getMotorcycle().getYear(), ClientDateDTO::setYear);
+            });
 
             return modelMapper;
         }
