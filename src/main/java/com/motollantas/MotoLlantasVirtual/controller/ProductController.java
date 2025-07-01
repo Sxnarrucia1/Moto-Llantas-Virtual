@@ -16,14 +16,16 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-
     @GetMapping
     public String listInventory(Model model) {
         List<Product> products = productService.getAllProductsOrdered();
+        List<Product> expiringProducts = productService.getProductsExpiringSoon(30);
+
         model.addAttribute("productos", products);
+        model.addAttribute("expiringProducts", expiringProducts);
+        System.out.println("Productos por vencer: " + expiringProducts.size());
         return "inventory/inventory";
     }
-
 
     @PostMapping("/reactivate/{id}")
     public String reactiveProducts(@PathVariable Long id) {
@@ -37,8 +39,6 @@ public class ProductController {
         return "redirect:/inventory";
     }
 
-
-
     @GetMapping("/detail/{id}")
     public String viewProductDetail(@PathVariable Long id, Model model) {
         Product product = productService.getProductById(id);
@@ -46,8 +46,6 @@ public class ProductController {
         model.addAttribute("productos", productService.getAllProductsOrdered());
         return "inventory/inventory";
     }
-
-
 
     @GetMapping("/search")
     public String searchProducts(@RequestParam("keyword") String keyword, Model model) {
@@ -77,7 +75,5 @@ public class ProductController {
         model.addAttribute("productos", productService.getAllProductsOrdered());
         return "inventory/inventory";
     }
-
-
 
 }
