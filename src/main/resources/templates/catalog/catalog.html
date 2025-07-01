@@ -7,12 +7,10 @@
   <meta charset="UTF-8"/>
 </head>
 <body>
+    <div th:replace="layout/layout :: header"></div>
 
-  <header th:replace="~{layout/layout :: header}"/>
+    <section th:replace="catalog/fragments :: catalog"></section>
 
-  <section th:replace="~{catalog/fragments :: catalog}"/>
-
-  <footer th:replace="~{layout/layout :: footer}"/>
-
+    <div th:replace="layout/layout :: footer"></div>
 </body>
 </html>
