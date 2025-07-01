@@ -3,6 +3,7 @@ package com.motollantas.MotoLlantasVirtual.ServiceImpl;
 import com.motollantas.MotoLlantasVirtual.Service.ProductService;
 import com.motollantas.MotoLlantasVirtual.dao.ProductDao;
 import com.motollantas.MotoLlantasVirtual.domain.Product;
+import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +46,6 @@ public class ProductServiceImpl implements ProductService {
         productDao.save(p);
     }
 
-
     @Override
     public List<Product> searchForName(String keyword) {
         return productDao.findByNameContainingIgnoreCaseOrCategoryContainingIgnoreCase(keyword, keyword);
@@ -61,5 +61,11 @@ public class ProductServiceImpl implements ProductService {
         productDao.save(product);
     }
 
+    @Override
+    public List<Product> getProductsExpiringSoon(int days) {
+        LocalDate today = LocalDate.now();
+        LocalDate threshold = today.plusDays(days);
+        return productDao.findByExpirationDateBetween(today, threshold);
+    }
 
 }
