@@ -42,9 +42,11 @@ public class ProductController {
     @GetMapping("/detail/{id}")
     public String viewProductDetail(@PathVariable Long id, Model model) {
         Product product = productService.getProductById(id);
-        model.addAttribute("product", product);
-        return "inventory";
+        model.addAttribute("productDetail", product);
+        model.addAttribute("productos", productService.getAllProductsOrdered());
+        return "inventory/inventory";
     }
+
 
 
     @GetMapping("/search")
@@ -56,5 +58,26 @@ public class ProductController {
         model.addAttribute("productos", filterProducts);
         return "inventory/inventory";
     }
+
+    @PostMapping("/save")
+    public String saveProduct(@ModelAttribute("product") Product product) {
+        productService.save(product);
+        return "redirect:/inventory";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editProduct(@PathVariable Long id, Model model) {
+        Product product;
+        if (id == 0) {
+            product = new Product(); // Nuevo producto vacío para crear
+        } else {
+            product = productService.getProductById(id); // Producto existente para editar
+        }
+        model.addAttribute("editProduct", product);
+        model.addAttribute("productos", productService.getAllProductsOrdered());
+        return "inventory/inventory";
+    }
+
+
 
 }

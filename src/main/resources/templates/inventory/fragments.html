@@ -14,6 +14,14 @@
       Inventario
     </h2>
 
+    <button type="button"
+            th:onclick="'location.href=\'/inventory/edit/0\''"
+            class="mb-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+      ➕ Nuevo Producto
+    </button>
+
+
+
     <!-- search -->
     <form method="get" th:action="@{inventory/search}" class="relative w-full sm:w-72 mb-6">
       <input type="text" name="keyword" placeholder="Buscar producto..."
@@ -63,23 +71,20 @@
           </td>
           <td class="py-2 px-4">
             <!-- Ver modal -->
-            <button type="button"
-                    th:attr="data-id=${p.id}"
-                    onclick="openModal([[${p.id}]])"
-                    class="inline-flex items-center gap-1 text-blue-600 hover:underline font-medium">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                   viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M2.458 12C3.732 7.943 7.522 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7s-8.268-2.943-9.542-7z"/>
-              </svg>
-              Ver
-            </button>
-
-
-            
+            <form th:action="@{/inventory/detail/{id}(id=${p.id})}" method="get" class="inline-block">
+              <button type="submit" class="inline-flex items-center gap-1 text-blue-600 hover:underline font-medium">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                     viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M2.458 12C3.732 7.943 7.522 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7s-8.268-2.943-9.542-7z"/>
+                </svg>
+                Ver
+              </button>
+            </form>
           </td>
+
 
           <td class="py-2 px-4 space-x-2">
             <form th:action="@{/inventory/reactivate/{id}(id=${p.id})}" method="post"
@@ -121,6 +126,158 @@
       </p>
     </div>
   </div>
+
+
+
+
+  <!-- Modal Detail product -->
+  <div class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center"
+       th:if="${productDetail != null}">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-8 transform transition-transform duration-300 scale-100 opacity-100">
+
+      <!-- Título -->
+      <h3 class="text-2xl font-bold text-blue-700 mb-6 text-center"
+          th:text="'Detalles de: ' + ${productDetail.name}">
+      </h3>
+
+      <!-- Contenido -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700 text-base">
+
+        <div>
+          <p class="font-semibold">🛠️ Nombre:</p>
+          <p th:text="${productDetail.name}" class="pl-2 text-gray-900"></p>
+        </div>
+
+        <div>
+          <p class="font-semibold">🏷️ Categoría:</p>
+          <p th:text="${productDetail.category}" class="pl-2 text-gray-900"></p>
+        </div>
+
+        <div class="sm:col-span-2">
+          <p class="font-semibold">📝 Descripción:</p>
+          <p th:text="${productDetail.description}" class="pl-2 text-gray-900"></p>
+        </div>
+
+        <div>
+          <p class="font-semibold">💰 Precio:</p>
+          <p><span class="text-gray-900">₡</span><span th:text="${productDetail.price}" class="pl-1 text-gray-900"></span></p>
+        </div>
+
+        <div>
+          <p class="font-semibold">📦 Stock:</p>
+          <p th:text="${productDetail.stock}" class="pl-2 text-gray-900"></p>
+        </div>
+
+        <div>
+          <p class="font-semibold">📅 Fecha de Vencimiento:</p>
+          <span th:if="${productDetail.expirationDate != null}"
+                th:text="${#temporals.format(productDetail.expirationDate, 'yyyy-MM-dd')}"
+                class="pl-2 text-gray-900"></span>
+          <span th:unless="${productDetail.expirationDate != null}"
+                class="pl-2 text-gray-500 italic">No aplicable</span>
+        </div>
+
+        <div>
+          <p class="font-semibold">⚙️ Estado:</p>
+          <span th:text="${productDetail.status ? 'Activo' : 'Inactivo'}"
+                th:classappend="${productDetail.status} ? 'text-green-600 font-semibold' : 'text-red-600 font-semibold'"
+                class="pl-2"></span>
+        </div>
+
+      </div>
+
+      <!-- Botones -->
+      <div class="mt-8 flex justify-end gap-3">
+        <a href="/inventory"
+           class="px-5 py-2 rounded-xl bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold transition">
+          ❌ Cerrar
+        </a>
+
+        <a th:href="@{/inventory/edit/{id}(id=${productDetail.id})}"
+           class="px-6 py-2 rounded-xl bg-yellow-500 hover:bg-yellow-600 text-white font-semibold transition">
+          ✏️ Editar
+        </a>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal edit product -->
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm transition-opacity duration-300"
+       th:if="${editProduct != null}">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-8 transform transition-transform duration-300 scale-100 opacity-100">
+
+      <!-- title -->
+      <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center"
+          th:text="${editProduct.id == null} ? 'Crear Producto' : 'Editar Producto'">
+      </h3>
+
+      <!-- form -->
+      <form th:action="@{/inventory/save}" th:object="${editProduct}" method="post" class="space-y-5">
+        <input type="hidden" th:field="*{id}" />
+
+        <!-- name -->
+        <div>
+          <label class="block font-semibold text-gray-700 mb-1">Nombre *</label>
+          <input type="text" th:field="*{name}" required placeholder="Ej. Aceite para motor"
+                 class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label class="block font-semibold text-gray-700 mb-1">Descripción *</label>
+          <textarea th:field="*{description}" required placeholder="Especificaciones del producto"
+                    class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" rows="3"></textarea>
+        </div>
+
+        <!-- Categories -->
+        <div>
+          <label class="block font-semibold text-gray-700 mb-1">Categoría *</label>
+          <input type="text" th:field="*{category}" required placeholder="Ej. Lubricantes"
+                 class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+        </div>
+
+        <!-- Price y Stock -->
+        <div class="flex gap-4">
+          <div class="w-1/2">
+            <label class="block font-semibold text-gray-700 mb-1">Precio *</label>
+            <input type="number" th:field="*{price}" required step="0.01" min="0" placeholder="₡0.00"
+                   class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+          </div>
+
+          <div class="w-1/2">
+            <label class="block font-semibold text-gray-700 mb-1">Stock *</label>
+            <input type="number" th:field="*{stock}" required min="0" placeholder="0"
+                   class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+          </div>
+        </div>
+
+        <!-- expirationDate -->
+        <div>
+          <label class="block font-semibold text-gray-700 mb-1">Fecha de Vencimiento *</label>
+          <input type="date" th:field="*{expirationDate}" 
+                 placeholder="Selecciona una nueva fecha"
+                 class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex justify-end gap-3 pt-4">
+          <a href="/inventory"
+             class="px-5 py-2 rounded-xl bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold transition">
+            Cancelar
+          </a>
+          <button type="submit"
+                  class="px-6 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold transition">
+            Guardar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+
 
 </section>
 

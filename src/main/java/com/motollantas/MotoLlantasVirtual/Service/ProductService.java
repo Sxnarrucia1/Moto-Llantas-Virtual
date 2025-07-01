@@ -15,6 +15,7 @@ public interface ProductService {
     void deactivateProductById(Long id);
     List<Product> getAllProductsOrdered();
     List<Product> searchForName(String keyword);
+    void save(Product product);
 
 
 }
