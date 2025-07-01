@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
->
-<head th:replace="~{layout/layout :: head}">
-  <title>Moto Llantas</title>
-  <meta charset="UTF-8"/>
-</head>
-<body>
-    <div th:replace="layout/layout :: header"></div>
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:replace="~{layout/layout :: head}">
+        <title>Moto Llantas</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body class="flex flex-col min-h-screen">
+        <header th:replace="~{layout/layout :: header}"/>
 
-    <section th:replace="catalog/fragments :: catalog"></section>
-
-    <div th:replace="layout/layout :: footer"></div>
-</body>
+        <main class="container mx-auto px-4 py-6">
+            <section th:replace="~{catalog/fragments :: catalog}"></section>
+        </main>
+        <footer th:replace="~{layout/layout :: footer}"/>
+    </body>
 </html>

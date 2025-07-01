@@ -7,8 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
 @RequestMapping("/catalog")
 public class CatalogController {
@@ -16,7 +14,7 @@ public class CatalogController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/catalog/productDetails/{id}")
+    @GetMapping("/productDetails/{id}")
     public String showProductDetails(@PathVariable("id") Long id, Model model) {
         Product product = productService.getProductById(id);
 
@@ -33,7 +31,7 @@ public class CatalogController {
     System.out.println(productService.getActiveProducts());
 
     model.addAttribute("products", productService.getActiveProducts());
-    return "catalog";
+    return "catalog/catalog";
 }
 
 }
