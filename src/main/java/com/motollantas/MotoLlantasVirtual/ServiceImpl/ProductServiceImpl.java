@@ -56,4 +56,10 @@ public class ProductServiceImpl implements ProductService {
         return productDao.findAllByOrderByStatusDescNameAsc();
     }
 
+    @Override
+    public void save(Product product) {
+        productDao.save(product);
+    }
+
+
 }
