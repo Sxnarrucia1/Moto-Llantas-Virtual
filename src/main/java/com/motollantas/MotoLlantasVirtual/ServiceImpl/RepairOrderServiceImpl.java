@@ -285,6 +285,13 @@ public class RepairOrderServiceImpl implements RepairOrderService {
                         existingOrder.getUser(),
                         "La orden de reparación de su moto ha sido marcada como Completada."
                 );
+                notificationService.notifyUser(
+                        existingOrder.getUser(),
+                        "¡Gracias por confiar en nosotros! Por favor califique el servicio recibido.",
+                        "FEEDBACK",
+                        existingOrder.getId()
+                );
+
             } else {
                 notificationService.notifyUser(
                         existingOrder.getUser(),
@@ -403,6 +410,12 @@ public class RepairOrderServiceImpl implements RepairOrderService {
                 notificationService.notifyUser(
                         existingOrder.getUser(),
                         "La orden de reparación de su moto ha sido marcada como Completada."
+                );
+                notificationService.notifyUser(
+                        existingOrder.getUser(),
+                        "¡Gracias por confiar en nosotros! Por favor califique el servicio recibido.",
+                        "FEEDBACK",
+                        existingOrder.getId()
                 );
             } else {
                 notificationService.notifyUser(

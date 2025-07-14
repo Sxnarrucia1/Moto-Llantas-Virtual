@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
  *
  * @author esteb
  */
+
 @Entity
 @Table(name = "notifications")
 public class Notification {
@@ -29,6 +30,10 @@ public class Notification {
     private boolean read = false;
 
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    private String type;
+
+    private Long referenceId;
 
     @ManyToOne(optional = false)
     private User user;
@@ -67,6 +72,22 @@ public class Notification {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Long getReferenceId() {
+        return referenceId;
+    }
+
+    public void setReferenceId(Long referenceId) {
+        this.referenceId = referenceId;
     }
     
 }

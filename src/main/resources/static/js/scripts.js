@@ -464,3 +464,44 @@ function closeDeleteModal(id) {
     document.getElementById('modal-' + id).classList.add('hidden');
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+    const stars = document.querySelectorAll("#star-container .star");
+    const ratingInput = document.getElementById("rating");
+    let selectedRating = parseInt(ratingInput.value) || 0;
+
+    function highlightStars(rating) {
+        stars.forEach((star, index) => {
+            if (index < rating) {
+                star.classList.add("text-yellow-400");
+                star.classList.remove("text-gray-300");
+            } else {
+                star.classList.remove("text-yellow-400");
+                star.classList.add("text-gray-300");
+            }
+        });
+    }
+
+    stars.forEach((star, index) => {
+        const value = index + 1;
+
+        star.addEventListener("mouseenter", () => {
+            highlightStars(value);
+        });
+
+        star.addEventListener("mouseleave", () => {
+            highlightStars(selectedRating);
+        });
+
+        star.addEventListener("click", () => {
+            selectedRating = value;
+            ratingInput.value = selectedRating;
+            highlightStars(selectedRating);
+        });
+    });
+
+    // Mostrar estrellas si ya hay una calificación cargada
+    if (selectedRating > 0) {
+        highlightStars(selectedRating);
+    }
+});
+
