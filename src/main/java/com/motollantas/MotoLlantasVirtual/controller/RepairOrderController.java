@@ -34,10 +34,12 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import com.motollantas.MotoLlantasVirtual.Service.EmployeeService;
 import com.motollantas.MotoLlantasVirtual.Service.MotorcycleService;
+import com.motollantas.MotoLlantasVirtual.Service.ProductService;
 import com.motollantas.MotoLlantasVirtual.Service.RepairSubtaskService;
 import com.motollantas.MotoLlantasVirtual.Service.UserService;
 import com.motollantas.MotoLlantasVirtual.domain.Employee;
 import com.motollantas.MotoLlantasVirtual.domain.Motorcycle;
+import com.motollantas.MotoLlantasVirtual.domain.RepairOrderProduct;
 import com.motollantas.MotoLlantasVirtual.domain.User;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -73,17 +75,20 @@ public class RepairOrderController {
     @Autowired
     private MotorcycleService motorcycleService;
 
+    @Autowired
+    private ProductService productService;
+
     @GetMapping("/adminGarage")
     public String mostrarOrdenes(Model model) {
         List<RepairOrder> nuevas = repairOrderService.findByStatusASC(OrderStatus.NUEVO);
         List<RepairOrder> enProgreso = repairOrderService.findByStatusASC(OrderStatus.EN_PROGRESO);
         List<RepairOrder> completadas = repairOrderService.findByStatusASC(OrderStatus.COMPLETADO);
-        List<RepairOrder> canceladas = repairOrderService.findByStatusASC(OrderStatus.CANCELADO);
+        List<RepairOrder> enEspera = repairOrderService.findByStatusASC(OrderStatus.EN_ESPERA);
 
         model.addAttribute("nuevas", nuevas);
         model.addAttribute("enProgreso", enProgreso);
         model.addAttribute("completadas", completadas);
-        model.addAttribute("canceladas", canceladas);
+        model.addAttribute("enEspera", enEspera);
         model.addAttribute("services", serviceTypeService.findAll());
         return "garage/adminGarage";
     }
@@ -117,6 +122,9 @@ public class RepairOrderController {
     public String showEditForm(@PathVariable Long id, Model model) {
         RepairOrder repairOrder = repairOrderService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid order ID: " + id));
+        if (repairOrder.getUsedProducts() == null) {
+            repairOrder.setUsedProducts(new ArrayList<>());
+        }
 
         model.addAttribute("subtasks", repairSubtaskService.getSubtasksByOrderId(repairOrder.getId()));
         model.addAttribute("repairOrder", repairOrder);
@@ -124,6 +132,7 @@ public class RepairOrderController {
         model.addAttribute("orderStatuses", OrderStatus.values());
         model.addAttribute("orderPriorities", OrderPriority.values());
         model.addAttribute("mechanics", employeeService.filterByRole("MECANICO"));
+        model.addAttribute("products", productService.getActiveProducts());
 
         return "garage/fragments :: editAdmin";
     }
@@ -167,6 +176,10 @@ public class RepairOrderController {
         User currentUser = userService.findByEmail(principal.getName());
         Optional<Employee> optionalEmployee = employeeService.findByUser(currentUser);
 
+        for (RepairOrderProduct usage : repairOrder.getUsedProducts()) {
+            usage.setRepairOrder(repairOrder);
+        }
+
         String redirectUrl;
 
         if (optionalEmployee.isPresent()) {
@@ -195,6 +208,7 @@ public class RepairOrderController {
         model.addAttribute("orderStatuses", OrderStatus.values());
         model.addAttribute("orderPriorities", OrderPriority.values());
         model.addAttribute("mechanics", employeeService.filterByRole("MECANICO"));
+        model.addAttribute("products", productService.getActiveProducts());
         return "garage/fragments :: editAdmin";
     }
 

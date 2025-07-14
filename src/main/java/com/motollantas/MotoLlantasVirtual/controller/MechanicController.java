@@ -52,12 +52,12 @@ public class MechanicController {
         List<RepairOrder> nuevas = repairOrderService.findByMechanicAndOrderStatusOrderByAppointmentDateAsc(mechanic, OrderStatus.NUEVO);
         List<RepairOrder> enProgreso = repairOrderService.findByMechanicAndOrderStatusOrderByAppointmentDateAsc(mechanic, OrderStatus.EN_PROGRESO);
         List<RepairOrder> completadas = repairOrderService.findByMechanicAndOrderStatusOrderByAppointmentDateAsc(mechanic, OrderStatus.COMPLETADO);
-        List<RepairOrder> canceladas = repairOrderService.findByMechanicAndOrderStatusOrderByAppointmentDateAsc(mechanic, OrderStatus.CANCELADO);
+        List<RepairOrder> enEspera = repairOrderService.findByMechanicAndOrderStatusOrderByAppointmentDateAsc(mechanic, OrderStatus.EN_ESPERA);
 
         model.addAttribute("nuevas", nuevas);
         model.addAttribute("enProgreso", enProgreso);
         model.addAttribute("completadas", completadas);
-        model.addAttribute("canceladas", canceladas);
+        model.addAttribute("enEspera", enEspera);
         return "garage/myOrders";
     }
 

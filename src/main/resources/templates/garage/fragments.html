@@ -195,7 +195,7 @@
                     <button class="bg-blue-500 text-white px-4 py-2 rounded">Nuevo</button>
                     <button class="bg-green-500 text-white px-4 py-2 rounded">En Proceso</button>
                     <button class="bg-yellow-500 text-white px-4 py-2 rounded">Completado</button>
-                    <button class="bg-red-500 text-white px-4 py-2 rounded">Cancelado</button>
+                    <button class="bg-red-500 text-white px-4 py-2 rounded">En Espera</button>
                 </div>
 
                 <!-- Columnas del tablero -->
@@ -295,9 +295,9 @@
                     </div>
                     <!-- CANCELADOS -->
                     <div class="bg-gray-100 p-4 rounded shadow">
-                        <h2 class="text-lg font-semibold mb-2">Cancelados</h2>
+                        <h2 class="text-lg font-semibold mb-2">En Espera</h2>
                         <div class="space-y-2">
-                            <div th:each="orden : ${canceladas}" class="bg-white p-4 rounded shadow relative">
+                            <div th:each="orden : ${enEspera}" class="bg-white p-4 rounded shadow relative">
                                 <div class="flex justify-between items-start">
                                     <div>
                                         <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.id}"></h3>
@@ -469,16 +469,43 @@
                                 </select>
                             </div>
                         </div>
-
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Descripción Problema</label>
                             <textarea th:field="*{problemDescription}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
-                        </div>
-                        <div class="flex justify-end">
-                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                Actualizar Orden
-                            </button>
-                        </div>
+                            <div class="mt-6">
+                                <h3 class="text-lg font-semibold mb-2 text-gray-800">Productos utilizados</h3>
+                                <div id="product-usage-list">
+                                    <div th:each="usedProduct, iterStat : *{usedProducts}" class="product-row grid grid-cols-4 gap-4 mb-2 items-center">
+                                        <select th:name="|usedProducts[${iterStat.index}].product.id|" class="form-select rounded-md border-gray-300">
+                                            <option value="" disabled>Seleccione un producto</option>
+                                            <option th:each="product : ${products}"
+                                                    th:value="${product.id}"
+                                                    th:text="${product.name}"
+                                                    th:selected="${product.id} == ${usedProduct.product.id}">
+                                            </option>
+                                        </select>
+                                        <input type="number" min="1" th:name="|usedProducts[${iterStat.index}].quantityUsed|"
+                                               th:value="${usedProduct.quantityUsed}" class="form-input rounded-md border-gray-300" placeholder="Cantidad usada" />
+                                        <input type="text" th:name="|usedProducts[${iterStat.index}].notes|"
+                                               th:value="${usedProduct.notes}" class="form-input rounded-md border-gray-300" placeholder="Notas (opcional)" />
+                                        <button type="button" class="remove-product-btn text-red-600 hover:text-red-800 font-bold text-xl leading-none">&times;</button>
+                                    </div>
+                                </div>
+                                <button id="add-product-btn" type="button" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                                    Agregar producto
+                                </button>
+                            </div>
+
+                            <div class="flex justify-end mt-4">
+                                <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                    Actualizar Orden
+                                </button>
+                            </div>
+
+                            <template id="product-options-template">
+                                <option value="" disabled>Seleccione un producto</option>
+                                <option th:each="product : ${products}" th:value="${product.id}" th:text="${product.name}">Producto</option>
+                            </template>
                     </form>
                     <form id="uploadForm" th:action="@{/garage/uploadFile}" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="repairOrderId" th:value="${repairOrder.id}" />
@@ -495,7 +522,7 @@
                     <button class="bg-blue-500 text-white px-4 py-2 rounded">Nuevo</button>
                     <button class="bg-green-500 text-white px-4 py-2 rounded">En Proceso</button>
                     <button class="bg-yellow-500 text-white px-4 py-2 rounded">Completado</button>
-                    <button class="bg-red-500 text-white px-4 py-2 rounded">Cancelado</button>
+                    <button class="bg-red-500 text-white px-4 py-2 rounded">En Espera</button>
                 </div>
                 <form th:action="@{/garage/search-history}" method="get" class="mb-6 flex flex-wrap items-center gap-4">
                     <input type="text" name="licensePlate" th:value="${licensePlate}" placeholder="Buscar por placa"
@@ -608,9 +635,9 @@
                     </div>
                     <!-- CANCELADOS -->
                     <div class="bg-gray-100 p-4 rounded shadow">
-                        <h2 class="text-lg font-semibold mb-2">Cancelados</h2>
+                        <h2 class="text-lg font-semibold mb-2">En Espera</h2>
                         <div class="space-y-2">
-                            <div th:each="orden : ${canceladas}" class="bg-white p-4 rounded shadow relative">
+                            <div th:each="orden : ${enEspera}" class="bg-white p-4 rounded shadow relative">
                                 <div class="flex justify-between items-start">
                                     <div>
                                         <h3 class="font-semibold text-gray-800" th:text="'Orden #' + ${orden.id}"></h3>
