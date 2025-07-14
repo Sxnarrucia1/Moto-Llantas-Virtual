@@ -66,6 +66,9 @@ public class RepairOrder {
     @OneToMany(mappedBy = "repairOrder", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RepairSubtask> subtasks = new ArrayList<>();
 
+    @OneToMany(mappedBy = "repairOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RepairOrderProduct> usedProducts = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "motorcycle_id")
     private Motorcycle motorcycle;
@@ -184,6 +187,14 @@ public class RepairOrder {
 
     public void setMotorcycle(Motorcycle motorcycle) {
         this.motorcycle = motorcycle;
+    }
+
+    public List<RepairOrderProduct> getUsedProducts() {
+        return usedProducts;
+    }
+
+    public void setUsedProducts(List<RepairOrderProduct> usedProducts) {
+        this.usedProducts = usedProducts;
     }
 
 }

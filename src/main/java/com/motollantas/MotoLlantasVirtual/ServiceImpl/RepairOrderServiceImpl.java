@@ -6,7 +6,9 @@ package com.motollantas.MotoLlantasVirtual.ServiceImpl;
 
 import com.motollantas.MotoLlantasVirtual.DTO.AdminDateDTO;
 import com.motollantas.MotoLlantasVirtual.DTO.ClientDateDTO;
+import com.motollantas.MotoLlantasVirtual.Service.InventoryService;
 import com.motollantas.MotoLlantasVirtual.Service.MotorcycleService;
+import com.motollantas.MotoLlantasVirtual.Service.NotificationService;
 import com.motollantas.MotoLlantasVirtual.Service.RepairOrderService;
 import com.motollantas.MotoLlantasVirtual.Service.ServiceTypeService;
 import com.motollantas.MotoLlantasVirtual.Service.UserService;
@@ -17,8 +19,10 @@ import com.motollantas.MotoLlantasVirtual.domain.Motorcycle;
 import com.motollantas.MotoLlantasVirtual.domain.OrderPriority;
 import com.motollantas.MotoLlantasVirtual.domain.OrderStatus;
 import com.motollantas.MotoLlantasVirtual.domain.RepairOrder;
+import com.motollantas.MotoLlantasVirtual.domain.RepairOrderProduct;
 import com.motollantas.MotoLlantasVirtual.domain.ServiceType;
 import com.motollantas.MotoLlantasVirtual.domain.User;
+import com.motollantas.MotoLlantasVirtual.handler.InventoryException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -54,6 +58,12 @@ public class RepairOrderServiceImpl implements RepairOrderService {
 
     @Autowired
     MotorcycleService motorcycleService;
+
+    @Autowired
+    InventoryService inventoryService;
+
+    @Autowired
+    NotificationService notificationService;
 
     @Override
     public void createDateClient(ClientDateDTO dto) {
@@ -246,6 +256,11 @@ public class RepairOrderServiceImpl implements RepairOrderService {
 
         motorcycleService.save(existingMoto);
 
+        boolean mechanicAssigned = existingOrder.getMechanic() == null && updatedOrder.getMechanic() != null;
+        boolean statusChanged = !existingOrder.getOrderStatus().equals(updatedOrder.getOrderStatus());
+
+        OrderStatus oldStatus = existingOrder.getOrderStatus();
+
         existingOrder.setFullName(updatedOrder.getFullName());
         existingOrder.setIdentification(updatedOrder.getIdentification());
         existingOrder.setAppointmentDate(updatedOrder.getAppointmentDate());
@@ -256,6 +271,43 @@ public class RepairOrderServiceImpl implements RepairOrderService {
         existingOrder.setProblemDescription(updatedOrder.getProblemDescription());
 
         repair.save(existingOrder);
+
+        if (mechanicAssigned) {
+            notificationService.notifyUser(
+                    existingOrder.getUser(),
+                    "La orden de reparación de su moto ha sido asignada a un mecánico."
+            );
+        }
+
+        if (statusChanged) {
+            if (updatedOrder.getOrderStatus() == OrderStatus.COMPLETADO) {
+                notificationService.notifyUser(
+                        existingOrder.getUser(),
+                        "La orden de reparación de su moto ha sido marcada como Completada."
+                );
+            } else {
+                notificationService.notifyUser(
+                        existingOrder.getUser(),
+                        String.format("La orden de reparación de su moto ha cambiado de estado de %s a %s.",
+                                formatStatus(oldStatus), formatStatus(updatedOrder.getOrderStatus()))
+                );
+            }
+        }
+    }
+
+    private String formatStatus(OrderStatus status) {
+        return switch (status) {
+            case NUEVO ->
+                "Nuevo";
+            case EN_PROGRESO ->
+                "En Progreso";
+            case EN_ESPERA ->
+                "En Espera";
+            case COMPLETADO ->
+                "Completado";
+            default ->
+                status.name();
+        };
     }
 
     @Override
@@ -282,6 +334,8 @@ public class RepairOrderServiceImpl implements RepairOrderService {
         Motorcycle updatedMoto = updatedOrder.getMotorcycle();
         Motorcycle existingMoto = existingOrder.getMotorcycle();
 
+        OrderStatus previousStatus = existingOrder.getOrderStatus();
+
         if (isAdmin) {
             if (!existingMoto.getLicensePlate().equalsIgnoreCase(updatedMoto.getLicensePlate())) {
                 boolean placaDuplicada = motorcycleService.findByLicensePlateAndUser(
@@ -307,12 +361,9 @@ public class RepairOrderServiceImpl implements RepairOrderService {
             existingOrder.setIdentification(updatedOrder.getIdentification());
             existingOrder.setServiceType(updatedOrder.getServiceType());
             existingOrder.setPriority(updatedOrder.getPriority());
-            existingOrder.setOrderStatus(updatedOrder.getOrderStatus());
             existingOrder.setMechanic(updatedOrder.getMechanic());
             existingOrder.setProblemDescription(updatedOrder.getProblemDescription());
-
         } else if (isMechanic) {
-            existingOrder.setOrderStatus(updatedOrder.getOrderStatus());
             existingOrder.setServiceType(updatedOrder.getServiceType());
             existingOrder.setPriority(updatedOrder.getPriority());
             existingOrder.setProblemDescription(updatedOrder.getProblemDescription());
@@ -321,7 +372,46 @@ public class RepairOrderServiceImpl implements RepairOrderService {
             motorcycleService.save(existingMoto);
         }
 
+        existingOrder.getUsedProducts().clear();
+
+        if (updatedOrder.getUsedProducts() != null) {
+            List<RepairOrderProduct> productosValidos = updatedOrder.getUsedProducts().stream()
+                    .filter(p -> p.getProduct() != null && p.getQuantityUsed() != null && p.getQuantityUsed() > 0)
+                    .collect(Collectors.toList());
+
+            for (RepairOrderProduct usage : productosValidos) {
+                usage.setRepairOrder(existingOrder);
+                existingOrder.getUsedProducts().add(usage);
+            }
+        }
+
+        OrderStatus newStatus = updatedOrder.getOrderStatus();
+        existingOrder.setOrderStatus(newStatus);
+
+        if (newStatus == OrderStatus.COMPLETADO && previousStatus != OrderStatus.COMPLETADO) {
+            try {
+                inventoryService.processProductUsage(existingOrder.getUsedProducts());
+            } catch (InventoryException e) {
+                throw new IllegalStateException("No se pudo finalizar la orden debido a problemas de inventario: " + e.getMessage());
+            }
+        }
+
         repair.save(existingOrder);
+
+        if (!previousStatus.equals(newStatus)) {
+            if (newStatus == OrderStatus.COMPLETADO) {
+                notificationService.notifyUser(
+                        existingOrder.getUser(),
+                        "La orden de reparación de su moto ha sido marcada como Completada."
+                );
+            } else {
+                notificationService.notifyUser(
+                        existingOrder.getUser(),
+                        String.format("La orden de reparación de su moto ha cambiado de estado de %s a %s.",
+                                formatStatus(previousStatus), formatStatus(newStatus))
+                );
+            }
+        }
     }
 
     @Override

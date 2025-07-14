@@ -11,6 +11,6 @@ package com.motollantas.MotoLlantasVirtual.domain;
 public enum OrderStatus {
     NUEVO,
     COMPLETADO,
-    CANCELADO,
+    EN_ESPERA,
     EN_PROGRESO
 }

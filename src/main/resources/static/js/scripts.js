@@ -333,7 +333,42 @@ function handleModalFormSubmit(form) {
     }
 }
 
+function initializeProductForm(scope) {
+    const addButton = scope.querySelector('#add-product-btn');
+    const usageList = scope.querySelector('#product-usage-list');
+    const optionsTemplate = scope.querySelector('#product-options-template');
 
+    if (!addButton || !usageList || !optionsTemplate) {
+        console.warn('Elementos del formulario de productos no encontrados.');
+        return;
+    }
+
+    addButton.addEventListener('click', () => {
+        const index = usageList.children.length;
+        const productOptions = optionsTemplate.innerHTML;
+
+        const row = document.createElement('div');
+        row.className = 'product-row grid grid-cols-4 gap-4 mb-2 items-center';
+        row.innerHTML = `
+            <select name="usedProducts[${index}].product.id" class="form-select rounded-md border-gray-300">
+                ${productOptions}
+            </select>
+            <input type="number" min="1" name="usedProducts[${index}].quantityUsed" class="form-input rounded-md border-gray-300" placeholder="Cantidad usada" />
+            <input type="text" name="usedProducts[${index}].notes" class="form-input rounded-md border-gray-300" placeholder="Notas (opcional)" />
+            <button type="button" class="remove-product-btn text-red-600 hover:text-red-800 font-bold text-xl leading-none">&times;</button>
+        `;
+        usageList.appendChild(row);
+    });
+
+    usageList.addEventListener('click', (event) => {
+        if (event.target.classList.contains('remove-product-btn')) {
+            event.preventDefault();
+            const row = event.target.closest('.product-row');
+            if (row)
+                row.remove();
+        }
+    });
+}
 
 function attachAllModalFormListeners() {
     const modalContent = document.getElementById("modal-content");
@@ -342,7 +377,10 @@ function attachAllModalFormListeners() {
 
     const allForms = modalContent.querySelectorAll("form");
     allForms.forEach(form => handleModalFormSubmit(form));
+
+    initializeProductForm(modalContent);
 }
+
 
 
 
@@ -418,28 +456,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-    function openDeleteModal(id) {
-        document.getElementById('modal-' + id).classList.remove('hidden');
-    }
+function openDeleteModal(id) {
+    document.getElementById('modal-' + id).classList.remove('hidden');
+}
 
-    function closeDeleteModal(id) {
-        document.getElementById('modal-' + id).classList.add('hidden');
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function closeDeleteModal(id) {
+    document.getElementById('modal-' + id).classList.add('hidden');
+}
 

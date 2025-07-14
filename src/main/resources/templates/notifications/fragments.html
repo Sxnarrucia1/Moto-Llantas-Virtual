@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html class="h-full" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:replace="~{layout/layout :: head}">
+        <title>Taller Llantas</title>
+    </head>
+    <body class="flex flex-col min-h-screen">
+        <section th:fragment="notificationList">
+            <h1 class="text-2xl font-bold mb-4 text-gray-800">Tus notificaciones</h1>
+
+            <div th:if="${notifications.isEmpty()}" class="text-gray-500">
+                No tienes notificaciones por el momento.
+            </div>
+
+            <ul th:if="${!notifications.isEmpty()}" class="space-y-4">
+                <li th:each="notification : ${notifications}" class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded shadow-sm">
+                    <p class="text-gray-800" th:text="${notification.message}"></p>
+                    <p class="text-sm text-gray-500 mt-1" th:text="${#temporals.format(notification.createdAt, 'dd/MM/yyyy HH:mm')}"></p>
+                </li>
+            </ul>
+
+        </section>
+    </body>
+</html>
