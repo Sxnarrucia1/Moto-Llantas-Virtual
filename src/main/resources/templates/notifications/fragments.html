@@ -17,9 +17,14 @@
                 <li th:each="notification : ${notifications}" class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded shadow-sm">
                     <p class="text-gray-800" th:text="${notification.message}"></p>
                     <p class="text-sm text-gray-500 mt-1" th:text="${#temporals.format(notification.createdAt, 'dd/MM/yyyy HH:mm')}"></p>
+                    <div th:if="${notification.type == 'FEEDBACK'}" class="mt-3">
+                        <a th:href="@{'/feedbacks/feedback/' + ${notification.referenceId}}"
+                           class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
+                            Calificar servicio
+                        </a>
+                    </div>
                 </li>
             </ul>
-
         </section>
     </body>
 </html>

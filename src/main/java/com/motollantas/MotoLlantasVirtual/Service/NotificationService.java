@@ -16,10 +16,11 @@ public interface NotificationService {
 
     void notifyUser(User user, String message);
 
+    void notifyUser(User user, String message, String type, Long referenceId);
+
     List<Notification> getUserNotifications(Long userId);
 
     int countUnreadNotifications(Long userId);
 
     void markAllAsRead(Long userId);
-
 }

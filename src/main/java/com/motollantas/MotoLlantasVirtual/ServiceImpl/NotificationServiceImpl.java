@@ -8,6 +8,7 @@ import com.motollantas.MotoLlantasVirtual.Service.NotificationService;
 import com.motollantas.MotoLlantasVirtual.dao.NotificationDao;
 import com.motollantas.MotoLlantasVirtual.domain.Notification;
 import com.motollantas.MotoLlantasVirtual.domain.User;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,13 +21,26 @@ import org.springframework.stereotype.Service;
 public class NotificationServiceImpl implements NotificationService {
 
     @Autowired
-    NotificationDao notificationDao;
+    private NotificationDao notificationDao;
 
     @Override
     public void notifyUser(User user, String message) {
         Notification notification = new Notification();
         notification.setUser(user);
         notification.setMessage(message);
+        notification.setCreatedAt(LocalDateTime.now());
+        notificationDao.save(notification);
+    }
+
+    @Override
+    public void notifyUser(User user, String message, String type, Long referenceId) {
+        Notification notification = new Notification();
+        notification.setUser(user);
+        notification.setMessage(message);
+        notification.setType(type);
+        notification.setReferenceId(referenceId);
+        notification.setCreatedAt(LocalDateTime.now());
+        System.out.println("Creando notificación: " + message + " | Tipo: " + type + " | RefID: " + referenceId);
         notificationDao.save(notification);
     }
 
@@ -48,5 +62,4 @@ public class NotificationServiceImpl implements NotificationService {
         }
         notificationDao.saveAll(unread);
     }
-
 }
