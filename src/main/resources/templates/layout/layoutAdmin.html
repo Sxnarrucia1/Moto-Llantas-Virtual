@@ -120,18 +120,18 @@
                     </li>
 
                     <li sec:authorize="hasRole('ADMIN')">
-                        <a href="#" class="flex items-center gap-2 p-3 text-white hover:bg-gray-700 rounded transition duration-300">
+                        <a href="/incomes/income" class="flex items-center gap-2 p-3 text-white hover:bg-gray-700 rounded transition duration-300">
                             💵 <span>Ingresos</span>
+                        </a>
+                    </li>
+                    <li sec:authorize="hasRole('ADMIN')">
+                        <a href="/expenses/expense" class="flex items-center gap-2 p-3 text-white hover:bg-gray-700 rounded transition duration-300">
+                            📤 <span>Egresos</span>
                         </a>
                     </li>
                     <li sec:authorize="hasRole('ADMIN')">
                         <a href="/calendar/admin" class="flex items-center gap-2 p-3 text-white hover:bg-gray-700 rounded transition duration-300">
                             📆 <span>Calendario</span>
-                        </a>
-                    </li>
-                    <li sec:authorize="hasRole('ADMIN')">
-                        <a href="#" class="flex items-center gap-2 p-3 text-white hover:bg-gray-700 rounded transition duration-300">
-                            📤 <span>Egresos</span>
                         </a>
                     </li>
                     <li sec:authorize="hasRole('ADMIN')" class="group">

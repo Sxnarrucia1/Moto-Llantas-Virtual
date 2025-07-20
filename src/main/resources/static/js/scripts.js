@@ -505,3 +505,91 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+function openIncomeModal(id) {
+    const modal = document.getElementById(id);
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+
+function closeIncomeModal(id) {
+    const modal = document.getElementById(id);
+    modal.classList.remove('flex');
+    modal.classList.add('hidden');
+}
+
+function openIncomeEditModal(id, date, amount, description, category) {
+    document.getElementById('edit-id').value = id;
+    document.getElementById('edit-date').value = date;
+    document.getElementById('edit-amount').value = amount;
+    document.getElementById('edit-description').value = description;
+    document.getElementById('edit-category').value = category;
+    openIncomeModal('editIncomeModal');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    ['createIncomeModal', 'editIncomeModal'].forEach(modalId => {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.addEventListener('click', () => closeIncomeModal(modalId));
+        }
+    });
+});
+
+function handleEditClick(button) {
+    const id = button.getAttribute('data-id');
+    const date = button.getAttribute('data-date');
+    const amount = button.getAttribute('data-amount');
+    const description = button.getAttribute('data-description');
+    const category = button.getAttribute('data-category');
+
+    openIncomeEditModal(id, date, amount, description, category);
+}
+
+function openConfirmModal(id) {
+    document.getElementById('modal-' + id).classList.remove('hidden');
+}
+
+function closeConfirmModal(id) {
+    document.getElementById('modal-' + id).classList.add('hidden');
+}
+
+function openExpenseModal(id) {
+    const modal = document.getElementById(id);
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+
+function closeExpenseModal(id) {
+    const modal = document.getElementById(id);
+    modal.classList.remove('flex');
+    modal.classList.add('hidden');
+}
+
+function openExpenseEditModal(id, date, amount, description, category) {
+    document.getElementById('edit-expense-id').value = id;
+    document.getElementById('edit-expense-date').value = date;
+    document.getElementById('edit-expense-amount').value = amount;
+    document.getElementById('edit-expense-description').value = description;
+    document.getElementById('edit-expense-category').value = category;
+    openExpenseModal('editExpenseModal');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    ['createExpenseModal', 'editExpenseModal'].forEach(modalId => {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.addEventListener('click', () => closeExpenseModal(modalId));
+        }
+    });
+});
+
+function handleExpenseEditClick(button) {
+    const id = button.getAttribute('data-id');
+    const date = button.getAttribute('data-date');
+    const amount = button.getAttribute('data-amount');
+    const description = button.getAttribute('data-description');
+    const category = button.getAttribute('data-category');
+
+    openExpenseEditModal(id, date, amount, description, category);
+}
+
