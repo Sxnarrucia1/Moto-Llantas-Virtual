@@ -4,8 +4,8 @@
 <head th:replace="~{layout/layout :: head}">
   <link rel="stylesheet" href="css/styles.css" type="text/css"/>
   <script src="https://kit.fontawesome.com/yourkitid.js" crossorigin="anonymous"></script>
-  <title>Catálogo de Repuestos</title>
   <meta charset="UTF-8"/>
+  <title>Mi Carrito</title>
 </head>
 <body class="bg-light">
 
@@ -16,7 +16,6 @@
       <p class="text-muted">Revisa y gestiona los productos que deseas comprar.</p>
     </div>
 
-    <!-- Tabla estilizada dentro de una tarjeta -->
     <div class="card shadow rounded-4 p-4 border-0">
       <table class="table table-borderless align-middle">
         <thead class="border-bottom border-2" style="color: #5F5E5D;">
@@ -30,87 +29,41 @@
         </tr>
         </thead>
         <tbody>
-        <!-- Producto 1 -->
-        <tr class="text-center align-middle">
-          <td><img src="https://motorepuestoscalleblancos.com/cdn/shop/products/D_NQ_NP_833778-MLC45978666256_052021-O.jpg?v=1667484926" alt="Filtro de Aire" class="img-thumbnail" style="width: 60px;"/></td>
-          <td class="fw-semibold" style="color: #484744;">Filtro de Aire</td>
-          <td style="color: #5F5E5D;">₡12,500</td>
-          <td class="fw-bold" style="color: #F47808;">₡25,000</td>
+        <tr class="text-center align-middle" th:each="item : ${cartItems}">
+          <!--
           <td>
-            <div class="d-flex justify-content-center align-items-center">
-              <input type="number" class="form-control form-control-sm text-center" value="2" min="1" style="width: 80px;" disabled />
-              <button class="btn btn-sm ms-2" style="border-color: #FED14A; color: #FED14A;" disabled>
-                <i class="fa-solid fa-floppy-disk"></i>
-              </button>
-            </div>
-          </td>
-          <td>
-            <button class="btn btn-sm" style="border-color: #F47808; color: #F47808;" disabled>
-              <i class="fas fa-trash-alt"></i>
-            </button>
-          </td>
-        </tr>
 
-        <!-- Producto 2 -->
-        <tr class="text-center align-middle">
-          <td><img src="/images/bujias.jpg" alt="Bujías NGK" class="img-thumbnail" style="width: 60px;"/></td>
-          <td class="fw-semibold" style="color: #484744;">Bujías NGK</td>
-          <td style="color: #5F5E5D;">₡3,000</td>
-          <td class="fw-bold" style="color: #F47808;">₡12,000</td>
-          <td>
-            <div class="d-flex justify-content-center align-items-center">
-              <input type="number" class="form-control form-control-sm text-center" value="4" min="1" style="width: 80px;" disabled />
-              <button class="btn btn-sm ms-2" style="border-color: #FED14A; color: #FED14A;" disabled>
-                <i class="fa-solid fa-floppy-disk"></i>
-              </button>
-            </div>
+            <img th:if="${item.product.imageUrl != null}"
+                 th:src="@{${item.product.imageUrl}}" alt="Imagen producto"
+                 class="img-thumbnail" style="width: 60px;"/>
           </td>
+          -->
+          <td class="fw-semibold" style="color: #484744;" th:text="${item.product.name}">Nombre producto</td>
+          <td style="color: #5F5E5D;" th:text="'₡' + ${item.product.price}">₡0</td>
+          <td class="fw-bold" style="color: #F47808;"
+              th:text="'₡' + ${#numbers.formatDecimal(item.quantity * item.product.price, 1, 'COMMA', 2, 'POINT')}">₡0</td>
           <td>
-            <button class="btn btn-sm" style="border-color: #F47808; color: #F47808;" disabled>
-              <i class="fas fa-trash-alt"></i>
-            </button>
-          </td>
-        </tr>
+            <form method="post" th:action="@{/cart/update}">
+              <div class="d-flex justify-content-center align-items-center">
 
-        <!-- Producto 3 -->
-        <tr class="text-center align-middle">
-          <td><img src="/images/aceite.jpg" alt="Aceite 10W-30" class="img-thumbnail" style="width: 60px;"/></td>
-          <td class="fw-semibold" style="color: #484744;">Aceite 10W-30</td>
-          <td style="color: #5F5E5D;">₡5,800</td>
-          <td class="fw-bold" style="color: #F47808;">₡11,600</td>
-          <td>
-            <div class="d-flex justify-content-center align-items-center">
-              <input type="number" class="form-control form-control-sm text-center" value="2" min="1" style="width: 80px;" disabled />
-              <button class="btn btn-sm ms-2" style="border-color: #FED14A; color: #FED14A;" disabled>
-                <i class="fa-solid fa-floppy-disk"></i>
-              </button>
-            </div>
-          </td>
-          <td>
-            <button class="btn btn-sm" style="border-color: #F47808; color: #F47808;" disabled>
-              <i class="fas fa-trash-alt"></i>
-            </button>
-          </td>
-        </tr>
+                <input type="hidden" name="productId" th:value="${item.product.id}"/>
 
-        <!-- Producto 4 -->
-        <tr class="text-center align-middle">
-          <td><img src="/images/freno.jpg" alt="Pastillas de Freno" class="img-thumbnail" style="width: 60px;"/></td>
-          <td class="fw-semibold" style="color: #484744;">Pastillas de Freno</td>
-          <td style="color: #5F5E5D;">₡18,000</td>
-          <td class="fw-bold" style="color: #F47808;">₡18,000</td>
-          <td>
-            <div class="d-flex justify-content-center align-items-center">
-              <input type="number" class="form-control form-control-sm text-center" value="1" min="1" style="width: 80px;" disabled />
-              <button class="btn btn-sm ms-2" style="border-color: #FED14A; color: #FED14A;" disabled>
-                <i class="fa-solid fa-floppy-disk"></i>
-              </button>
-            </div>
+                <input type="number" class="form-control form-control-sm text-center"
+                       name="quantity" th:value="${item.quantity}" min="1" style="width: 80px;"/>
+                <button type="submit" class="btn btn-sm ms-2" style="border-color: #FED14A; color: #FED14A;">
+                  <i class="fa-solid fa-floppy-disk"></i>
+                </button>
+              </div>
+            </form>
           </td>
           <td>
-            <button class="btn btn-sm" style="border-color: #F47808; color: #F47808;" disabled>
-              <i class="fas fa-trash-alt"></i>
-            </button>
+            <form method="post" th:action="@{/cart/remove}">
+              <!-- Id-->
+              <input type="hidden" name="productId" th:value="${item.product.id}"/>
+              <button type="submit" class="btn btn-sm" style="border-color: #F47808; color: #F47808;">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </form>
           </td>
         </tr>
         </tbody>
@@ -119,7 +72,8 @@
         <tr>
           <td colspan="4"></td>
           <td class="text-end fw-bold" style="color: #5F5E5D;">Total:</td>
-          <td class="fw-bold text-center" style="color: #F47808;">₡66,600</td>
+          <td class="fw-bold text-center" style="color: #F47808;"
+              th:text="'₡' + ${#numbers.formatDecimal(totalPrice, 1, 'COMMA', 2, 'POINT')}">₡0</td>
         </tr>
         </tfoot>
       </table>
@@ -127,15 +81,16 @@
 
     <div class="row mt-4">
       <div class="col text-center">
-        <a href="#" class="btn me-2 disabled" style="border-color: #484744; color: #484744;">
-          <i class="fas fa-arrow-left"></i> Seguir añadiendo productos
+        <a th:href="@{/catalog/catalog}" class="btn me-2" style="border-color: #484744; color: #484744;">
+          <i class="fas fa-arrow-left"></i> Seguir comprando
         </a>
-        <button class="btn disabled" style="background-color: #FED14A; color: #484744;">
-          <i class="fas fa-check"></i> Finalizar Compra
-        </button>
+        <a th:href="@{/checkout}" class="btn" style="background-color: #FED14A; color: #484744;">
+          <i class="fas fa-check"></i> Finalizar compra
+        </a>
       </div>
     </div>
   </div>
 </section>
+
 </body>
 </html>
