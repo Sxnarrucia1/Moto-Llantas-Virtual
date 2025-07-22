@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/layout :: head}">
+    <meta charset="UTF-8"/>
+    <title>Contabilidad - Transacciones</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css"/>
+</head>
+<body>
+
+<div th:replace="~{layout/layout :: header}"></div>
+
+<div class="container mt-4">
+    <h2 class="mb-4">Lista de Ingresos y Egresos</h2>
+    <a class="btn btn-primary mb-3" th:href="@{/contabilidad/nueva}">Agregar Transacción</a>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Monto</th>
+                <th>Descripción</th>
+                <th>Categoría</th>
+                <th>Tipo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+              <tr>
+                <td>2025-04-05</td>
+                <td>150000</td>
+                <td>Venta de llantas</td>
+                <td>Ventas</td>
+                <td>Ingreso</td>
+                <td>
+                    <a href="#" class="btn btn-sm btn-warning">Editar</a>
+                    <a href="#" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+              <tr>
+                <td>2025-04-06</td>
+                <td>50000</td>
+                <td>Compra de inventario</td>
+                <td>Compras</td>
+                <td>Egreso</td>
+                <td>
+                    <a href="#" class="btn btn-sm btn-warning">Editar</a>
+                    <a href="#" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+            <tr>
+                <td>2025-04-07</td>
+                <td>30000</td>
+                <td>Pago de servicios públicos</td>
+                <td>Servicios</td>
+                <td>Egreso</td>
+                <td>
+                    <a href="#" class="btn btn-sm btn-warning">Editar</a>
+                    <a href="#" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div th:replace="~{layout/layout :: footer}"></div>
+
+</body>
+</html>
+

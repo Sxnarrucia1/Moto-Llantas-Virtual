@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="~{layout/layout :: head}">
+  <title>Moto Llantas</title>
+  <meta charset="UTF-8"/>
+</head>
+<body>
+
+<header th:replace="~{layout/layoutAdmin :: header}"/>
+
+<section th:replace="~{inventory/fragments :: inventoryProducts}"/>
+
+
+
+
+<!--
+<section th:replace="~{inventory/fragments :: historyChanges}"/>
+<section th:replace="~{inventory/fragments :: expirationAlerts}"/>
+-->
+
+
+
+
+<aside th:replace="~{layout/layoutAdmin :: sidebar}"/>
+
+<script src="js/scripts.js"></script>
+</body>
+</html>

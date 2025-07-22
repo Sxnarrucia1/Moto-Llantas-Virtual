@@ -1,17 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.motollantas.MotoLlantasVirtual.Service;
 
 import com.motollantas.MotoLlantasVirtual.domain.Notification;
+import com.motollantas.MotoLlantasVirtual.domain.NotificationPreference;
 import com.motollantas.MotoLlantasVirtual.domain.User;
-import java.util.List;
 
-/**
- *
- * @author esteb
- */
+import java.util.List;
+import java.util.Optional;
+
 public interface NotificationService {
 
     void notifyUser(User user, String message);
@@ -23,4 +18,8 @@ public interface NotificationService {
     int countUnreadNotifications(Long userId);
 
     void markAllAsRead(Long userId);
+
+    void savePreferences(NotificationPreference preferences);
+
+    Optional<NotificationPreference> findPreferencesByUserId(Long userId);
 }
