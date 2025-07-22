@@ -10,7 +10,8 @@
         <header th:replace="~{layout/layout :: header}"/>
 
         <main class="container mx-auto px-4 py-6">
-            <!-- Solo se incluye el catálogo, que ya tiene el formulario dentro -->
+            <section th:replace="~{catalog/fragments :: filterProducts}"></section>
+
             <section th:replace="~{catalog/fragments :: catalog}"></section>
         </main>
 
