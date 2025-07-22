@@ -20,29 +20,38 @@ public class CatalogController {
         Product product = productService.getProductById(id);
 
         if (product == null || !product.isStatus()) {
-            return "redirect:/catalog"; // Redirige si el producto no existe o está inactivo
+            return "redirect:/catalog";
         }
 
         model.addAttribute("product", product);
         return "catalog/productDetails";
     }
-    @GetMapping("/catalog")
-    public String showCatalog(Model model) {
-    System.out.println(productService.getActiveProducts());
-    model.addAttribute("products", productService.getActiveProducts());
-    return "catalog/catalog";
-}
-    
-    @GetMapping("/search")
-    public String searchCatalog(@RequestParam(required = false) String keyword, Model model) {
-        List<Product> filteredProducts = productService.getActiveProducts().stream()
-                .filter(p -> keyword == null || keyword.isBlank()
-                        || p.getName().toLowerCase().contains(keyword.toLowerCase())
-                        || p.getCategory().toLowerCase().contains(keyword.toLowerCase()))
-                .toList();
 
+    @GetMapping("/catalog")
+    public String showCatalog(@RequestParam(required = false) String keyword,
+                               @RequestParam(required = false) String category,
+                               Model model) {
+
+        List<Product> filteredProducts = productService.getAllProductsOrdered().stream()
+            .filter(p -> p.isStatus()) // solo productos activos
+            .filter(p -> keyword == null || keyword.isEmpty() ||
+                         p.getName().toLowerCase().contains(keyword.toLowerCase()) ||
+                         p.getDescription().toLowerCase().contains(keyword.toLowerCase()))
+            .filter(p -> category == null || category.isEmpty() ||
+                         p.getCategory().equalsIgnoreCase(category))
+            .toList();
+
+        List<String> categories = productService.getAllProductsOrdered().stream()
+            .map(Product::getCategory)
+            .filter(c -> c != null && !c.isEmpty())
+            .distinct()
+            .toList();
+
+        model.addAttribute("categories", categories);
+        model.addAttribute("selectedCategory", category);
+        model.addAttribute("keyword", keyword);
         model.addAttribute("products", filteredProducts);
-        model.addAttribute("keyword", keyword); // para mantener el valor en el input
+
         return "catalog/catalog";
     }
 }
