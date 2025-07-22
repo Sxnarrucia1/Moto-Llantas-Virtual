@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:replace="~{layout/layout :: head}">
+        <title>Mis Motocicletas</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body class="flex flex-col min-h-screen">
+        <div class="fixed top-5 right-5 z-50" id="toastContainer">
+            <div th:if="${mensajeError}" class="toast-message bg-red-500 text-white px-4 py-3 rounded shadow-lg mb-4 animate-fade-in-out">
+                <p th:text="${mensajeError}"></p>
+            </div>
+            <div th:if="${mensajeExito}" class="toast-message bg-green-500 text-white px-4 py-3 rounded shadow-lg animate-fade-in-out">
+                <p th:text="${mensajeExito}"></p>
+            </div>
+        </div>
+        <header th:replace="~{layout/layout :: header}"/>
+
+        <main class="container mx-auto px-4 py-6">
+            <section th:replace="~{motorcycle/fragments :: myMotorcycles}"/>
+        </main>
+
+        <footer th:replace="~{layout/layout :: footer}"/>
+        <script th:src="@{/js/scripts.js}"></script>
+    </body>
+</html>

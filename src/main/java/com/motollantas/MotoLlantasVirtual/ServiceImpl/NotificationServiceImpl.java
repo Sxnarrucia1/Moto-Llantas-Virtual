@@ -1,27 +1,25 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.motollantas.MotoLlantasVirtual.ServiceImpl;
 
 import com.motollantas.MotoLlantasVirtual.Service.NotificationService;
 import com.motollantas.MotoLlantasVirtual.dao.NotificationDao;
+import com.motollantas.MotoLlantasVirtual.dao.NotificationPreferenceDao;
 import com.motollantas.MotoLlantasVirtual.domain.Notification;
+import com.motollantas.MotoLlantasVirtual.domain.NotificationPreference;
 import com.motollantas.MotoLlantasVirtual.domain.User;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author esteb
- */
 @Service
 public class NotificationServiceImpl implements NotificationService {
 
     @Autowired
     private NotificationDao notificationDao;
+
+    @Autowired
+    private NotificationPreferenceDao preferencesDao;
 
     @Override
     public void notifyUser(User user, String message) {
@@ -40,7 +38,6 @@ public class NotificationServiceImpl implements NotificationService {
         notification.setType(type);
         notification.setReferenceId(referenceId);
         notification.setCreatedAt(LocalDateTime.now());
-        System.out.println("Creando notificación: " + message + " | Tipo: " + type + " | RefID: " + referenceId);
         notificationDao.save(notification);
     }
 
@@ -61,5 +58,26 @@ public class NotificationServiceImpl implements NotificationService {
             notification.setRead(true);
         }
         notificationDao.saveAll(unread);
+    }
+
+    @Override
+    public void savePreferences(NotificationPreference preferences) {
+        Optional<NotificationPreference> existing = preferencesDao.findByUserId(preferences.getUserId());
+
+        if (existing.isPresent()) {
+            NotificationPreference pref = existing.get();
+            pref.setPromotions(preferences.isPromotions());
+            pref.setUpdates(preferences.isUpdates());
+            pref.setReminders(preferences.isReminders());
+            pref.setFrequency(preferences.getFrequency());
+            preferencesDao.save(pref);
+        } else {
+            preferencesDao.save(preferences);
+        }
+    }
+
+    @Override
+    public Optional<NotificationPreference> findPreferencesByUserId(Long userId) {
+        return preferencesDao.findByUserId(userId);
     }
 }
