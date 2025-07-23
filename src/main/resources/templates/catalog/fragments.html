@@ -47,6 +47,14 @@
                                class="inline-block mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
                                 Ver detalles
                             </a>
+                            <form th:action="@{/cart/add}" method="post" class="mt-2">
+                                <input type="hidden" name="productId" th:value="${product.id}" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <button type="submit"
+                                        class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
+                                    Agregar al carrito
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
