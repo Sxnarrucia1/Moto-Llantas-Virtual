@@ -57,8 +57,96 @@
                     </ul>
                 </aside>
 
-                <!-- Resto del formulario de perfil (sin cambios) -->
-                <!-- ... -->
+                <!-- profile -->
+                <div class="w-full lg:w-2/3">
+                    <!-- title -->
+                    <div class="flex items-center mb-8">
+                        <i class="fas fa-user-circle text-blue-600 text-4xl mr-4"></i>
+                        <h2 class="text-3xl font-extrabold text-gray-800">Tu perfil</h2>
+                    </div>
+
+
+                    <form action="#" method="post" class="space-y-6">
+                        <!-- name -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nombre completo</label>
+                            <div class="flex items-center border rounded-xl px-4 py-2 bg-gray-50 shadow-sm">
+                                <i class="fas fa-user text-gray-500 mr-3"></i>
+                                <input type="text" name="fullName" th:value="${user.fullName}"
+                                       class="w-full bg-transparent outline-none text-gray-900 placeholder-gray-400"/>
+                            </div>
+                        </div>
+
+                        <!-- Identification -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Identificación</label>
+                            <div class="flex items-center border rounded-xl px-4 py-2 bg-gray-100 shadow-inner">
+                                <i class="fas fa-id-card text-gray-400 mr-3"></i>
+                                <input type="text" th:value="${user.identification}"
+                                       class="w-full bg-transparent outline-none text-gray-500 cursor-not-allowed"
+                                       disabled/>
+                            </div>
+                        </div>
+
+                        <!-- email -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
+                            <div class="flex items-center border rounded-xl px-4 py-2 bg-gray-100 shadow-inner">
+                                <i class="fas fa-envelope text-gray-400 mr-3"></i>
+                                <input type="email" th:value="${user.email}" readonly
+                                       class="w-full bg-transparent outline-none text-gray-500 cursor-not-allowed"/>
+                            </div>
+                        </div>
+
+                        <!-- Cambiar contraseña -->
+                        <div class="pt-6 border-t border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center">
+                                <i class="fas fa-lock mr-2 text-indigo-600"></i> Cambiar Contraseña
+                            </h3>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <!-- password actual (no editable) -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Actual</label>
+                                    <div class="flex items-center border rounded-xl px-4 py-2 bg-gray-100 shadow-inner">
+                                        <i class="fas fa-key text-gray-400 mr-3"></i>
+                                        <input type="password" placeholder="****" name="currentPassword"
+                                               class="w-full bg-transparent outline-none text-gray-500 cursor-not-allowed"
+                                               readonly />
+                                    </div>
+                                </div>
+
+                                <!-- nueva contraseña -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nueva</label>
+                                    <div class="flex items-center border rounded-xl px-4 py-2 bg-gray-50 shadow-sm">
+                                        <i class="fas fa-unlock-alt text-gray-500 mr-3"></i>
+                                        <input type="password" placeholder="Nueva contraseña" name="newPassword"
+                                               class="w-full bg-transparent outline-none text-gray-900" />
+                                    </div>
+                                </div>
+
+                                <!-- confirmar nueva contraseña -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Confirmar</label>
+                                    <div class="flex items-center border rounded-xl px-4 py-2 bg-gray-50 shadow-sm">
+                                        <i class="fas fa-check text-gray-500 mr-3"></i>
+                                        <input type="password" placeholder="Confirmar" name="confirmNewPassword"
+                                               class="w-full bg-transparent outline-none text-gray-900" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- button -->
+                        <div class="flex justify-end pt-6">
+                            <button type="submit"
+                                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-xl transition duration-200 shadow-md hover:shadow-lg">
+                                <i class="fas fa-save mr-2"></i> Guardar cambios
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
