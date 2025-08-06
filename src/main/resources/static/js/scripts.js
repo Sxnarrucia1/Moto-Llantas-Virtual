@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const menuToggle = document.getElementById('menu-toggle');
+
     const menu = document.getElementById('menu');
     if (menuToggle && menu) {
         menuToggle.addEventListener('click', function () {
@@ -467,6 +468,12 @@ function closeDeleteModal(id) {
 document.addEventListener("DOMContentLoaded", () => {
     const stars = document.querySelectorAll("#star-container .star");
     const ratingInput = document.getElementById("rating");
+
+    if (!ratingInput) {
+        console.error("Elemento con id='rating' no encontrado.");
+        return;
+    }
+
     let selectedRating = parseInt(ratingInput.value) || 0;
 
     function highlightStars(rating) {
@@ -499,11 +506,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Mostrar estrellas si ya hay una calificación cargada
     if (selectedRating > 0) {
         highlightStars(selectedRating);
     }
 });
+
 
 function openIncomeModal(id) {
     const modal = document.getElementById(id);
@@ -592,4 +599,45 @@ function handleExpenseEditClick(button) {
 
     openExpenseEditModal(id, date, amount, description, category);
 }
+
+let chart;
+
+document.addEventListener('DOMContentLoaded', function () {
+    const ctx = document.getElementById('financialChart').getContext('2d');
+    chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Ingreso', 'Egreso', 'Balance'],
+            datasets: [{
+                    label: 'Resumen Financiero',
+                    data: [0, 0, 0],
+                    backgroundColor: ['#22c55e', '#ef4444', '#3b82f6']
+                }]
+        }
+    });
+
+    updateFinancialChart();
+});
+
+
+function updateFinancialChart() {
+    fetch('/dashboard/api/finance-summary')
+            .then(response => response.json())
+            .then(data => {
+                const {income, expense, balance} = data;
+
+                chart.data.datasets[0].data = [income, expense, balance];
+                chart.update();
+
+                document.getElementById('income').textContent = income.toFixed(2);
+                document.getElementById('expense').textContent = expense.toFixed(2);
+                document.getElementById('balance').textContent = balance.toFixed(2);
+            })
+            .catch(error => console.error("Error al obtener datos financieros:", error));
+}
+
+setInterval(updateFinancialChart, 30000);
+
+
+
 

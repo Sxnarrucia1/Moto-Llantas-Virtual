@@ -7,6 +7,7 @@ package com.motollantas.MotoLlantasVirtual.ServiceImpl;
 import com.motollantas.MotoLlantasVirtual.Service.IncomeService;
 import com.motollantas.MotoLlantasVirtual.dao.IncomeDao;
 import com.motollantas.MotoLlantasVirtual.domain.Income;
+import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,5 +43,9 @@ public class IncomeServiceImpl implements IncomeService {
         income.setActive(false);
         incomeDao.save(income);
     }
-}
 
+    @Override
+    public BigDecimal getTotalIncome() {
+        return incomeDao.sumAllActiveIncomes();
+    }
+}

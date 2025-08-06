@@ -4,23 +4,17 @@
  */
 package com.motollantas.MotoLlantasVirtual.Service;
 
-import com.motollantas.MotoLlantasVirtual.domain.Income;
 import java.math.BigDecimal;
-import java.util.List;
 
 /**
  *
  * @author esteb
  */
-public interface IncomeService {
-
-    public List<Income> findByDescription(String description);
-
-    public List<Income> filterByCategory(String category);
-
-    public List<Income> findAllActive();
-
-    public void softDelete(Long id);
+public interface FinanceDashboardService {
 
     public BigDecimal getTotalIncome();
+    
+    public BigDecimal getTotalExpense();
+    
+    public BigDecimal getNetBalance();
 }

@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.css"/>
         <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
     <body class="flex flex-col min-h-screen">
 
@@ -72,7 +73,7 @@
 
                     <!--  dashboard Admin -->
                     <a sec:authorize="hasRole('ADMIN')"
-                       th:href="@{/dashboard}"
+                       th:href="@{/dashboard/finance}"
                        class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg shadow-md transition duration-300">
                         <i class="fa-solid fa-user-shield mr-2"></i> Panel Admin
                     </a>
