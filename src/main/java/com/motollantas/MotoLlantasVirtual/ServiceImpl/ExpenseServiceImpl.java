@@ -7,6 +7,7 @@ package com.motollantas.MotoLlantasVirtual.ServiceImpl;
 import com.motollantas.MotoLlantasVirtual.Service.ExpenseService;
 import com.motollantas.MotoLlantasVirtual.dao.ExpenseDao;
 import com.motollantas.MotoLlantasVirtual.domain.Expense;
+import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,5 +42,10 @@ public class ExpenseServiceImpl implements ExpenseService {
         Expense expense = expenseDao.findById(id).orElseThrow();
         expense.setActive(false);
         expenseDao.save(expense);
+    }
+
+    @Override
+    public BigDecimal getTotalExpense() {
+        return expenseDao.sumAllActiveExpenses();
     }
 }

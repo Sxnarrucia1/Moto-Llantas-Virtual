@@ -5,6 +5,7 @@
 package com.motollantas.MotoLlantasVirtual.Service;
 
 import com.motollantas.MotoLlantasVirtual.domain.Expense;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -20,4 +21,6 @@ public interface ExpenseService {
     List<Expense> findAllActive();
 
     void softDelete(Long id);
+    
+    public BigDecimal getTotalExpense();
 }
