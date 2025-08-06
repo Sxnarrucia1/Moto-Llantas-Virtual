@@ -638,6 +638,82 @@ function updateFinancialChart() {
 
 setInterval(updateFinancialChart, 30000);
 
+document.addEventListener('DOMContentLoaded', function () {
+    const container = document.getElementById('reportDataContainer');
+
+    if (!container) {
+        console.error("No se encontró el contenedor #reportDataContainer.");
+        return;
+    }
+
+    const jsonString = container.dataset.json;
+
+    if (!jsonString) {
+        console.error("No se encontró el atributo data-json.");
+        return;
+    }
+
+    let reportData;
+    try {
+        reportData = JSON.parse(jsonString);
+    } catch (error) {
+        console.error("Error al parsear reportJson:", error);
+        return;
+    }
+
+    const labels = reportData.summaries.map(s => s.label);
+    const incomeData = reportData.summaries.map(s => s.income);
+    const expenseData = reportData.summaries.map(s => s.expense);
+    const balanceData = reportData.summaries.map(s => s.balance);
+
+    const ctx = document.getElementById('reportChart')?.getContext('2d');
+    if (!ctx) {
+        console.error("No se encontró el canvas #reportChart.");
+        return;
+    }
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Ingresos',
+                    data: incomeData,
+                    borderColor: '#22c55e',
+                    fill: false
+                },
+                {
+                    label: 'Egresos',
+                    data: expenseData,
+                    borderColor: '#ef4444',
+                    fill: false
+                },
+                {
+                    label: 'Balance',
+                    data: balanceData,
+                    borderColor: '#3b82f6',
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top'
+                },
+                title: {
+                    display: true,
+                    text: 'Resumen Financiero por Periodo'
+                }
+            }
+        }
+    });
+});
+
+
+
 
 
 
