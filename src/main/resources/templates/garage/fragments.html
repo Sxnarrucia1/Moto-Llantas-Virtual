@@ -5,8 +5,8 @@
     <head th:replace="~{layout/layout :: head}">
         <title>Taller Llantas</title>
     </head>
-    <body class="flex flex-col min-h-screen">
-        <section th:fragment="userDate" class="h-100 h-custom gradient-custom-garage">
+    <body class="flex flex-col flex-grow">
+        <section th:fragment="userDate" class="min-vh-100 d-flex justify-content-center align-items-center gradient-custom-garage">
             <div class="container py-5 h-100"> 
                 <form th:action="${clientDateDTO.id} != null ? @{/garage/updateDate} : @{/garage/saveDate}" th:object="${clientDateDTO}" method="post">
                     <input type="hidden" th:field="*{id}" />
