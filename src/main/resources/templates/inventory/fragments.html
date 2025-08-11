@@ -180,6 +180,15 @@
                             <p th:text="${productDetail.stock}" class="pl-2 text-gray-900"></p>
                         </div>
 
+                        <!-- Imagen -->
+                        <div class="sm:col-span-2 flex justify-center">
+                            <img th:if="${productDetail.imageUrl != null}"
+                                 th:src="${productDetail.imageUrl}"
+                                 alt="Imagen del producto"
+                                 class="max-h-64 rounded-md shadow-md"/>
+                            <p th:if="${productDetail.imageUrl == null}" class="text-gray-500 italic">No hay imagen disponible</p>
+                        </div>
+
                         <div>
                             <p class="font-semibold">📅 Fecha de Vencimiento:</p>
                             <span th:if="${productDetail.expirationDate != null}"
@@ -225,7 +234,7 @@
                     </h3>
 
                     <!-- form -->
-                    <form th:action="@{/inventory/save}" th:object="${editProduct}" method="post" class="space-y-5">
+                    <form th:action="@{/inventory/save}" th:object="${editProduct}" method="post" enctype="multipart/form-data" class="space-y-5">
                         <input type="hidden" th:field="*{id}" />
 
                         <!-- name -->
@@ -271,6 +280,16 @@
                                    placeholder="Selecciona una nueva fecha"
                                    class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                         </div>
+
+                        <!-- Vista previa imagen actual -->
+                        <div th:if="${editProduct.imageUrl != null}" class="mb-4">
+                            <label class="block font-semibold text-gray-700 mb-1">Imagen actual:</label>
+                            <img th:src="${editProduct.imageUrl}" alt="Imagen actual" class="max-h-40 rounded-md shadow-md"/>
+                        </div>
+
+                        <!-- Subir nueva imagen -->
+                        <label>Imagen (subir nueva):</label>
+                        <input type="file" name="imageFile" accept="image/*"/>
 
                         <!-- Buttons -->
                         <div class="flex justify-end gap-3 pt-4">

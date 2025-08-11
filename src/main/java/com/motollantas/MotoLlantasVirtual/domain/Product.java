@@ -33,6 +33,9 @@ public class Product {
     @Column(name = "expiration_date")
     private LocalDate expirationDate;
 
+    @Column(name = "image_url", length = 1024)
+    private String imageUrl;
+
     public Long getId() {
         return id;
     }
@@ -97,10 +100,18 @@ public class Product {
         this.expirationDate = expirationDate;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public Product() {
     }
 
-    public Product(String name, String description, String category, BigDecimal price, Integer stock, boolean status, LocalDate expirationDate) {
+    public Product(String name, String description, String category, BigDecimal price, Integer stock, boolean status, LocalDate expirationDate, String imageUrl) {
         this.name = name;
         this.description = description;
         this.category = category;
@@ -108,5 +119,6 @@ public class Product {
         this.stock = stock;
         this.status = status;
         this.expirationDate = expirationDate;
+        this.imageUrl = imageUrl;
     }
 }
