@@ -30,14 +30,14 @@
         </thead>
         <tbody>
         <tr class="text-center align-middle" th:each="item : ${cartItems}">
-          <!--
+
           <td>
 
             <img th:if="${item.product.imageUrl != null}"
                  th:src="@{${item.product.imageUrl}}" alt="Imagen producto"
                  class="img-thumbnail" style="width: 60px;"/>
           </td>
-          -->
+
           <td class="fw-semibold" style="color: #484744;" th:text="${item.product.name}">Nombre producto</td>
           <td style="color: #5F5E5D;" th:text="'₡' + ${item.product.price}">₡0</td>
           <td class="fw-bold" style="color: #F47808;"

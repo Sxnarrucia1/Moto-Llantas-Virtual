@@ -62,6 +62,7 @@
         <p class="text-gray-700 mb-4" th:text="${product.description}">Descripción del producto</p>
         <p class="text-2xl font-semibold text-green-600 mb-6" th:text="'₡' + ${product.price}">₡0</p>
 
+
         <div class="mb-6 flex flex-wrap items-center gap-3" sec:authorize="isAuthenticated()">
           <!-- Facebook -->
           <a class="p-2 border rounded hover:bg-gray-100"
@@ -107,4 +108,84 @@
     </section>
 
   </body>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <div th:each="product : ${products}" class="bg-white rounded shadow hover:shadow-lg transition duration-200">
+                        <div class="p-4 flex flex-col items-center">
+                            <!-- Imagen del producto -->
+                            <img th:if="${product.imageUrl != null}"
+                                 th:src="${product.imageUrl}"
+                                 alt="Imagen de producto"
+                                 class="w-full h-48 object-contain mb-4 rounded-md shadow-sm" />
+                            <p th:if="${product.imageUrl == null}" class="text-gray-400 italic mb-4">Sin imagen</p>
+
+                            <h2 class="text-lg font-semibold mb-2 text-center" th:text="${product.name}">Nombre</h2>
+                            <p class="text-gray-700 mb-2 text-center" th:text="${product.description}">Descripción</p>
+                            <p class="text-green-600 font-bold text-lg mb-2" th:text="'₡' + ${product.price}">₡0</p>
+
+                            <a th:href="@{'/catalog/productDetails/' + ${product.id}}"
+                               class="inline-block mt-1 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                                Ver detalles
+                            </a>
+                            <form th:action="@{/cart/add}" method="post" class="mt-2 w-full text-center">
+                                <input type="hidden" name="productId" th:value="${product.id}" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <button type="submit"
+                                        class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition w-full">
+                                    Agregar al carrito
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section th:fragment="productDetails" class="max-w-4xl mx-auto bg-white shadow rounded overflow-hidden mt-8">
+            <div class="md:flex md:gap-6 p-6">
+                <!-- Imagen -->
+                <div class="md:w-1/2 flex justify-center items-center bg-gray-100 rounded-lg p-4">
+                    <img th:if="${product.imageUrl != null}"
+                         th:src="${product.imageUrl}"
+                         alt="Imagen de producto"
+                         class="max-h-80 w-full object-contain rounded-md shadow-md" />
+                    <p th:if="${product.imageUrl == null}" class="text-gray-400 italic">Imagen no disponible</p>
+                </div>
+
+                <!-- Detalles -->
+                <div class="md:w-1/2 mt-6 md:mt-0">
+                    <h1 class="text-3xl font-bold mb-4" th:text="${product.name}">Nombre del producto</h1>
+
+                    <p class="text-gray-700 mb-6 whitespace-pre-line" th:text="${product.description}">Descripción del producto</p>
+
+                    <p class="text-2xl font-semibold text-green-600 mb-6" th:text="'₡' + ${product.price}">₡0</p>
+
+                    <p class="mb-4">
+                        <span class="font-semibold">Categoría: </span>
+                        <span th:text="${product.category}">Categoría</span>
+                    </p>
+
+                    <p class="mb-4">
+                        <span class="font-semibold">Stock disponible: </span>
+                        <span th:text="${product.stock}">0</span>
+                    </p>
+
+                    <p class="mb-6">
+                        <span class="font-semibold">Fecha de vencimiento: </span>
+                        <span th:if="${product.expirationDate != null}"
+                              th:text="${#temporals.format(product.expirationDate, 'dd/MM/yyyy')}">dd/MM/yyyy</span>
+                        <span th:unless="${product.expirationDate != null}" class="italic text-gray-500">No aplicable</span>
+                    </p>
+
+                    <a th:href="@{/catalog/catalog}"
+                       class="inline-block px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                        Volver al Catálogo
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </body>
+
 </html>
