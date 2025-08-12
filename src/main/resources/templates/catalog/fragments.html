@@ -2,40 +2,112 @@
 <html class="h-full" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <head th:replace="~{layout/layout :: head}">
-        <title>Taller Llantas</title>
-    </head>
-    <body class="flex flex-col min-h-screen">
+  <head th:replace="~{layout/layout :: head}">
+    <title>Taller Llantas</title>
+  </head>
+  <body class="flex flex-col min-h-screen">
 
-        <section th:fragment="filterProducts">
-            <form th:action="@{/catalog/catalog}" method="get" class="mb-6 flex flex-wrap justify-center gap-4">
-                <!-- Campo búsqueda -->
-                <input type="text" name="keyword" th:value="${keyword}" placeholder="Buscar por nombre o categoría"
-                       class="border border-gray-300 rounded px-4 py-2 w-64 shadow-sm" />
+    <!-- Filtro de productos -->
+    <section th:fragment="filterProducts">
+      <form th:action="@{/catalog/catalog}" method="get" class="mb-6 flex flex-wrap justify-center gap-4">
+        <input type="text" name="keyword" th:value="${keyword}" placeholder="Buscar por nombre o categoría" class="border border-gray-300 rounded px-4 py-2 w-64 shadow-sm" />
+        <select name="category" class="border border-gray-300 rounded px-4 py-2">
+          <option value="">-- Filtrar por categoría --</option>
+          <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}" th:selected="${cat == selectedCategory}"></option>
+        </select>
+        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">Buscar</button>
+        <a th:href="@{/catalog/catalog}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition">Limpiar</a>
+      </form>
+    </section>
 
-                <select name="category" class="border border-gray-300 rounded px-4 py-2">
-                    <option value="">-- Filtrar por categoría --</option>
-                    <option th:each="cat : ${categories}"
-                            th:value="${cat}"
-                            th:text="${cat}"
-                            th:selected="${cat == selectedCategory}">
-                    </option>
-                </select>
+    <!-- Catálogo de productos -->
+    <section th:fragment="catalog">
+      <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6 text-center">Catálogo de Productos</h1>
 
-                <button type="submit"
-                        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
-                    Buscar
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div th:each="product : ${products}" class="bg-white rounded shadow hover:shadow-lg transition duration-200">
+            <div class="p-4">
+              <h2 class="text-lg font-semibold mb-2" th:text="${product.name}">Nombre</h2>
+              <p class="text-gray-700 mb-2" th:text="${product.description}">Descripción</p>
+              <p class="text-green-600 font-bold text-lg" th:text="'₡' + ${product.price}">₡0</p>
+
+              <a th:href="@{'/catalog/productDetails/' + ${product.id}}"
+                 class="inline-block mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                Ver detalles
+              </a>
+
+              <form th:action="@{/cart/add}" method="post" class="mt-2">
+                <input type="hidden" name="productId" th:value="${product.id}" />
+                <input type="hidden" name="quantity" value="1" />
+                <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
+                  Agregar al carrito
                 </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-                <a th:href="@{/catalog/catalog}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition">
-                    Limpiar
-                </a>
-            </form>
-        </section>
+    <!-- Detalles de producto con íconos de compartir -->
+    <section th:fragment="productDetails" class="max-w-4xl mx-auto bg-white shadow rounded overflow-hidden">
+      <div class="p-6"
+           th:with="
+             productUrl='https://moto-llantas-virtual-production.up.railway.app/catalog/productDetails/' + ${product.id},
+             shareText=${product.name} + ' | ' + ${#strings.abbreviate(product.description, 160)}
+           ">
 
-        <section th:fragment="catalog">
-            <div class="container mx-auto px-4 py-8">
-                <h1 class="text-3xl font-bold mb-6 text-center">Catálogo de Productos</h1>
+        <h1 class="text-3xl font-bold mb-4" th:text="${product.name}">Nombre del producto</h1>
+        <p class="text-gray-700 mb-4" th:text="${product.description}">Descripción del producto</p>
+        <p class="text-2xl font-semibold text-green-600 mb-6" th:text="'₡' + ${product.price}">₡0</p>
+
+
+        <div class="mb-6 flex flex-wrap items-center gap-3" sec:authorize="isAuthenticated()">
+          <!-- Facebook -->
+          <a class="p-2 border rounded hover:bg-gray-100"
+             th:href="@{'https://www.facebook.com/sharer/sharer.php'(u=${productUrl})}"
+             target="_blank" rel="noopener noreferrer" title="Compartir en Facebook">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M22 12.07C22 6.48 17.52 2 11.93 2S2 6.48 2 12.07c0 5.02 3.66 9.19 8.44 9.93v-7.02H7.9v-2.91h2.54V9.41c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.23.2 2.23.2v2.45h-1.26c-1.24 0-1.63.77-1.63 1.56v1.87h2.78l-.44 2.91h-2.34V22c4.78-.74 8.44-4.91 8.44-9.93z"/>
+            </svg>
+          </a>
+
+          <!-- WhatsApp -->
+          <a class="p-2 border rounded hover:bg-gray-100"
+             th:href="@{'https://wa.me/'(text=${shareText + ' ' + productUrl})}"
+             target="_blank" rel="noopener noreferrer" title="Compartir en WhatsApp">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20.52 3.48A11.86 11.86 0 0012.03 0 11.99 11.99 0 000 12c0 2.11.55 4.08 1.6 5.83L0 24l6.34-1.64A11.97 11.97 0 0012.03 24c6.63 0 12-5.37 12-12 0-3.21-1.25-6.22-3.51-8.52z"/>
+            </svg>
+          </a>
+
+          <!-- X / Twitter -->
+          <a class="p-2 border rounded hover:bg-gray-100"
+             th:href="@{'https://twitter.com/intent/tweet'(text=${shareText}, url=${productUrl})}"
+             target="_blank" rel="noopener noreferrer" title="Compartir en X">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.244 2H21.5l-7.59 8.66L23 22h-6.406l-5.01-6.08L5.6 22H2.34l8.1-9.24L1 2h6.5l4.52 5.73L18.244 2zm-1.12 18h2.1L8.95 4h-2.1l10.274 16z"/>
+            </svg>
+          </a>
+
+          <!-- Compartir nativo -->
+          <button type="button" class="p-2 border rounded hover:bg-gray-100"
+                  th:attr="data-title=${product.name},data-text=${shareText},data-url=${productUrl}"
+                  onclick="shareNative(this)" title="Compartir">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M13 5.828V16a1 1 0 11-2 0V5.828L7.414 9.414A1 1 0 116 8l6-6 6 6a1 1 0 01-1.414 1.414L13 5.828zM5 14a1 1 0 011 1v3a1 1 0 001 1h10a1 1 0 001-1v-3a1 1 0 112 0v3a3 3 0 01-3 3H7a3 3 0 01-3-3v-3a1 1 0 011-1z"/>
+            </svg>
+          </button>
+        </div>
+
+        <a th:href="@{/catalog/catalog}" class="inline-block px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+          Volver al Catálogo
+        </a>
+      </div>
+    </section>
+
+  </body>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     <div th:each="product : ${products}" class="bg-white rounded shadow hover:shadow-lg transition duration-200">
@@ -115,4 +187,5 @@
         </section>
 
     </body>
+
 </html>
