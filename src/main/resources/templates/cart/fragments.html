@@ -7,87 +7,89 @@
   <meta charset="UTF-8"/>
   <title>Mi Carrito</title>
 </head>
-<body class="bg-light">
+<body class="bg-gray-50">
 
-<section th:fragment="cart" class="py-5">
-  <div class="container">
-    <div class="row mb-4 text-center">
-      <h2 class="display-6" style="color: #484744;">Mi carrito de compras</h2>
-      <p class="text-muted">Revisa y gestiona los productos que deseas comprar.</p>
+<section th:fragment="cart" class="py-10">
+  <div class="container mx-auto px-4 max-w-6xl">
+    <div class="mb-8 text-center">
+      <h2 class="text-4xl font-extrabold text-gray-800 mb-2">Mi carrito de compras</h2>
+      <p class="text-gray-500 text-lg">Revisa y gestiona los productos que deseas comprar.</p>
     </div>
 
-    <div class="card shadow rounded-4 p-4 border-0">
-      <table class="table table-borderless align-middle">
-        <thead class="border-bottom border-2" style="color: #5F5E5D;">
-        <tr class="text-center">
-          <th>Imagen</th>
-          <th>Producto</th>
-          <th>Precio</th>
-          <th>Subtotal</th>
-          <th>Cantidad</th>
-          <th>Acciones</th>
+    <div class="bg-white shadow-lg rounded-xl p-6 overflow-x-auto">
+      <table class="w-full table-auto text-gray-700">
+        <thead class="border-b-2 border-gray-200">
+        <tr class="text-center text-gray-600 uppercase tracking-wide font-semibold">
+          <th class="p-3">Imagen</th>
+          <th class="p-3">Producto</th>
+          <th class="p-3">Precio</th>
+          <th class="p-3">Subtotal</th>
+          <th class="p-3">Cantidad</th>
+          <th class="p-3">Acciones</th>
         </tr>
         </thead>
         <tbody>
-        <tr class="text-center align-middle" th:each="item : ${cartItems}">
-
-          <td>
-
+        <tr th:each="item : ${cartItems}" class="border-b hover:bg-gray-50 transition">
+          <td class="p-3 text-center">
             <img th:if="${item.product.imageUrl != null}"
                  th:src="@{${item.product.imageUrl}}" alt="Imagen producto"
-                 class="img-thumbnail" style="width: 60px;"/>
+                 class="mx-auto rounded-md shadow-md w-16 h-16 object-contain"/>
+            <span th:if="${item.product.imageUrl == null}" class="italic text-gray-400 text-sm">No disponible</span>
           </td>
 
-          <td class="fw-semibold" style="color: #484744;" th:text="${item.product.name}">Nombre producto</td>
-          <td style="color: #5F5E5D;" th:text="'₡' + ${item.product.price}">₡0</td>
-          <td class="fw-bold" style="color: #F47808;"
+          <td class="p-3 font-semibold text-gray-800" th:text="${item.product.name}">Nombre producto</td>
+
+          <td class="p-3 text-center text-gray-600" th:text="'₡' + ${item.product.price}">₡0</td>
+
+          <td class="p-3 text-center font-semibold text-amber-600"
               th:text="'₡' + ${#numbers.formatDecimal(item.quantity * item.product.price, 1, 'COMMA', 2, 'POINT')}">₡0</td>
-          <td>
-            <form method="post" th:action="@{/cart/update}">
-              <div class="d-flex justify-content-center align-items-center">
 
-                <input type="hidden" name="productId" th:value="${item.product.id}"/>
-
-                <input type="number" class="form-control form-control-sm text-center"
-                       name="quantity" th:value="${item.quantity}" min="1" style="width: 80px;"/>
-                <button type="submit" class="btn btn-sm ms-2" style="border-color: #FED14A; color: #FED14A;">
-                  <i class="fa-solid fa-floppy-disk"></i>
-                </button>
-              </div>
+          <td class="p-3 text-center">
+            <form method="post" th:action="@{/cart/update}" class="flex justify-center items-center gap-2">
+              <input type="hidden" name="productId" th:value="${item.product.id}"/>
+              <input type="number" name="quantity" th:value="${item.quantity}" min="1"
+                     class="w-20 border rounded-md text-center py-1 focus:outline-amber-500 focus:ring-1 focus:ring-amber-400"/>
+              <button type="submit"
+                      class="text-amber-600 hover:text-amber-800 transition duration-200"
+                      title="Actualizar cantidad">
+                <i class="fa-solid fa-floppy-disk fa-lg"></i>
+              </button>
             </form>
           </td>
-          <td>
+
+          <td class="p-3 text-center">
             <form method="post" th:action="@{/cart/remove}">
-              <!-- Id-->
               <input type="hidden" name="productId" th:value="${item.product.id}"/>
-              <button type="submit" class="btn btn-sm" style="border-color: #F47808; color: #F47808;">
-                <i class="fas fa-trash-alt"></i>
+              <button type="submit"
+                      class="text-red-500 hover:text-red-700 transition duration-200"
+                      title="Eliminar producto">
+                <i class="fas fa-trash-alt fa-lg"></i>
               </button>
             </form>
           </td>
         </tr>
         </tbody>
 
-        <tfoot class="border-top">
+        <tfoot class="border-t-2 border-gray-200">
         <tr>
           <td colspan="4"></td>
-          <td class="text-end fw-bold" style="color: #5F5E5D;">Total:</td>
-          <td class="fw-bold text-center" style="color: #F47808;"
+          <td class="text-right pr-6 font-bold text-gray-600 uppercase tracking-wide">Total:</td>
+          <td class="text-center font-extrabold text-amber-600 text-lg"
               th:text="'₡' + ${#numbers.formatDecimal(totalPrice, 1, 'COMMA', 2, 'POINT')}">₡0</td>
         </tr>
         </tfoot>
       </table>
     </div>
 
-    <div class="row mt-4">
-      <div class="col text-center">
-        <a th:href="@{/catalog/catalog}" class="btn me-2" style="border-color: #484744; color: #484744;">
-          <i class="fas fa-arrow-left"></i> Seguir comprando
-        </a>
-        <a th:href="@{/checkout}" class="btn" style="background-color: #FED14A; color: #484744;">
-          <i class="fas fa-check"></i> Finalizar compra
-        </a>
-      </div>
+    <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+      <a th:href="@{/catalog/catalog}"
+         class="flex items-center justify-center px-6 py-3 border border-gray-500 text-gray-700 rounded-lg hover:bg-gray-100 transition font-semibold w-full sm:w-auto">
+        <i class="fas fa-arrow-left mr-2"></i> Seguir comprando
+      </a>
+      <a th:href="@{/checkout}"
+         class="flex items-center justify-center px-6 py-3 bg-amber-400 text-gray-900 rounded-lg hover:bg-amber-500 transition font-semibold w-full sm:w-auto">
+        <i class="fas fa-check mr-2"></i> Finalizar compra
+      </a>
     </div>
   </div>
 </section>
