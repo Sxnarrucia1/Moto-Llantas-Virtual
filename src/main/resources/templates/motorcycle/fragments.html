@@ -6,83 +6,99 @@
         <title>Taller Llantas</title>
     </head>
     <body>
-        <section th:fragment="myMotorcycles" class="max-w-7xl mx-auto px-4 py-10">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-3xl font-bold text-orange-600">Mis Motocicletas</h2>
-                <a th:href="@{/motorcycle/register}" 
-                   class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded shadow">
-                    + Agregar nueva moto
-                </a>
-            </div>
-            <div class="w-full overflow-x-auto">
-                <table class="w-full table-auto bg-white border border-gray-200 shadow-md rounded-lg">
-                    <thead class="bg-gray-800 text-white">
-                        <tr>
-                            <th class="px-6 py-3 text-sm font-semibold text-center">Marca</th>
-                            <th class="px-6 py-3 text-sm font-semibold text-center">Modelo</th>
-                            <th class="px-6 py-3 text-sm font-semibold text-center">Año</th>
-                            <th class="px-6 py-3 text-sm font-semibold text-center">Placa</th>
-                            <th class="px-6 py-3 text-sm font-semibold text-center">Cilindraje</th>
-                            <th class="px-6 py-3 text-sm font-semibold text-center">Kilometraje</th>
-                            <th class="px-6 py-3 text-sm font-semibold text-center">Color</th>
-                            <th class="px-6 py-3 text-sm font-semibold text-center">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="moto : ${motorcycles}" class="border-t hover:bg-gray-100">
-                            <td class="px-6 py-4 text-center" th:text="${moto.brand}"></td>
-                            <td class="px-6 py-4 text-center" th:text="${moto.modelName}"></td>
-                            <td class="px-6 py-4 text-center" th:text="${moto.year}"></td>
-                            <td class="px-6 py-4 text-center" th:text="${moto.licensePlate}"></td>
-                            <td class="px-6 py-4 text-center" th:text="${moto.displacement}"></td>
-                            <td class="px-6 py-4 text-center" th:text="${moto.kilometraje}"></td>
-                            <td class="px-6 py-4 text-center" th:text="${moto.color}"></td>
-                            <td class="px-2 py-4 text-center">
-                                <div class="flex justify-center flex-wrap gap-2 max-w-full">
-                                    <a th:href="@{/motorcycle/edit/{id}(id=${moto.id})}" 
-                                       class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">Editar</a>
-                                    <button type="button"
-                                            th:attr="onclick=|openDeleteModal('${moto.id}')|"
-                                            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">
-                                        Eliminar
+    <section th:fragment="myMotorcycles" class="max-w-7xl mx-auto px-6 py-12">
+        <!-- Encabezado -->
+        <div class="flex justify-between items-center mb-10">
+            <h2 class="text-4xl font-extrabold text-orange-600 tracking-tight">🏍️ Mis Motocicletas</h2>
+            <a th:href="@{/motorcycle/register}"
+               class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700
+              text-white font-semibold py-2 px-6 rounded-xl shadow-md transition">
+                + Agregar nueva moto
+            </a>
+        </div>
+
+        <!-- Tabla -->
+        <div class="w-full overflow-x-auto rounded-xl shadow-lg border border-gray-200 bg-white">
+            <table class="w-full text-sm text-gray-700">
+                <thead class="bg-gray-900 text-white">
+                <tr>
+                    <th class="px-6 py-3 text-center font-semibold">Marca</th>
+                    <th class="px-6 py-3 text-center font-semibold">Modelo</th>
+                    <th class="px-6 py-3 text-center font-semibold">Año</th>
+                    <th class="px-6 py-3 text-center font-semibold">Placa</th>
+                    <th class="px-6 py-3 text-center font-semibold">Cilindraje</th>
+                    <th class="px-6 py-3 text-center font-semibold">Kilometraje</th>
+                    <th class="px-6 py-3 text-center font-semibold">Color</th>
+                    <th class="px-6 py-3 text-center font-semibold">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Fila con datos -->
+                <tr th:each="moto : ${motorcycles}" class="border-b hover:bg-gray-50 transition">
+                    <td class="px-6 py-4 text-center font-medium text-gray-800" th:text="${moto.brand}"></td>
+                    <td class="px-6 py-4 text-center" th:text="${moto.modelName}"></td>
+                    <td class="px-6 py-4 text-center" th:text="${moto.year}"></td>
+                    <td class="px-6 py-4 text-center" th:text="${moto.licensePlate}"></td>
+                    <td class="px-6 py-4 text-center" th:text="${moto.displacement}"></td>
+                    <td class="px-6 py-4 text-center" th:text="${moto.kilometraje}"></td>
+                    <td class="px-6 py-4 text-center" th:text="${moto.color}"></td>
+                    <td class="px-2 py-4 text-center">
+                        <div class="flex justify-center gap-2 flex-wrap">
+                            <a th:href="@{/motorcycle/edit/{id}(id=${moto.id})}"
+                               class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1.5 rounded-lg text-xs font-medium transition">
+                                Editar
+                            </a>
+                            <button type="button"
+                                    th:attr="onclick=|openDeleteModal('${moto.id}')|"
+                                    class="bg-red-500 hover:bg-red-600 text-white px-4 py-1.5 rounded-lg text-xs font-medium transition">
+                                Eliminar
+                            </button>
+                            <a th:href="@{/motorcycle/services/{id}(id=${moto.id})}"
+                               class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-1.5 rounded-lg text-xs font-medium transition">
+                                Servicios
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Sin registros -->
+                <tr th:if="${#lists.isEmpty(motorcycles)}">
+                    <td colspan="8" class="px-6 py-6 text-center text-gray-500 italic">
+                        No tienes motocicletas registradas.
+                    </td>
+                </tr>
+
+                <!-- Modal -->
+                <tr th:each="moto : ${motorcycles}">
+                    <td colspan="8">
+                        <div th:id="'modal-' + ${moto.id}"
+                             class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                            <div class="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md">
+                                <h3 class="text-lg font-bold text-gray-800 mb-3">¿Eliminar esta motocicleta?</h3>
+                                <p class="text-gray-600 mb-6">⚠️ Esta acción no se puede deshacer.</p>
+                                <div class="flex justify-end gap-4">
+                                    <button th:attr="onclick=|closeDeleteModal('${moto.id}')|"
+                                            class="px-5 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition">
+                                        Cancelar
                                     </button>
-                                    <a th:href="@{/motorcycle/services/{id}(id=${moto.id})}"
-                                       class="bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1 rounded text-sm">
-                                        Servicios
-                                    </a>
+                                    <form th:action="@{/motorcycle/delete/{id}(id=${moto.id})}" method="post">
+                                        <button type="submit"
+                                                class="px-5 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition">
+                                            Confirmar
+                                        </button>
+                                    </form>
                                 </div>
-                            </td>
-                        </tr>
-                        <tr th:if="${#lists.isEmpty(motorcycles)}">
-                            <td colspan="8" class="px-6 py-4 text-center text-gray-500">No tienes motocicletas registradas.</td>
-                        </tr>
-                        <tr th:each="moto : ${motorcycles}">
-                            <td colspan="8">
-                                <div th:id="'modal-' + ${moto.id}" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                                    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-                                        <h3 class="text-lg font-semibold text-gray-800 mb-4">¿Eliminar esta motocicleta?</h3>
-                                        <p class="text-gray-600 mb-6">Esta acción no se puede deshacer.</p>
-                                        <div class="flex justify-end space-x-4">
-                                            <button th:attr="onclick=|closeDeleteModal('${moto.id}')|"
-                                                    class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded">
-                                                Cancelar
-                                            </button>
-                                            <form th:action="@{/motorcycle/delete/{id}(id=${moto.id})}" method="post">
-                                                <button type="submit"
-                                                        class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded">
-                                                    Confirmar
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-        <section th:fragment="register" class="p-6">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+
+    <section th:fragment="register" class="p-6">
             <div class="max-w-2xl mx-auto bg-white p-6 rounded shadow">
                 <h2 class="text-2xl font-bold mb-4" 
                     th:text="${motorcycle.id} != null ? 'Editar Motocicleta' : 'Registrar Motocicleta'">Registrar Motocicleta</h2>
