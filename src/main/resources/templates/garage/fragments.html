@@ -115,6 +115,9 @@
                 </form>
             </div>
         </section>
+
+
+
         <section th:fragment="appointmentsClient" class="max-w-7xl mx-auto px-4 py-10">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-3xl font-bold text-orange-600">Mis Citas Agendadas</h2>
@@ -145,7 +148,7 @@
                             <td class="px-6 py-4 text-center" th:text="${clientDates.year}"></td>
                             <td class="px-6 py-4 text-center" th:text="${clientDates.licensePlate}"></td>
                             <td class="px-6 py-4 text-center space-x-2">
-                                <a th:href="@{'/garage/edit/' + ${clientDates.id}}" 
+                                <a th:href="@{'/garage/edit/' + ${clientDates.id}}"
                                    class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">Editar</a>
                                 <button type="button"
                                         th:attr="onclick=|openModalU('${clientDates.id}')|"
@@ -181,6 +184,8 @@
                 </table>
             </div>
         </section>
+
+
         <section th:fragment="adminGarageImpl">
             <!-- Encabezado y botón para crear cita -->
             <div class="flex justify-between items-center mb-4">

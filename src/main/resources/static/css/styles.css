@@ -11071,7 +11071,7 @@ div.kanban-column.drop {
   .animate-fade-in-down {
     animation: fade-in-down 0.25s ease-out;
   }
-  
+
 
    .animate-fade-in {
       animation: fadeIn 0.25s ease-in-out;

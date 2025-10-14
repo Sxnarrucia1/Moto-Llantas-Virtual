@@ -6,14 +6,13 @@
         <title>Moto Llantas</title>
         <meta charset="UTF-8"/>
     </head>
-    <body class="flex flex-col min-h-screen">
+    <body class="flex-col min-h-screen">
         <header th:replace="~{layout/layout :: header}"/>
 
-        <main class="container mx-auto px-4 py-6">
-            <section th:replace="~{catalog/fragments :: filterProducts}"></section>
 
-            <section th:replace="~{catalog/fragments :: catalog}"></section>
-        </main>
+         <section th:replace="~{catalog/fragments :: filterProducts}"></section>
+
+         <section th:replace="~{catalog/fragments :: catalog}"></section>
 
         <footer th:replace="~{layout/layout :: footer}"/>
     </body>
