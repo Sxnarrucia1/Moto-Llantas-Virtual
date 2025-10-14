@@ -712,8 +712,28 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+// script para los layouts de admin sidebar y el navbar
+ const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    const toggle = document.getElementById('sidebarToggle');
+
+    toggle.addEventListener('click', () => {
+        sidebar.classList.toggle('-translate-x-full');
+        overlay.classList.toggle('hidden');
+    });
+
+    overlay.addEventListener('click', () => {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+    });
 
 
 
 
 
+// script for changeQuantity in productDetails
+        function changeQuantity(delta) {
+                const input = document.getElementById('quantity');
+                const value = parseInt(input.value) + delta;
+                if (value > 0) input.value = value;
+        }

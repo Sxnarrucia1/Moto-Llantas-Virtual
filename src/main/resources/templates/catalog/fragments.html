@@ -10,36 +10,48 @@
   <!-- Filtro de productos -->
   <section th:fragment="filterProducts">
       <form th:action="@{/catalog/catalog}" method="get"
-            class="mb-8 flex flex-wrap items-center justify-center gap-3 bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
+            class="sticky top-4 z-10 mb-10 mx-auto max-w-6xl flex flex-wrap items-center justify-start gap-4 rounded-3xl p-6 bg-white/90 backdrop-blur-md">
 
-          <!-- Input búsqueda -->
-          <div class="relative">
+          <!-- Buscador -->
+          <div class="relative flex-1 min-w-[220px] md:min-w-[300px]">
               <input type="text" name="keyword" th:value="${keyword}"
-                     placeholder="🔎 Buscar producto o categoría"
-                     class="border border-gray-300 rounded-xl px-4 py-2 w-72 focus:ring-2 focus:ring-emerald-400 focus:outline-none shadow-sm" />
+                     placeholder="Buscar por nombre o categoría…"
+                     class="peer rounded-3xl pl-12 pr-4 py-2 w-full text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-300 bg-gray-100/50 transition" />
+              <div class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400">
+                  <svg fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M12.9 14.32a8 8 0 111.414-1.414l4.387 4.386a1 1 0 01-1.414 1.415l-4.387-4.387zM14 8a6 6 0 11-12 0 6 6 0 0112 0z" />
+                  </svg>
+              </div>
           </div>
 
-          <!-- Filtro categoría -->
-          <div>
+          <!-- Categoría -->
+          <div class="relative w-64">
               <select name="category"
-                      class="border border-gray-300 rounded-xl px-4 py-2 w-64 bg-gray-50 focus:ring-2 focus:ring-emerald-400 focus:outline-none shadow-sm">
-                  <option value="">-- Filtrar por categoría --</option>
+                      class="rounded-3xl px-4 py-2 w-full bg-gray-100/50 text-gray-700 focus:outline-none focus:ring-1 focus:ring-gray-300 appearance-none transition">
+                  <option value="" class="text-gray-500">-- Filtrar por categoría --</option>
                   <option th:each="cat : ${categories}"
                           th:value="${cat}"
                           th:text="${cat}"
                           th:selected="${cat == selectedCategory}">
                   </option>
               </select>
+              <div class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400">
+                  <svg fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M5.23 7.21a.75.75 0 011.06-.02L10 10.586l3.71-3.396a.75.75 0 111.04 1.08l-4.25 3.89a.75.75 0 01-1.04 0l-4.25-3.89a.75.75 0 01-.02-1.06z"/>
+                  </svg>
+              </div>
           </div>
 
-          <!-- Botones -->
-          <div class="flex gap-3">
+          <!-- Acciones -->
+          <div class="flex w-auto justify-end gap-3">
               <button type="submit"
-                      class="px-6 py-2 bg-emerald-500 text-white font-medium rounded-xl shadow hover:bg-emerald-600 transition">
+                      class="px-6 py-2 bg-gray-200 text-gray-700 font-medium rounded-3xl hover:bg-gray-300 transition">
                   Buscar
               </button>
               <a th:href="@{/catalog/catalog}"
-                 class="px-6 py-2 bg-gray-200 text-gray-800 font-medium rounded-xl shadow hover:bg-gray-300 transition">
+                 class="px-6 py-2 bg-gray-100 text-gray-600 font-medium rounded-3xl hover:bg-gray-200 transition">
                   Limpiar
               </a>
           </div>
@@ -47,119 +59,216 @@
   </section>
 
 
+
+
+
+
+
   <!-- Catálogo de productos -->
-    <section th:fragment="catalog">
-        <div class="container mx-auto px-4 py-8">
-            <h1 class="text-3xl font-bold mb-10 text-center text-gray-800">Catálogo de Productos</h1>
+  <section th:fragment="catalog">
+      <div class="container mx-auto px-4 py-6">
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                <div th:each="product : ${products}"
-                     class="bg-white rounded-xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1 flex flex-col justify-between">
+          <!-- Cuando NO hay productos -->
+          <div th:if="${#lists.isEmpty(products)}" class="flex justify-center py-20">
+              <div class="flex flex-col items-center justify-center bg-white shadow-lg rounded-3xl p-10 max-w-sm text-center animate-fadeIn">
+                  <!-- Ícono carrito vacío -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 mb-4 text-orange-400 animate-bounce" fill="none"
+                       viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m5-9v9m4-9v9m4-9l2 9"/>
+                  </svg>
 
-                    <!-- Imagen -->
-                    <div class="p-4 flex justify-center items-center bg-gray-50 rounded-t-xl">
-                        <img th:if="${product.imageUrl != null}"
-                             th:src="${product.imageUrl}"
-                             alt="Imagen de producto"
-                             class="w-full h-48 object-contain rounded-md" />
-                        <p th:if="${product.imageUrl == null}"
-                           class="text-gray-400 italic">Imagen no disponible</p>
-                    </div>
+                  <p class="text-xl md:text-2xl font-semibold mb-2 text-gray-900">
+                      ¡Ups! No hay productos disponibles o no se encontraron
+                  </p>
+                  <p class="text-gray-500">
+                      Vuelve más tarde o explora otras categorías.
+                  </p>
+              </div>
+          </div>
 
-                    <!-- Información -->
-                    <div class="p-4 flex-grow flex flex-col">
-                        <h2 class="text-lg font-semibold text-center mb-2 text-gray-800" th:text="${product.name}">Nombre</h2>
-                        <p class="text-gray-600 text-sm mb-3 text-center line-clamp-3" th:text="${product.description}">Descripción</p>
-                        <p class="text-green-600 font-bold text-xl mb-4 text-center" th:text="'₡' + ${product.price}">₡0</p>
+          <!-- Cuando SÍ hay productos -->
+          <div th:if="${!#lists.isEmpty(products)}" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+              <a th:each="product : ${products}"
+                 th:href="@{'/catalog/productDetails/' + ${product.id}}"
+                 class="group relative flex flex-col overflow-hidden rounded-lg no-underline">
 
-                        <!-- Botones -->
-                        <div class="mt-auto space-y-2">
-                            <a th:href="@{'/catalog/productDetails/' + ${product.id}}"
-                               class="block px-4 py-2 text-center bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium">
-                                Ver detalles
-                            </a>
-                            <form th:action="@{/cart/add}" method="post">
-                                <input type="hidden" name="productId" th:value="${product.id}" />
-                                <input type="hidden" name="quantity" value="1" />
-                                <button type="submit"
-                                        class="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium">
-                                    Agregar al carrito
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+                  <!-- Imagen -->
+                  <div class="relative w-full aspect-[3/2] overflow-hidden rounded-lg">
+                      <img th:if="${product.imageUrl != null}"
+                           th:src="${product.imageUrl}"
+                           alt="Imagen de producto"
+                           class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105 z-0 relative" />
+
+                      <p th:if="${product.imageUrl == null}"
+                         class="absolute inset-0 flex items-center justify-center text-gray-400 italic text-sm z-0">
+                          Imagen no disponible
+                      </p>
+                  </div>
+
+                  <!-- Información -->
+                  <div class="p-2 flex flex-col items-center gap-1">
+                      <h2 class="text-sm md:text-base font-bold text-gray-900 text-center line-clamp-2"
+                          th:text="${product.name}">
+                          Nombre
+                      </h2>
+                      <p class="text-black font-semibold text-lg"
+                         th:text="'₡' + ${#numbers.formatDecimal(product.price, 0, 'POINT', 0, 'NONE')}">
+                          ₡0
+                      </p>
+                  </div>
+              </a>
+          </div>
+      </div>
+  </section>
 
 
 
 
 
-    <section th:fragment="productDetails" class="max-w-6xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden mt-10 p-6">
-        <div class="md:flex md:gap-8">
-            <!-- Galería de imágenes -->
-            <div class="md:w-1/2">
-                <!-- Imagen principal -->
-                <div class="flex justify-center items-center bg-gray-50 rounded-xl p-5 shadow-inner mb-4">
-                    <img th:if="${product.imageUrl != null}"
-                         th:src="${product.imageUrl}"
-                         alt="Imagen de producto"
-                         class="max-h-96 w-full object-contain rounded-lg shadow-md transition-transform duration-300 hover:scale-105" />
-                    <p th:if="${product.imageUrl == null}" class="text-gray-400 italic">Imagen no disponible</p>
-                </div>
-            </div>
 
-            <!-- Detalles del producto -->
-            <div class="md:w-1/2 flex flex-col justify-between">
-                <div>
-                    <h1 class="text-4xl font-bold mb-4 text-gray-800" th:text="${product.name}">Nombre del producto</h1>
-                    <p class="text-gray-700 mb-6 whitespace-pre-line leading-relaxed" th:text="${product.description}">Descripción del producto</p>
 
-                    <!-- Información adicional -->
-                    <div class="space-y-3 text-gray-700">
-                        <p><span class="font-semibold">Categoría: </span><span th:text="${product.category}">Categoría</span></p>
-                        <p><span class="font-semibold">Stock disponible: </span><span th:text="${product.stock}">0</span></p>
-                        <p>
-                            <span class="font-semibold">Fecha de vencimiento: </span>
-                            <span th:if="${product.expirationDate != null}"
-                                  th:text="${#temporals.format(product.expirationDate, 'dd/MM/yyyy')}">dd/MM/yyyy</span>
-                            <span th:unless="${product.expirationDate != null}" class="italic text-gray-500">No aplicable</span>
-                        </p>
-                    </div>
 
-                    <!-- Precio destacado -->
-                    <p class="text-3xl font-bold text-green-600 mt-6 mb-4" th:text="'₡' + ${product.price}">₡0</p>
-                </div>
 
-                <!-- Botones de acción -->
-                <div class="mt-6 space-y-3">
-                    <form th:action="@{/cart/add}" method="post" class="w-full">
-                        <input type="hidden" name="productId" th:value="${product.id}" />
-                        <input type="hidden" name="quantity" value="1" />
-                        <button type="submit"
-                                class="w-full px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold shadow">
-                            🛒 Agregar al carrito
-                        </button>
-                    </form>
-                    <a th:href="@{/catalog/catalog}"
-                       class="block w-full text-center px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold shadow">
-                        ← Volver al catálogo
-                    </a>
-                </div>
+  <section th:fragment="productDetails" class="max-w-6xl mx-auto bg-white rounded-3xl overflow-hidden mt-6 p-6 md:p-10 relative">
 
-                <!-- Redes sociales -->
-                <div class="mt-6 flex gap-3" sec:authorize="isAuthenticated()">
-                    <a class="p-3 border rounded-lg hover:bg-gray-100" th:href="@{'https://www.facebook.com/sharer/sharer.php'(u=${productUrl})}" target="_blank" title="Compartir en Facebook">📘</a>
-                    <a class="p-3 border rounded-lg hover:bg-gray-100" th:href="@{'https://wa.me/'(text=${shareText + ' ' + productUrl})}" target="_blank" title="Compartir en WhatsApp">💬</a>
-                    <a class="p-3 border rounded-lg hover:bg-gray-100" th:href="@{'https://twitter.com/intent/tweet'(text=${shareText}, url=${productUrl})}" target="_blank" title="Compartir en X">✖</a>
-                    <button type="button" class="p-3 border rounded-lg hover:bg-gray-100"
-                            th:attr="data-title=${product.name},data-text=${shareText},data-url=${productUrl}"
-                            onclick="shareNative(this)" title="Compartir">🔗</button>
-                </div>
-            </div>
-        </div>
-    </section>
+      <!-- Flecha de regreso -->
+      <a th:href="@{/catalog/catalog}"
+         class="absolute top-4 left-4 text-gray-600 hover:text-red-600 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
+               stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+          </svg>
+      </a>
+
+      <div class="md:flex md:gap-10">
+          <!-- Imagen -->
+          <div class="md:w-1/2">
+              <div class="flex justify-center items-center bg-gray-50 rounded-2xl p-6 mb-6">
+                  <img th:if="${product.imageUrl != null}"
+                       th:src="${product.imageUrl}"
+                       alt="Imagen de producto"
+                       class="max-h-[26rem] w-full object-contain rounded-lg transition-transform duration-300 hover:scale-105" />
+                  <p th:if="${product.imageUrl == null}" class="text-gray-400 italic text-center">Imagen no disponible</p>
+              </div>
+          </div>
+
+          <!-- Detalles -->
+          <div class="md:w-1/2 flex flex-col justify-between">
+              <div>
+                  <h1 class="text-3xl md:text-4xl font-extrabold mb-4 text-gray-900 leading-snug"
+                      th:text="${product.name}">
+                      Nombre del producto
+                  </h1>
+
+                  <p class="text-gray-700 mb-6 whitespace-pre-line leading-relaxed text-justify"
+                     th:text="${product.description}">
+                      Descripción del producto
+                  </p>
+
+                  <!-- Información adicional -->
+                  <div class="space-y-2 text-gray-700 text-sm md:text-base">
+                      <p><span class="font-semibold">Categoría:</span> <span th:text="${product.category}">Categoría</span></p>
+                      <p>
+                          <span class="font-semibold">Stock:</span>
+                          <span th:if="${product.stock > 0}" class="text-green-600 font-semibold">Hay existencias</span>
+                          <span th:unless="${product.stock > 0}" class="text-red-600 font-semibold">Sin existencias</span>
+                      </p>
+                      <p>
+                          <span class="font-semibold">Fecha de vencimiento:</span>
+                          <span th:if="${product.expirationDate != null}"
+                                th:text="${#temporals.format(product.expirationDate, 'dd/MM/yyyy')}">dd/MM/yyyy</span>
+                          <span th:unless="${product.expirationDate != null}" class="italic text-gray-500">No aplicable</span>
+                      </p>
+                  </div>
+
+                  <!-- Precio sin decimales -->
+                  <p class="text-4xl font-extrabold text-black mt-8 mb-6 tracking-tight"
+                     th:text="'₡' + ${#numbers.formatDecimal(product.price, 0, 'POINT', 0, 'NONE')}">
+                      ₡0
+                  </p>
+
+                  <!-- Formulario de compra -->
+                  <form th:action="@{/cart/add}" method="post" class="space-y-4">
+                      <input type="hidden" name="productId" th:value="${product.id}" />
+
+                      <!-- Selector de cantidad -->
+                      <div class="flex items-center gap-3">
+                          <label for="quantity" class="font-semibold text-gray-700">Cantidad:</label>
+                          <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden w-32">
+                              <button type="button"
+                                      onclick="changeQuantity(-1)"
+                                      class="px-3 py-2 bg-gray-100 hover:bg-gray-200 transition font-bold">−</button>
+                              <input id="quantity" name="quantity" type="number" value="1" min="1"
+                                     class="w-full text-center outline-none border-x border-gray-200 py-2 text-gray-700 font-medium">
+                              <button type="button"
+                                      onclick="changeQuantity(1)"
+                                      class="px-3 py-2 bg-gray-100 hover:bg-gray-200 transition font-bold">+</button>
+                          </div>
+                      </div>
+
+                      <!-- Botón agregar -->
+                      <button type="submit"
+                              class="w-full flex items-center justify-center gap-2 px-5 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-semibold">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                               viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-2 9m5-9v9m4-9v9m4-9l2 9" />
+                          </svg>
+                          Añadir al carrito
+                      </button>
+                  </form>
+              </div>
+
+              <!-- Redes sociales -->
+              <div class="mt-8 flex gap-4 items-center justify-start pt-4">
+                  <p class="font-semibold text-gray-700">Compartir:</p>
+
+                  <!-- Facebook -->
+                  <a th:href="@{'https://www.facebook.com/sharer/sharer.php'(u=${productUrl})}" target="_blank"
+                     class="p-2.5 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition" title="Facebook">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M22 12a10 10 0 1 0-11.5 9.9v-7h-2v-3h2v-2.3c0-2 1.2-3.2 3-3.2.9 0 1.8.1 1.8.1v2h-1c-1 0-1.3.6-1.3 1.2V12h2.3l-.4 3h-1.9v7A10 10 0 0 0 22 12z" />
+                      </svg>
+                  </a>
+
+                  <!-- WhatsApp -->
+                  <a th:href="@{'https://wa.me/'(text=${shareText + ' ' + productUrl})}" target="_blank"
+                     class="p-2.5 bg-green-500 text-white rounded-full hover:bg-green-600 transition" title="WhatsApp">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M16.7 14.5c-.3-.2-1.7-.8-2-1s-.5-.2-.8.1-.9 1-1.1 1.2-.4.2-.7.1-1.4-.5-2.6-1.6c-1-1-1.6-2.1-1.8-2.4s0-.5.1-.7.3-.3.4-.5.2-.3.3-.4c.1-.1.1-.3 0-.5s-.8-2.1-1.1-2.9c-.3-.8-.6-.7-.8-.7H6.6c-.2 0-.5.1-.8.3s-1 1-1 2.4 1 2.8 1.2 3.1c.2.3 2 3.1 4.8 4.3 2.8 1.2 2.8.8 3.3.8s1.7-.7 2-1.3c.3-.6.3-1.1.2-1.3zM12.1 2C6.7 2 2.4 6.3 2.4 11.7c0 2.1.6 4.1 1.7 5.8l-1.1 4 4.1-1.1c1.7 1 3.7 1.6 5.8 1.6 5.4 0 9.7-4.3 9.7-9.7S17.5 2 12.1 2z" />
+                      </svg>
+                  </a>
+
+                  <!-- X / Twitter -->
+                  <a th:href="@{'https://twitter.com/intent/tweet'(text=${shareText}, url=${productUrl})}" target="_blank"
+                     class="p-2.5 bg-black text-white rounded-full hover:bg-gray-800 transition" title="X (Twitter)">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M18.9 2h2.7l-5.9 6.7L23 22h-6.7l-4.7-7-5.4 7H3.5l6.3-7.9L1 2h7l4.2 6 5.5-6z" />
+                      </svg>
+                  </a>
+              </div>
+          </div>
+      </div>
+
+      <!-- MÁS PRODUCTOS -->
+      <div class="mt-16 border-t border-gray-200 pt-10">
+          <h1 class="text-2xl md:text-3xl font-bold mb-8 text-center text-gray-900 tracking-tight">
+              Más productos
+          </h1>
+      </div>
+
+  </section>
+
+
+
+
+
+
+
+
+
+
+
     </body>
 </html>

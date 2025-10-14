@@ -134,16 +134,20 @@
                             <input class="form-control" type="text" placeholder="Correo Electrónico..." aria-label="Correo Electrónico..." aria-describedby="button-newsletter" />
                             <button class="btn btn-outline-light" id="button-newsletter" type="button">Regístrate</button>
                         </div>
-                        <div class="small text-black-60">Cuidamos de tu privacidad y nunca compartiremos tus daots</div>
+                        <div class="small text-black-60">Cuidamos de tu privacidad y nunca compartiremos tus datos.</div>
                     </div>
                 </div>
             </aside>
         </section>
 
-        <section th:fragment="location" class="w-full min-h-screen font-['Libre_Baskerville'] bg-[#F8F9FA]">
+
+
+
+
+        <section th:fragment="location" class="w-full min-h-screen bg-[#F8F9FA]">
             <!-- Título -->
-            <div class="py-12 bg-[#5F5E5D]">
-                <h2 class="text-center mb-3 text-5xl font-bold text-white drop-shadow-md">
+            <div class="py-12 bg-gradient-to-b from-[#5F5E5D] to-[#484744]">
+                <h2 class="text-center mb-3 text-5xl font-bold text-white drop-shadow-lg">
                     Contáctanos - Moto Llantas Virtual
                 </h2>
                 <p class="text-center text-lg text-white opacity-90">
@@ -152,81 +156,83 @@
             </div>
 
             <!-- Contacto y Local -->
-            <div class="py-12 bg-[#F8F9FA]">
-                <div class="flex flex-col lg:flex-row justify-center gap-8">
+            <div class="py-16 bg-[#F8F9FA]">
+                <div class="flex flex-col lg:flex-row justify-center gap-10 px-6">
                     <!-- Local -->
-                    <div class="bg-[#5F5E5D] rounded-2xl shadow-lg p-6 flex flex-col justify-center text-center text-white w-full lg:w-1/3">
-                        <h3 class="mb-3 text-2xl font-semibold drop-shadow-md">
-                            <i class="fas fa-map-marker-alt"></i> Nuestro Local
+                    <div class="bg-gradient-to-b from-[#5F5E5D] to-[#484744] rounded-2xl shadow-2xl p-8 flex flex-col justify-center text-center text-white w-full lg:w-1/3 transition-transform transform hover:scale-105">
+                        <h3 class="mb-4 text-3xl font-semibold drop-shadow-md">
+                            <i class="fas fa-map-marker-alt text-[#FED14A]"></i> Nuestro Local
                         </h3>
                         <p class="text-lg">
                             Zapote frente al jardín de<br> niños Napoleón Quesada
                         </p>
-                        <p class="mt-2 text-lg">
-                            <i class="fas fa-phone-alt"></i> 425.555.0100
+                        <p class="mt-4 text-lg">
+                            <i class="fas fa-phone-alt text-[#FED14A]"></i> 63162014
+                        </p>
+                        <p class="mt-4 text-lg">
+                            <i class="fas fa-phone-alt text-[#FED14A]"></i> 83101474
                         </p>
                     </div>
 
                     <!-- Email -->
-                    <div class="bg-[#5F5E5D] rounded-2xl shadow-lg p-6 flex flex-col justify-center text-center text-white w-full lg:w-1/3">
-                        <h3 class="mb-3 text-2xl font-semibold drop-shadow-md">
-                            <i class="fas fa-envelope"></i> Escríbenos
+                    <div class="bg-gradient-to-b from-[#5F5E5D] to-[#484744] rounded-2xl shadow-2xl p-8 flex flex-col justify-center text-center text-white w-full lg:w-1/3 transition-transform transform hover:scale-105">
+                        <h3 class="mb-4 text-3xl font-semibold drop-shadow-md">
+                            <i class="fas fa-envelope text-[#FED14A]"></i> Escríbenos
                         </h3>
                         <p class="text-lg">
-                            <strong>Soporte:</strong> <a href="mailto:soporte@.com" class="underline">soporte@.com</a>
+                            <strong>Soporte:</strong>
+                            <a href="mailto:soporte@.com" class="underline hover:text-[#FED14A] transition">soporte@.com</a>
                         </p>
-                        <p class="mt-2 text-lg">
-                            <strong>Marketing:</strong> <a href="mailto:marketing@.com" class="underline">marketing@.com</a>
+                        <p class="mt-4 text-lg">
+                            <strong>Marketing:</strong>
+                            <a href="mailto:marketing@.com" class="underline hover:text-[#FED14A] transition">marketing@.com</a>
                         </p>
                     </div>
                 </div>
             </div>
 
             <!-- Horarios -->
-            <div class="py-12 bg-[#F8F9FA]">
-                <h4 class="text-center mb-6 text-[#5F5E5D] font-bold text-3xl">
+            <div class="py-16 bg-[#DDDDDF]">
+                <h4 class="text-center mb-8 text-[#484744] font-bold text-3xl">
                     Horarios de Atención
                 </h4>
                 <div class="flex justify-center">
-                    <ul class="bg-white rounded-2xl shadow-lg divide-y divide-gray-100 w-full max-w-lg">
+                    <ul class="bg-white rounded-2xl shadow-xl divide-y divide-gray-200 w-full max-w-lg border border-[#5F5E5D]/20">
                         <li class="flex justify-between items-center px-6 py-4 text-gray-700">
-                            <span><i class="far fa-calendar-alt mr-2"></i> Lunes a Viernes</span>
-                            <span class="bg-[#5F5E5D] text-white rounded-full px-4 py-1">8:00 AM - 6:00 PM</span>
+                            <span><i class="far fa-calendar-alt mr-2 text-[#F47808]"></i> Lunes a Viernes</span>
+                            <span class="bg-[#F47808] text-white rounded-full px-4 py-1 font-semibold">8:00 AM - 6:00 PM</span>
                         </li>
                         <li class="flex justify-between items-center px-6 py-4 text-gray-700">
-                            <span><i class="far fa-calendar-alt mr-2"></i> Sábados</span>
-                            <span class="bg-[#5F5E5D] text-white rounded-full px-4 py-1">9:00 AM - 2:00 PM</span>
+                            <span><i class="far fa-calendar-alt mr-2 text-[#F47808]"></i> Sábados</span>
+                            <span class="bg-[#FED14A] text-[#484744] rounded-full px-4 py-1 font-semibold">9:00 AM - 2:00 PM</span>
                         </li>
                         <li class="flex justify-between items-center px-6 py-4 text-gray-700">
-                            <span><i class="fas fa-times-circle mr-2"></i> Domingos</span>
-                            <span class="bg-[#5F5E5D] text-white rounded-full px-4 py-1">Cerrado</span>
+                            <span><i class="fas fa-times-circle mr-2 text-red-500"></i> Domingos</span>
+                            <span class="bg-[#5F5E5D] text-white rounded-full px-4 py-1 font-semibold">Cerrado</span>
                         </li>
                     </ul>
                 </div>
             </div>
 
             <!-- Mapa -->
-            <div class="py-12 bg-[#5F5E5D]">
-                <h4 class="text-center mb-6 text-white font-bold text-3xl drop-shadow-md">Ubicación</h4>
+            <div class="py-16 bg-gradient-to-r from-[#484744] to-[#5F5E5D]">
+                <h4 class="text-center mb-8 text-[#FFFFFF] font-bold text-3xl drop-shadow-md">Ubicación</h4>
                 <div class="flex justify-center">
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3930.1417134980384!2d-84.05456559999999!3d9.922153500000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8fa0fdddef0da8cb%3A0x4329a7d04fdbe0d9!2sMoto%20Llantas%20Virtual!5e0!3m2!1sen!2scr!4v1744129871541!5m2!1sen!2scr"
-                            class="rounded-lg shadow-lg border-0 w-[90%] h-[400px]" allowfullscreen="" loading="lazy"></iframe>
+                            class="rounded-2xl shadow-2xl border-4 border-[#FED14A]/40 w-[90%] h-[400px]" allowfullscreen="" loading="lazy"></iframe>
                 </div>
             </div>
 
             <!-- Redes Sociales -->
-            <div class="py-12 bg-[#F8F9FA]">
-                <h4 class="text-center mb-6 text-[#5F5E5D] font-bold text-3xl">Síguenos en Redes Sociales</h4>
-                <div class="flex justify-center space-x-6">
-                    <a href="#" class="text-3xl text-[#5F5E5D] hover:text-gray-800"><i class="fab fa-facebook"></i></a>
-                    <a href="#" class="text-3xl text-[#5F5E5D] hover:text-gray-800"><i class="fab fa-twitter"></i></a>
-                    <a href="https://www.instagram.com/motollantasvirtual/" class="text-3xl text-[#5F5E5D] hover:text-gray-800"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.facebook.com/Motollantasvirtual/?ref=_xav_ig_profile_page_web#" class="text-3xl text-[#5F5E5D] hover:text-gray-800"><i class="fab fa-linkedin"></i></a>
+            <div class="py-16 bg-[#F8F9FA]">
+                <h4 class="text-center mb-6 text-[#484744] font-bold text-3xl">Síguenos en Redes Sociales</h4>
+                <div class="flex justify-center space-x-8">
+                    <a href="#" class="text-4xl text-[#5F5E5D] hover:text-[#F47808] transition transform hover:scale-110"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="text-4xl text-[#5F5E5D] hover:text-[#F47808] transition transform hover:scale-110"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/motollantasvirtual/" class="text-4xl text-[#5F5E5D] hover:text-[#F47808] transition transform hover:scale-110"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/Motollantasvirtual/?ref=_xav_ig_profile_page_web#" class="text-4xl text-[#5F5E5D] hover:text-[#F47808] transition transform hover:scale-110"><i class="fab fa-linkedin"></i></a>
                 </div>
             </div>
         </section>
-
-
-
     </body>
 </html>
