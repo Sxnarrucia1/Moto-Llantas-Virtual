@@ -9,90 +9,91 @@
 </head>
 <body class="bg-gray-50">
 
-<section th:fragment="cart" class="py-10">
-  <div class="container mx-auto px-4 max-w-6xl">
-    <div class="mb-8 text-center">
-      <h2 class="text-4xl font-extrabold text-gray-800 mb-2">Mi carrito de compras</h2>
-      <p class="text-gray-500 text-lg">Revisa y gestiona los productos que deseas comprar.</p>
-    </div>
+<section th:fragment="cart">
+  <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <header class="text-center mb-8">
+        <h1 class="text-3xl font-extrabold text-gray-800">Mi carrito de compras</h1>
+        <p class="text-gray-500 mt-2 text-lg">Revisa y gestiona los productos que deseas comprar.</p>
+      </header>
 
-    <div class="bg-white shadow-lg rounded-xl p-6 overflow-x-auto">
-      <table class="w-full table-auto text-gray-700">
-        <thead class="border-b-2 border-gray-200">
-        <tr class="text-center text-gray-600 uppercase tracking-wide font-semibold">
-          <th class="p-3">Imagen</th>
-          <th class="p-3">Producto</th>
-          <th class="p-3">Precio</th>
-          <th class="p-3">Subtotal</th>
-          <th class="p-3">Cantidad</th>
-          <th class="p-3">Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="item : ${cartItems}" class="border-b hover:bg-gray-50 transition">
-          <td class="p-3 text-center">
+      <div class="mt-8">
+        <ul class="space-y-6">
+          <li th:each="item : ${cartItems}" class="flex items-center gap-4 border-b pb-4">
+
+            <!-- Imagen del producto -->
             <img th:if="${item.product.imageUrl != null}"
-                 th:src="@{${item.product.imageUrl}}" alt="Imagen producto"
-                 class="mx-auto rounded-md shadow-md w-16 h-16 object-contain"/>
-            <span th:if="${item.product.imageUrl == null}" class="italic text-gray-400 text-sm">No disponible</span>
-          </td>
+                 th:src="@{${item.product.imageUrl}}"
+                 alt="Imagen producto"
+                 class="size-16 rounded-md object-cover shadow-md"/>
+            <span th:if="${item.product.imageUrl == null}"
+                  class="italic text-gray-400 text-sm">No disponible</span>
 
-          <td class="p-3 font-semibold text-gray-800" th:text="${item.product.name}">Nombre producto</td>
+            <!-- Detalles del producto -->
+            <div>
+              <h3 class="text-sm font-semibold text-gray-900" th:text="${item.product.name}">Nombre producto</h3>
+              <dl class="mt-1 space-y-px text-[11px] text-gray-600">
+                <div>
+                  <dt class="inline font-semibold">Precio:</dt>
+                  <dd class="inline" th:text="'₡' + ${item.product.price}">₡0</dd>
+                </div>
+                <div>
+                  <dt class="inline font-semibold">Subtotal:</dt>
+                  <dd class="inline text-amber-600 font-semibold"
+                      th:text="'₡' + ${#numbers.formatDecimal(item.quantity * item.product.price, 1, 'COMMA', 2, 'POINT')}">₡0</dd>
+                </div>
+              </dl>
+            </div>
 
-          <td class="p-3 text-center text-gray-600" th:text="'₡' + ${item.product.price}">₡0</td>
+            <!-- Cantidad y eliminar -->
+            <div class="flex flex-1 items-center justify-end gap-2">
+              <form method="post" th:action="@{/cart/update}">
+                <input type="hidden" name="productId" th:value="${item.product.id}" />
+                <input type="number" name="quantity" th:value="${item.quantity}" min="1"
+                       class="h-8 w-14 rounded-sm border-gray-200 bg-gray-50 p-0 text-center text-xs text-gray-600 focus:outline-hidden focus:ring-1 focus:ring-amber-400" />
+              </form>
 
-          <td class="p-3 text-center font-semibold text-amber-600"
-              th:text="'₡' + ${#numbers.formatDecimal(item.quantity * item.product.price, 1, 'COMMA', 2, 'POINT')}">₡0</td>
+              <form method="post" th:action="@{/cart/remove}">
+                <input type="hidden" name="productId" th:value="${item.product.id}" />
+                <button type="submit" class="text-gray-600 hover:text-red-600 transition" title="Eliminar producto">
+                  <span class="sr-only">Eliminar producto</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                       stroke-width="1.5" stroke="currentColor" class="size-5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/>
+                  </svg>
+                </button>
+              </form>
+            </div>
+          </li>
+        </ul>
 
-          <td class="p-3 text-center">
-            <form method="post" th:action="@{/cart/update}" class="flex justify-center items-center gap-2">
-              <input type="hidden" name="productId" th:value="${item.product.id}"/>
-              <input type="number" name="quantity" th:value="${item.quantity}" min="1"
-                     class="w-20 border rounded-md text-center py-1 focus:outline-amber-500 focus:ring-1 focus:ring-amber-400"/>
-              <button type="submit"
-                      class="text-amber-600 hover:text-amber-800 transition duration-200"
-                      title="Actualizar cantidad">
-                <i class="fa-solid fa-floppy-disk fa-lg"></i>
-              </button>
-            </form>
-          </td>
+        <!-- Totales -->
+        <div class="mt-10 flex justify-end border-t border-gray-100 pt-8">
+          <div class="w-full max-w-md space-y-4 text-sm text-gray-700">
+            <div class="flex justify-between font-medium text-base text-gray-900">
+              <dt>Total:</dt>
+              <dd th:text="'₡' + ${#numbers.formatDecimal(totalPrice, 1, 'COMMA', 2, 'POINT')}">₡0</dd>
+            </div>
 
-          <td class="p-3 text-center">
-            <form method="post" th:action="@{/cart/remove}">
-              <input type="hidden" name="productId" th:value="${item.product.id}"/>
-              <button type="submit"
-                      class="text-red-500 hover:text-red-700 transition duration-200"
-                      title="Eliminar producto">
-                <i class="fas fa-trash-alt fa-lg"></i>
-              </button>
-            </form>
-          </td>
-        </tr>
-        </tbody>
+            <div class="flex justify-between">
+              <a th:href="@{/catalog/catalog}"
+                 class="block rounded-sm border border-gray-400 px-5 py-2 text-sm text-gray-700 hover:bg-gray-100 transition">
+                ← Seguir comprando
+              </a>
 
-        <tfoot class="border-t-2 border-gray-200">
-        <tr>
-          <td colspan="4"></td>
-          <td class="text-right pr-6 font-bold text-gray-600 uppercase tracking-wide">Total:</td>
-          <td class="text-center font-extrabold text-amber-600 text-lg"
-              th:text="'₡' + ${#numbers.formatDecimal(totalPrice, 1, 'COMMA', 2, 'POINT')}">₡0</td>
-        </tr>
-        </tfoot>
-      </table>
-    </div>
-
-    <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-      <a th:href="@{/catalog/catalog}"
-         class="flex items-center justify-center px-6 py-3 border border-gray-500 text-gray-700 rounded-lg hover:bg-gray-100 transition font-semibold w-full sm:w-auto">
-        <i class="fas fa-arrow-left mr-2"></i> Seguir comprando
-      </a>
-      <a th:href="@{/checkout}"
-         class="flex items-center justify-center px-6 py-3 bg-amber-400 text-gray-900 rounded-lg hover:bg-amber-500 transition font-semibold w-full sm:w-auto">
-        <i class="fas fa-check mr-2"></i> Finalizar compra
-      </a>
+              <a th:href="@{/checkout}"
+                 class="block rounded-sm bg-amber-400 px-5 py-2 text-sm text-gray-900 font-semibold hover:bg-amber-500 transition">
+                Finalizar compra
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
 
 </body>
 </html>
