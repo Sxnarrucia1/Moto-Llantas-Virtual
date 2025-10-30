@@ -24,10 +24,12 @@ public class CartServiceImpl implements CartService {
     @Override
     public void addProduct(User user, Long productId, int quantity) {
         Product product = productDao.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+                .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado"));
 
         if (quantity > product.getStock()) {
-            throw new RuntimeException("Cantidad supera el stock disponible");
+            throw new IllegalArgumentException("No puedes agregar más de "
+                    + product.getStock() + " unidades del producto '"
+                    + product.getName() + "'.");
         }
 
         Cart cartItem = cartDao.findByUserAndProduct(user, product)
@@ -35,10 +37,13 @@ public class CartServiceImpl implements CartService {
 
         cartItem.setUser(user);
         cartItem.setProduct(product);
-        cartItem.setQuantity(cartItem.getCartId() == null ? quantity : cartItem.getQuantity() + quantity);
+        cartItem.setQuantity(cartItem.getCartId() == null
+                ? quantity
+                : cartItem.getQuantity() + quantity);
 
         cartDao.save(cartItem);
     }
+
 
     @Override
     public void updateQuantity(User user, Long productId, int quantity) {

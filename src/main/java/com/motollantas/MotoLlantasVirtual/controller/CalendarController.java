@@ -40,7 +40,7 @@ public class CalendarController {
     public String showAdminCalendar(Model model) {
         List<ServiceType> serviceTypes = serviceTypeService.findAll();
         model.addAttribute("serviceTypes", serviceTypes);
-        return "/calendar/admin";
+        return "calendar/admin";
     }
 
     @ResponseBody

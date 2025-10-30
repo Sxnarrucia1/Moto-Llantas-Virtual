@@ -7,10 +7,6 @@
     <meta charset="UTF-8"/>
 </head>
 <body>
-    <section th:fragment="users">
-        <!-- Tabla de empleados (sin cambios) -->
-        <!-- ... -->
-    </section>
 
     <!-- Perfil de Usuario -->
     <section th:fragment="userProfile" class="mt-16 mb-16">
@@ -31,16 +27,6 @@
                             <a th:href="@{/notifications/notification}" 
                                class="flex items-center hover:text-blue-800 transition">
                                 <i class="fas fa-bell mr-2"></i> Notificaciones
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="flex items-center hover:text-blue-800 transition">
-                                <i class="fas fa-shield-alt mr-2"></i> Seguridad y privacidad
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="flex items-center hover:text-blue-800 transition">
-                                <i class="fas fa-language mr-2"></i> Preferencias de idioma
                             </a>
                         </li>
 
