@@ -180,7 +180,7 @@
                                 </form>
                                 <form th:action="@{'/employee/restore/' + ${employee.id}}" method="post" th:if="${!employee.active}" class="inline">
                                     <button type="submit"
-                                            class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">Restaurar</button>
+                                            class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm" onclick="return confirm('¿Está usted seguro que quiere restaurar este empleado?')">Restaurar</button>
                                 </form>
                             </td>
                         </tr>

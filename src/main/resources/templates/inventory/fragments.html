@@ -238,6 +238,8 @@
                     <form th:action="@{/inventory/save}" th:object="${editProduct}" method="post" enctype="multipart/form-data" class="space-y-5">
                         <input type="hidden" th:field="*{id}" />
 
+                        <input type="hidden" th:field="*{status}" />
+
                         <!-- Nombre -->
                         <div>
                             <label class="block font-semibold text-gray-700 mb-1">Nombre *</label>
