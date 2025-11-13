@@ -33,7 +33,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/index", "/register", "/user/register", "/catalog/**", "/catalog/productDetails/**", "/cart", "/login",  "/about", "/location", "/css/**", "/error**", "/errores/**", "/img/**", "/js/**").permitAll()
-                .requestMatchers("/employee", "/inventory", "/calendar/**").hasRole("ADMIN")
+                .requestMatchers("/employee", "/inventory", "/calendar/**", "/dashboard/finance/**").hasRole("ADMIN")
                 .requestMatchers("/garage/mechanic*").hasRole("MECANICO")
                 .requestMatchers("/trabajador/**").hasRole("EMPLOYEE")
                 .requestMatchers("/garage/userGarage").hasRole("USUARIO")
