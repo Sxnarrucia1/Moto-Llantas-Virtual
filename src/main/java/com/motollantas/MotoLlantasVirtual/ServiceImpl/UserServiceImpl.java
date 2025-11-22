@@ -4,7 +4,9 @@
  */
 package com.motollantas.MotoLlantasVirtual.ServiceImpl;
 
+import com.motollantas.MotoLlantasVirtual.dao.DocumentTypeDao;
 import com.motollantas.MotoLlantasVirtual.dao.UserDao;
+import com.motollantas.MotoLlantasVirtual.domain.DocumentType;
 import com.motollantas.MotoLlantasVirtual.domain.User;
 import java.util.Optional;
 import com.motollantas.MotoLlantasVirtual.Service.UserService;
@@ -18,18 +20,21 @@ import org.springframework.stereotype.Service;
  *
  * @author esteb
  */
+
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    UserDao dao;
+    private UserDao userDao;
+
+    @Autowired
+    private DocumentTypeDao documentTypeDao;
 
     @Override
     public Optional<User> findByIdentification(String identification) {
-        return dao.findByIdentification(identification);
+        // Mantener por compatibilidad; idealmente migrar a findByDocument(...)
+        return userDao.findByIdentification(identification);
     }
-    @Autowired
-    private UserDao userDao;
 
     @Override
     public User getCurrentUser() {
@@ -45,6 +50,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(User user) {
+        validateDocument(user.getDocumentType(), user.getIdentification(), user);
+        userDao.save(user);
+    }
+
+    @Override
+    public void update(User user) {
+        validateDocument(user.getDocumentType(), user.getIdentification(), user);
         userDao.save(user);
     }
 
@@ -61,7 +73,65 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean existsByIdentification(String identification) {
+        // Mantener por compatibilidad; idealmente migrar a existsByDocument(...)
         return userDao.existsByIdentification(identification);
+    }
+
+    // ---------------- NUEVOS MÉTODOS ----------------
+
+    @Override
+    public Optional<User> findByDocument(DocumentType documentType, String identification) {
+        return userDao.findByDocumentTypeAndIdentification(documentType, identification);
+    }
+
+    @Override
+    public Optional<User> findByDocumentCode(String documentTypeCode, String identification) {
+        return userDao.findByDocumentTypeCodeAndIdentification(documentTypeCode, identification);
+    }
+
+    @Override
+    public boolean existsByDocument(DocumentType documentType, String identification) {
+        return userDao.existsByDocumentTypeAndIdentification(documentType, identification);
+    }
+
+    @Override
+    public boolean existsByDocumentCode(String documentTypeCode, String identification) {
+        return userDao.existsByDocumentTypeCodeAndIdentification(documentTypeCode, identification);
+    }
+
+    private void validateDocument(DocumentType type, String number, User currentUser) {
+        if (type == null && (number == null || number.isBlank())) {
+            return; // permitido si tu negocio lo admite (empleados sin doc, etc.)
+        }
+        if (type == null) {
+            throw new IllegalArgumentException("Debe seleccionar el tipo de documento.");
+        }
+        if (Boolean.FALSE.equals(type.getIsActive())) {
+            throw new IllegalArgumentException("El tipo de documento seleccionado no está activo.");
+        }
+        if (number == null || number.isBlank()) {
+            throw new IllegalArgumentException("Debe ingresar el número de identificación.");
+        }
+        if (type.getMinLength() != null && number.length() < type.getMinLength()) {
+            throw new IllegalArgumentException("La identificación es demasiado corta para " + type.getName() + ".");
+        }
+        if (type.getMaxLength() != null && number.length() > type.getMaxLength()) {
+            throw new IllegalArgumentException("La identificación es demasiado larga para " + type.getName() + ".");
+        }
+        if (type.getPatternRegex() != null && !type.getPatternRegex().isBlank() && !number.matches(type.getPatternRegex())) {
+            throw new IllegalArgumentException("El formato de la identificación no es válido para " + type.getName() + ".");
+        }
+
+        Optional<User> existing = userDao.findByDocumentTypeAndIdentification(type, number);
+        if (existing.isPresent()) {
+            Long existingId = existing.get().getIdUser();
+            Long currentId  = (currentUser != null) ? currentUser.getIdUser() : null;
+
+            // Si estoy creando (currentId == null) o es distinto usuario, es conflicto
+            if (currentId == null || !existingId.equals(currentId)) {
+                throw new IllegalArgumentException("Ya existe un usuario con ese tipo y número de identificación.");
+            }
+        }
     }
 
 }

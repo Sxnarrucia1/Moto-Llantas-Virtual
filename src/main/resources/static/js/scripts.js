@@ -728,7 +728,26 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
+    // Aplica dinámicamente el pattern según el tipo seleccionado
+    const typeSelect = document.getElementById('documentType');
+    const idInput    = document.getElementById('identificacion');
+    const helpText   = document.getElementById('docHelp');
 
+    function applyPattern() {
+      const selected = typeSelect.options[typeSelect.selectedIndex];
+      const pattern  = selected?.getAttribute('data-pattern') || '';
+      if (pattern) {
+        idInput.setAttribute('pattern', pattern);
+        helpText.textContent = `Formato requerido: ${pattern}`;
+      } else {
+        idInput.removeAttribute('pattern');
+        helpText.textContent = '';
+      }
+    }
+
+    typeSelect.addEventListener('change', applyPattern);
+    // Inicializa al cargar (por si el usuario vuelve a la vista con errores)
+    applyPattern();
 
 
 // script for changeQuantity in productDetails
