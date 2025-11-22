@@ -2,151 +2,156 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <head th:fragment="head">
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Taller Moto Llantas Virtual</title>
-        <link rel="icon" type="image/png" th:href="@{/img/motollantaslogo.png}" />
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link rel="stylesheet" th:href="@{/css/styles.css}" />
-        <!-- Font Awesome -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.css"/>
-        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src="/js/scripts.js" defer></script>
-    </head>
-    <body class="flex flex-col min-h-screen">
+<head th:fragment="head">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Taller Moto Llantas Virtual</title>
+    <link rel="icon" type="image/png" th:href="@{/img/motollantaslogo.png}"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/js/scripts.js" defer></script>
+</head>
+<body class="flex flex-col min-h-screen">
 
-        <!-- Header -->
-        <header th:fragment="header" class="bg-[#5F5E5D] text-white shadow-md">
-            <nav class="container mx-auto flex flex-wrap items-center justify-between px-6 py-3 md:py-4">
-                <!-- Logo -->
-                <a class="text-lg font-semibold" th:href="@{/index}">
-                    Taller Moto Llantas Virtual
-                </a>
+<!-- Header -->
+<header th:fragment="header" class="bg-[#5F5E5D] text-white shadow-md">
+    <nav class="container mx-auto flex flex-wrap items-center justify-between px-6 py-3 md:py-4">
+        <!-- Logo -->
+        <a class="text-lg font-semibold" th:href="@{/index}">
+            Taller Moto Llantas Virtual
+        </a>
 
-                <!-- Botón móvil -->
-                <button id="menu-toggle" class="text-white md:hidden focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
-                         viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                              d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
+        <!-- Botón móvil -->
+        <button id="menu-toggle" class="text-white md:hidden focus:outline-none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+        </button>
+
+        <!-- Menú -->
+        <div id="menu" class="w-full md:w-auto mt-4 md:mt-0 hidden md:flex md:items-center md:space-x-6">
+            <a th:href="@{/index}" class="block py-2 md:py-0 hover:text-yellow-400 transition-colors">Inicio</a>
+            <a th:href="@{/catalog/catalog}"
+               class="block py-2 md:py-0 hover:text-yellow-400 transition-colors">Catálogo</a>
+            <a th:href="@{/garage/userGarage}" class="block py-2 md:py-0 hover:text-yellow-400 transition-colors">Agendar
+                Cita</a>
+            <a th:href="@{/garage/myAppointments}" sec:authorize="isAuthenticated()"
+               class="block py-2 md:py-0 hover:text-yellow-400 transition-colors">Mis Citas</a>
+            <a th:href="@{/location}" class="block py-2 md:py-0 hover:text-yellow-400 transition-colors">Contacto</a>
+            <a th:href="@{/motorcycle/myMotorcycle}" sec:authorize="isAuthenticated()"
+               class="block py-2 md:py-0 hover:text-yellow-400 transition-colors">Mis Motos</a>
+
+            <!-- Notificaciones -->
+            <a th:href="@{/notifications/notification}"
+               class="relative block py-2 md:py-0 hover:text-yellow-400 transition-colors">
+                <i class="fa-solid fa-bell text-xl"></i>
+                <span id="notification-count" th:if="${unreadCount > 0}" th:text="${unreadCount}"
+                      class="absolute -top-2 -right-2 bg-yellow-500 text-white text-xs px-2 py-0.5 rounded-full"></span>
+            </a>
+
+            <!-- Login -->
+            <a th:href="@{/login}" sec:authorize="isAnonymous()"
+               class="block py-2 md:py-0 hover:text-yellow-400 text-xl">
+                <i class="fa-solid fa-user"></i>
+            </a>
+
+            <!-- Carrito -->
+            <a th:href="@{/cart}" class="relative block py-2 md:py-0 hover:text-yellow-400 transition-colors">
+                <i class="fa-solid fa-cart-shopping text-xl"></i>
+                <span id="cart-count"
+                      class="absolute -top-2 -right-2 bg-yellow-500 text-white text-xs px-2 py-0.5 rounded-full">0</span>
+            </a>
+        </div>
+
+        <!-- Botones de usuario autenticado -->
+        <div class="flex flex-wrap gap-3 items-center" sec:authorize="isAuthenticated()">
+            <a th:href="@{/userProfile}"
+               class="flex items-center space-x-1.5 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-full transition duration-150 min-w-[140px] justify-center text-center text-sm">
+                <i class="fa-solid fa-user text-gray-700 text-base"></i>
+                <span sec:authentication="name" class="text-gray-800 font-medium truncate"></span>
+            </a>
+
+            <a sec:authorize="hasRole('ADMIN')"
+               th:href="@{/dashboard/finance}"
+               class="inline-flex items-center px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition duration-300 min-w-[140px] justify-center text-center">
+                <i class="fa-solid fa-user-shield mr-1.5 text-base"></i> Panel Admin
+            </a>
+
+            <a sec:authorize="hasRole('MECANICO')"
+               th:href="@{/garage/myOrders}"
+               class="inline-flex items-center px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-lg transition duration-300 min-w-[140px] justify-center text-center">
+                <i class="fa-solid fa-wrench mr-1.5 text-base"></i> Tareas Mecánico
+            </a>
+
+            <form th:action="@{/logout}" method="post" class="min-w-[140px]">
+                <button type="submit"
+                        class="w-full bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1.5 rounded-md flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-arrow-right-from-bracket text-base"></i> Cerrar Sesión
                 </button>
+            </form>
+        </div>
+    </nav>
+</header>
 
-                <!-- Menú -->
-                <div id="menu" class="w-full md:w-auto mt-4 md:mt-0 hidden md:flex md:items-center md:space-x-6">
-                    <a th:href="@{/index}" class="block py-2 md:py-0 hover:text-yellow-400 transition-colors">Inicio</a>
-                    <a th:href="@{/catalog/catalog}" class="block py-2 md:py-0 hover:text-yellow-400 transition-colors">Catálogo</a>
-                    <a th:href="@{/garage/userGarage}" class="block py-2 md:py-0 hover:text-yellow-400 transition-colors">Agendar Cita</a>
-                    <a th:href="@{/garage/myAppointments}" sec:authorize="isAuthenticated()" class="block py-2 md:py-0 hover:text-yellow-400 transition-colors">Mis Citas</a>
-                    <a th:href="@{/location}" class="block py-2 md:py-0 hover:text-yellow-400 transition-colors">Ubicación</a>
-                    <a th:href="@{/motorcycle/myMotorcycle}" sec:authorize="isAuthenticated()" class="block py-2 md:py-0 hover:text-yellow-400 transition-colors">Mis Motos</a>
 
-                    <!-- Notificaciones -->
-                    <a th:href="@{/notifications/notification}" class="relative block py-2 md:py-0 hover:text-yellow-400 transition-colors">
-                        <i class="fa-solid fa-bell text-xl"></i>
-                        <span id="notification-count" th:if="${unreadCount > 0}" th:text="${unreadCount}"
-                              class="absolute -top-2 -right-2 bg-yellow-500 text-white text-xs px-2 py-0.5 rounded-full"></span>
+<!-- Footer -->
+<footer th:fragment="footer" class="bg-[#5F5E5D] text-white py-10 mt-auto">
+    <div class="lg:grid lg:grid-cols-5">
+        <!-- Imagen lateral -->
+        <div class="relative hidden lg:block h-full col-span-2">
+            <img
+                    src="https://moto-llantas-virtual-s3.s3.us-east-2.amazonaws.com/484076413_1062179015939689_2496076615522263323_n.jpg"
+                    alt="Taller de motos"
+                    class="absolute inset-0 h-full w-full object-cover rounded-r-2xl"
+            />
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="px-6 py-10 lg:col-span-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-10">
+                <!-- Contacto -->
+                <div>
+                    <h3 class="text-lg font-semibold text-orange-400 mb-3">Contáctanos</h3>
+                    <p class="text-sm">Teléfono:</p>
+                    <a href="tel:+50688888888" class="block text-2xl font-bold hover:text-orange-400">
+                        +506 6316-2014
+                    </a>
+                    <a href="tel:+50688888888" class="block text-2xl font-bold hover:text-orange-400">
+                        +506 8310-1474
                     </a>
 
-                    <!-- Login -->
-                    <a th:href="@{/login}" sec:authorize="isAnonymous()" class="block py-2 md:py-0 hover:text-yellow-400 text-xl">
-                        <i class="fa-solid fa-user"></i>
-                    </a>
+                    <p class="mt-3 text-sm">Lunes a Viernes: 9:00 a. m. - 5:00 p. m.</p>
+                    <p class="text-sm">Sábado: 9:00 a. m. - 2:00 p. m.</p>
+                    <p class="text-sm">Domingo: Cerrado</p>
 
-                    <!-- Carrito -->
-                    <a th:href="@{/cart}" class="relative block py-2 md:py-0 hover:text-yellow-400 transition-colors">
-                        <i class="fa-solid fa-cart-shopping text-xl"></i>
-                        <span id="cart-count" class="absolute -top-2 -right-2 bg-yellow-500 text-white text-xs px-2 py-0.5 rounded-full">0</span>
-                    </a>
-                </div>
-
-                <!-- Botones de usuario autenticado -->
-                <div class="flex flex-wrap gap-3 items-center" sec:authorize="isAuthenticated()">
-                    <a th:href="@{/userProfile}"
-                       class="flex items-center space-x-1.5 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-full transition duration-150 min-w-[140px] justify-center text-center text-sm">
-                        <i class="fa-solid fa-user text-gray-700 text-base"></i>
-                        <span sec:authentication="name" class="text-gray-800 font-medium truncate"></span>
-                    </a>
-
-                    <a sec:authorize="hasRole('ADMIN')"
-                       th:href="@{/dashboard/finance}"
-                       class="inline-flex items-center px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition duration-300 min-w-[140px] justify-center text-center">
-                        <i class="fa-solid fa-user-shield mr-1.5 text-base"></i> Panel Admin
-                    </a>
-
-                    <a sec:authorize="hasRole('MECANICO')"
-                       th:href="@{/garage/myOrders}"
-                       class="inline-flex items-center px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-lg transition duration-300 min-w-[140px] justify-center text-center">
-                        <i class="fa-solid fa-wrench mr-1.5 text-base"></i> Tareas Mecánico
-                    </a>
-
-                    <form th:action="@{/logout}" method="post" class="min-w-[140px]">
-                        <button type="submit"
-                                class="w-full bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1.5 rounded-md flex items-center justify-center gap-1.5">
-                            <i class="fa-solid fa-arrow-right-from-bracket text-base"></i> Cerrar Sesión
-                        </button>
-                    </form>
-                </div>
-            </nav>
-        </header>
-
-
-        
-
-
-        <!-- Footer -->
-        <footer th:fragment="footer" class="bg-[#5F5E5D] text-white py-10 mt-auto">
-            <div class="lg:grid lg:grid-cols-5">
-                <!-- Imagen lateral -->
-                <div class="relative hidden lg:block h-full col-span-2">
-                    <img
-                            src="https://moto-llantas-virtual-s3.s3.us-east-2.amazonaws.com/484076413_1062179015939689_2496076615522263323_n.jpg"
-                            alt="Taller de motos"
-                            class="absolute inset-0 h-full w-full object-cover rounded-r-2xl"
-                    />
-                </div>
-
-                <!-- Contenido principal -->
-                <div class="px-6 py-10 lg:col-span-3">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-10">
-                        <!-- Contacto -->
-                        <div>
-                            <h3 class="text-lg font-semibold text-orange-400 mb-3">Contáctanos</h3>
-                            <p class="text-sm">Teléfono:</p>
-                            <a href="tel:+50688888888" class="block text-2xl font-bold hover:text-orange-400">
-                                +506 6316-2014
-                            </a>
-                            <a href="tel:+50688888888" class="block text-2xl font-bold hover:text-orange-400">
-                                +506 8310-1474
-                            </a>
-
-                            <p class="mt-3 text-sm">Lunes a Viernes: 9:00 a. m. - 5:00 p. m.</p>
-                            <p class="text-sm">Sábado: 9:00 a. m. - 2:00 p. m.</p>
-                            <p class="text-sm">Domingo: Cerrado</p>
-
-                            <div class="mt-5 flex gap-5">
-                                <!-- Facebook -->
-                                <a href="https://www.facebook.com/Motollantasvirtual/" class="hover:text-orange-400 transition">
-                                    <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
-                                        <path
-                                                d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657
+                    <div class="mt-5 flex gap-5">
+                        <!-- Facebook -->
+                        <a href="https://www.facebook.com/Motollantasvirtual/" class="hover:text-orange-400 transition">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                <path
+                                        d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657
                      9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797
                      c0-2.506 1.492-3.89 3.777-3.89
                      1.094 0 2.238.195 2.238.195v2.46h-1.26
                      c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443
                      2.89h-2.33v6.988C18.343 21.128
                      22 16.991 22 12z"
-                                        />
-                                    </svg>
-                                </a>
-                                <!-- Instagram -->
-                                <a href="https://www.instagram.com/motollantasvirtual/" class="hover:text-orange-400 transition">
-                                    <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
-                                        <path
-                                                d="M7 2C4.243 2 2 4.243 2 7v10c0 2.757 2.243
+                                />
+                            </svg>
+                        </a>
+                        <!-- Instagram -->
+                        <a href="https://www.instagram.com/motollantasvirtual/"
+                           class="hover:text-orange-400 transition">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                <path
+                                        d="M7 2C4.243 2 2 4.243 2 7v10c0 2.757 2.243
                      5 5 5h10c2.757 0 5-2.243
                      5-5V7c0-2.757-2.243-5-5-5H7zm10
                      2c1.654 0 3 1.346 3
@@ -156,14 +161,15 @@
                      5 0 100 10 5 5 0 000-10zm0
                      2a3 3 0 110 6 3 3 0 010-6zm4.5-.75a1.25
                      1.25 0 110 2.5 1.25 1.25 0 010-2.5z"
-                                        />
-                                    </svg>
-                                </a>
-                                <!-- WhatsApp -->
-                                <a href="https://api.whatsapp.com/send/?phone=50663162014&text&type=phone_number&app_absent=0" class="hover:text-orange-400 transition">
-                                    <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
-                                        <path
-                                                d="M20.52 3.48A11.91 11.91 0 0012 0C5.373
+                                />
+                            </svg>
+                        </a>
+                        <!-- WhatsApp -->
+                        <a href="https://api.whatsapp.com/send/?phone=50663162014&text&type=phone_number&app_absent=0"
+                           class="hover:text-orange-400 transition">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                <path
+                                        d="M20.52 3.48A11.91 11.91 0 0012 0C5.373
                      0 0 5.373 0 12a11.91 11.91 0
                      001.64 6.02L0 24l6.2-1.63A11.91 11.91
                      0 0012 24c6.627 0 12-5.373
@@ -180,46 +186,46 @@
                      1.93 2.95 4.68 4.14.65.28 1.16.45
                      1.56.58.65.21 1.23.18 1.69.11.52-.08
                      1.66-.68 1.89-1.33.23-.65.23-1.2.16-1.33-.07-.14-.25-.22-.53-.36z"
-                                        />
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
+                                />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
 
-                        <!-- Enlaces -->
-                        <div class="grid grid-cols-2 gap-6">
-                            <div>
-                                <h3 class="text-lg font-semibold text-orange-400 mb-3">Servicios</h3>
-                                <ul class="space-y-2 text-sm">
-                                    <li>Cambio de llantas</li>
-                                    <li>Balanceo</li>
-                                    <li>Alineamiento</li>
-                                    <li> Mecánica rápida</li>
-                                </ul>
-                            </div>
-
-                            <div>
-                                <h3 class="text-lg font-semibold text-orange-400 mb-3">Compañía</h3>
-                                <ul class="space-y-2 text-sm">
-                                    <li><a href="#" class="hover:text-orange-400 transition">Sobre Nosotros</a></li>
-                                    <li><a href="/location" class="hover:text-orange-400 transition">Contáctanos</a></li>
-                                </ul>
-                            </div>
-                        </div>
+                <!-- Enlaces -->
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-orange-400 mb-3">Servicios</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li>Cambio de llantas</li>
+                            <li>Balanceo</li>
+                            <li>Alineamiento</li>
+                            <li> Mecánica rápida</li>
+                        </ul>
                     </div>
 
-                    <div class="mt-10 border-t border-gray-400 pt-6 flex flex-col sm:flex-row justify-between items-center">
-                        <ul class="flex gap-4 text-xs text-gray-300">
-                            <li><a href="#" class="hover:text-orange-400">Privacidad</a></li>
-                            <li><a href="#" class="hover:text-orange-400">Términos</a></li>
-                            <li><a href="#" class="hover:text-orange-400">Cookies</a></li>
+                    <div>
+                        <h3 class="text-lg font-semibold text-orange-400 mb-3">Compañía</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="#" class="hover:text-orange-400 transition">Sobre Nosotros</a></li>
+                            <li><a href="/location" class="hover:text-orange-400 transition">Contáctanos</a></li>
                         </ul>
-                        <p class="mt-4 sm:mt-0 text-xs text-gray-300">
-                            &copy; 2025 Moto Llantas Virtual. Todos los derechos reservados.
-                        </p>
                     </div>
                 </div>
             </div>
-        </footer>
-    </body>
+
+            <div class="mt-10 border-t border-gray-400 pt-6 flex flex-col sm:flex-row justify-between items-center">
+                <ul class="flex gap-4 text-xs text-gray-300">
+                    <li><a href="#" class="hover:text-orange-400">Privacidad</a></li>
+                    <li><a href="#" class="hover:text-orange-400">Términos</a></li>
+                    <li><a href="#" class="hover:text-orange-400">Cookies</a></li>
+                </ul>
+                <p class="mt-4 sm:mt-0 text-xs text-gray-300">
+                    &copy; 2025 Moto Llantas Virtual. Todos los derechos reservados.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
 </html>
