@@ -34,11 +34,6 @@ public class HomeController {
         return "login/login";
     }
 
-    @GetMapping("/register")
-    public String register() {
-        return "login/register";
-    }
-
     @GetMapping("/dashboard")
     public String users() {
         return "users/adminDashboard";

@@ -28,6 +28,10 @@ public class User implements Serializable {
     @Column(name = "full_name")
     private String fullName;
 
+    @ManyToOne
+    @JoinColumn(name = "document_type_id")
+    private DocumentType documentType;
+
     @Column(name = "identification")
     private String identification;
 
@@ -39,8 +43,16 @@ public class User implements Serializable {
 
     @Column(name = "user_type")
     private String userType;
-    
-    public long getIdUser(){
+
+    public DocumentType getDocumentType() {
+        return documentType;
+    }
+
+    public void setDocumentType(DocumentType documentType) {
+        this.documentType = documentType;
+    }
+
+    public long getIdUser() {
         return id;
     }
 
@@ -87,8 +99,10 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(String fullName, String identification, String email, String password, String userType) {
+    public User(String fullName, Long id, DocumentType documentType, String identification, String email, String password, String userType) {
         this.fullName = fullName;
+        this.id = id;
+        this.documentType = documentType;
         this.identification = identification;
         this.email = email;
         this.password = password;
