@@ -1,20 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.motollantas.MotoLlantasVirtual.ServiceImpl;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author esteb
- */
 @Service
-@Async
 public class EmailServiceImpl {
 
     private final JavaMailSender mailSender;
@@ -27,7 +17,15 @@ public class EmailServiceImpl {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
         message.setSubject("Credenciales de acceso");
-        message.setText("Bienvenido al sistema.\n\nTu contraseña temporal es: " + password + "\n\nPor favor cámbiala al iniciar sesión.");
+        message.setText("Tu contraseña temporal es: " + password + "\nPor favor cámbiala al iniciar sesión.");
+        mailSender.send(message);
+    }
+
+    public void sendOtpEmail(String to, String otp) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject("Código de verificación - Moto Llantas Virtual");
+        message.setText("Tu código de verificación es: " + otp + "\nEste código vence en 5 minutos.");
         mailSender.send(message);
     }
 }

@@ -12,7 +12,7 @@ import com.motollantas.MotoLlantasVirtual.Service.UserService;
 import com.motollantas.MotoLlantasVirtual.dao.EmployeeDao;
 import com.motollantas.MotoLlantasVirtual.domain.User;
 import java.security.SecureRandom;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -27,8 +27,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     private EmailServiceImpl emailService;
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-
+    private PasswordEncoder passwordEncoder;
+    
     private final List<String> availableRoles = Arrays.asList("ADMIN", "MECANICO", "SERVICIO_CLIENTE", "BODEGUERO");
 
     private static final List<String> ROLE_PRIORITY = List.of(
