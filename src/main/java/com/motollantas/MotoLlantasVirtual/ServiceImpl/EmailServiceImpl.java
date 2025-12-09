@@ -1,31 +1,66 @@
 package com.motollantas.MotoLlantasVirtual.ServiceImpl;
 
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import com.resend.services.emails.model.CreateEmailResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import com.resend.Resend;
+import com.resend.services.emails.model.CreateEmailOptions;
+import com.resend.services.emails.model.EmailResponse;
 
 @Service
 public class EmailServiceImpl {
 
-    private final JavaMailSender mailSender;
+    private final Resend resend;
 
-    public EmailServiceImpl(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
+    public EmailServiceImpl(@Value("${resend.api.key}") String apiKey) {
+        this.resend = new Resend(apiKey);
     }
 
-    public void sendCredentialsEmail(String to, String password) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(to);
-        message.setSubject("Credenciales de acceso");
-        message.setText("Tu contraseña temporal es: " + password + "\nPor favor cámbiala al iniciar sesión.");
-        mailSender.send(message);
+    // Enviar credenciales
+    public void sendCredentialsEmail(String to, String tempPassword) {
+
+        CreateEmailOptions params = CreateEmailOptions.builder()
+                .from("MotoLlantas <no-reply@motollantas.cr>")
+                .to(to)
+                .subject("Credenciales de Acceso")
+                .html("<h2>Bienvenido a MotoLlantas</h2>" +
+                        "<p>Tu contraseña temporal es:</p>" +
+                        "<h3 style='color:#333;'>" + tempPassword + "</h3>" +
+                        "<p>Por seguridad, debes cambiarla al iniciar sesión.</p>")
+                .build();
+
+        try {
+            CreateEmailResponse response = resend.emails().send(params);
+            System.out.println("Correo enviado correctamente. ID: " + response.getId());
+        } catch (Exception e) {
+            throw new RuntimeException("Error enviando el correo: " + e.getMessage());
+        }
     }
 
+    // Enviar OTP
     public void sendOtpEmail(String to, String otp) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(to);
-        message.setSubject("Código de verificación - Moto Llantas Virtual");
-        message.setText("Tu código de verificación es: " + otp + "\nEste código vence en 5 minutos.");
-        mailSender.send(message);
+
+        CreateEmailOptions params = CreateEmailOptions.builder()
+                .from("MotoLlantas <no-reply@motollantavirtual.xyz>")
+                .to(to)
+                .subject("Código de Verificación (OTP)")
+                .html("<h2>Verificación de Seguridad</h2>" +
+                        "<p>Tu código OTP es:</p>" +
+                        "<h1 style='letter-spacing: 4px; color:#F47808;'>" + otp + "</h1>" +
+                        "<p>Este código expira en 5 minutos.</p>")
+                .build();
+
+        try {
+            CreateEmailResponse response = resend.emails().send(params);
+            System.out.println("OTP enviado correctamente. ID: " + response.getId());
+        } catch (Exception e) {
+            throw new RuntimeException("Error enviando el OTP: " + e.getMessage());
+        }
     }
 }
+
+
+
+
+
+

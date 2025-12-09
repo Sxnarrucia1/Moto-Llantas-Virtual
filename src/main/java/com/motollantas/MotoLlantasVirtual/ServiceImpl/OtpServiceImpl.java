@@ -42,6 +42,7 @@ public class OtpServiceImpl implements OtpService {
     public boolean validateOtp(String email, String code) {
         return otpDao
                 .findTopByEmailAndUsedFalseOrderByExpiresAtDesc(email)
+                .filter(e -> !e.isUsed())
                 .filter(e -> e.getExpiresAt().isAfter(LocalDateTime.now()))
                 .filter(e -> encoder.matches(code, e.getCodeHash()))
                 .map(e -> {

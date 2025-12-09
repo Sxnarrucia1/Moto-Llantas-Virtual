@@ -27,11 +27,14 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
                                         Authentication authentication) throws IOException {
 
         String email = authentication.getName();
-        String otp = otpService.generateOtpFor(email);
 
-        emailService.sendOtpEmail(email, otp);
+        if (request.getSession().getAttribute("PRE_AUTH_EMAIL") == null) {
 
-        request.getSession().setAttribute("PRE_AUTH_EMAIL", email);
+            String otp = otpService.generateOtpFor(email);
+            emailService.sendOtpEmail(email, otp);
+
+            request.getSession().setAttribute("PRE_AUTH_EMAIL", email);
+        }
 
         response.sendRedirect("/otp");
     }

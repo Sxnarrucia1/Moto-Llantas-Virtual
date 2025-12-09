@@ -13,6 +13,7 @@ public class OtpController {
     private final OtpService otpService;
     private final EmailServiceImpl emailService;
 
+
     public OtpController(OtpService otpService, EmailServiceImpl emailService) {
         this.otpService = otpService;
         this.emailService = emailService;
