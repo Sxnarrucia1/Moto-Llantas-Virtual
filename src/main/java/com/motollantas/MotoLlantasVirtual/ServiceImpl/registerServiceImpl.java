@@ -28,6 +28,7 @@ public class registerServiceImpl implements registerService {
         // Normalizaciones básicas
         user.setFullName(user.getFullName().trim());
         user.setEmail(user.getEmail().trim().toLowerCase());
+        validatePassword(user.getPassword());
         if (user.getIdentification() != null) {
             user.setIdentification(user.getIdentification().trim());
         }
@@ -81,6 +82,29 @@ public class registerServiceImpl implements registerService {
             if (!number.matches(type.getPatternRegex())) {
                 throw new RuntimeException("El formato de la identificación no es válido para " + type.getName() + ".");
             }
+        }
+    }
+
+    // Validaciones para la contraseña antes de registrarse de manera correcta
+    private void validatePassword(String password) {
+        System.out.println("Validando contraseña: " + password);
+        if (password == null || password.isBlank()) {
+            throw new IllegalArgumentException("Debe ingresar una contraseña.");
+        }
+
+        // Longitud mínima 12 y máxima 18
+        if (password.length() < 12 || password.length() > 18) {
+            throw new IllegalArgumentException("La contraseña debe tener entre 12 y 18 caracteres.");
+        }
+
+        // Debe incluir al menos una mayúscula
+        if (!password.matches(".*[A-Z].*")) {
+            throw new IllegalArgumentException("La contraseña debe contener al menos una letra mayúscula.");
+        }
+
+        // Debe incluir al menos un número
+        if (!password.matches(".*\\d.*")) {
+            throw new IllegalArgumentException("La contraseña debe contener al menos un número.");
         }
     }
 }

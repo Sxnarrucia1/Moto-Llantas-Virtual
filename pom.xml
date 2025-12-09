@@ -129,6 +129,13 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.resend</groupId>
+            <artifactId>resend-java</artifactId>
+            <version>LATEST</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
