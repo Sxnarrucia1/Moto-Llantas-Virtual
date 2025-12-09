@@ -57,6 +57,23 @@ public class EmailServiceImpl {
             throw new RuntimeException("Error enviando el OTP: " + e.getMessage());
         }
     }
+
+    public void sendSimpleEmail(String to, String subject, String htmlMessage) {
+
+        CreateEmailOptions params = CreateEmailOptions.builder()
+                .from("MotoLlantas <no-reply@motollantavirtual.xyz>")
+                .to(to)
+                .subject(subject)
+                .html(htmlMessage)
+                .build();
+
+        try {
+            CreateEmailResponse response = resend.emails().send(params);
+            System.out.println("Correo enviado correctamente. ID: " + response.getId());
+        } catch (Exception e) {
+            throw new RuntimeException("Error enviando el correo: " + e.getMessage());
+        }
+    }
 }
 
 

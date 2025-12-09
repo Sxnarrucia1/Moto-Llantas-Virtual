@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .requestMatchers(
                         "/", "/index",
                         "/register", "/user/register",
-                        "/login", "/otp",
+                        "/login", "/otp","/forgotPassword", "/resetPassword",
                         "/catalog/**", "/catalog/productDetails/**",
                         "/cart", "/about", "/location",
                         "/css/**", "/js/**", "/img/**",
