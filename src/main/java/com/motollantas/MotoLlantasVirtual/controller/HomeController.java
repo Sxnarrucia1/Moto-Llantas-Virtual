@@ -48,5 +48,4 @@ public class HomeController {
     public String marketing() {
         return "marketing/marketing";
     }
-
 }
