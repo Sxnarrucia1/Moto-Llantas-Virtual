@@ -25,10 +25,19 @@ package com.motollantas.MotoLlantasVirtual.Service ;
         User getCurrentUser();
         User findByEmail(String email);
         boolean existsByEmail(String email);
+        void increaseFailedAttempts(User user);
+        void resetFailedAttempts(User user);
+        void lock(User user);
+        boolean unlockIfTimeExpired(User user);
 
         // --- Persistencia ---
         void save(User user);        // valida tipo + número + email (si aplica)
         void update(User user);      // opcional, o usa save para ambos
         void deleteByEmail(String email);
+        void disableByEmail(String email);
+
+
+
+
     }
 

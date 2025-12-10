@@ -8,6 +8,8 @@ import com.motollantas.MotoLlantasVirtual.dao.DocumentTypeDao;
 import com.motollantas.MotoLlantasVirtual.dao.UserDao;
 import com.motollantas.MotoLlantasVirtual.domain.DocumentType;
 import com.motollantas.MotoLlantasVirtual.domain.User;
+
+import java.time.LocalDateTime;
 import java.util.Optional;
 import com.motollantas.MotoLlantasVirtual.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,47 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private DocumentTypeDao documentTypeDao;
+
+
+    private static final int MAX_FAILED_ATTEMPTS = 5;
+    private static final long LOCK_DURATION_MINUTES = 5;
+
+    @Override
+    public void increaseFailedAttempts(User user) {
+        user.setFailedAttempts(user.getFailedAttempts() + 1);
+        userDao.save(user);
+    }
+
+    @Override
+    public void resetFailedAttempts(User user) {
+        user.setFailedAttempts(0);
+        user.setLockTime(null);
+        userDao.save(user);
+    }
+
+    @Override
+    public void lock(User user) {
+        user.setAccountLocked(true);
+        user.setLockTime(LocalDateTime.now());
+        userDao.save(user);
+    }
+
+    @Override
+    public boolean unlockIfTimeExpired(User user) {
+        if (user.getLockTime() == null) {
+            return true;
+        }
+
+        LocalDateTime unlockTime = user.getLockTime().plusMinutes(LOCK_DURATION_MINUTES);
+
+        if (LocalDateTime.now().isAfter(unlockTime)) {
+            user.setAccountLocked(false);
+            resetFailedAttempts(user);
+            return true;
+        }
+
+        return false;
+    }
 
     @Override
     public Optional<User> findByIdentification(String identification) {
@@ -76,6 +119,18 @@ public class UserServiceImpl implements UserService {
         // Mantener por compatibilidad; idealmente migrar a existsByDocument(...)
         return userDao.existsByIdentification(identification);
     }
+
+    @Override
+    public void disableByEmail(String email) {
+        Optional<User> optionalUser = userDao.findByEmail(email);
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setStatus(false);
+            userDao.save(user);
+        }
+    }
+
 
 
     // ---------------- NUEVOS MÉTODOS ----------------
