@@ -77,7 +77,8 @@ public class UserController {
 
     @PostMapping("/user/delete")
     public String deleteUserAccount(Principal principal, HttpServletRequest request, HttpServletResponse response) {
-        userService.deleteByEmail(principal.getName());
+        
+        userService.disableByEmail(principal.getName());
 
         SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
         logoutHandler.logout(request, response, SecurityContextHolder.getContext().getAuthentication());

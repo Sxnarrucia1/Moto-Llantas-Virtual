@@ -6,6 +6,8 @@ package com.motollantas.MotoLlantasVirtual.dao;
 
 import com.motollantas.MotoLlantasVirtual.domain.DocumentType;
 import com.motollantas.MotoLlantasVirtual.domain.User;
+
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,6 +18,8 @@ public interface UserDao extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
     Optional<User> findByIdentification(String identification);
+
+    List<User> findByStatusTrue();
 
     void deleteByEmail(String email);
 

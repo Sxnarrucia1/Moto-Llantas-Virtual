@@ -7,7 +7,7 @@ import com.motollantas.MotoLlantasVirtual.domain.PasswordResetToken;
 import com.motollantas.MotoLlantasVirtual.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,7 +22,7 @@ public class PasswordResetServiceImpl implements PasswordResetService {
     private PasswordResetTokenDao tokenDao;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     private UserDao userDao;

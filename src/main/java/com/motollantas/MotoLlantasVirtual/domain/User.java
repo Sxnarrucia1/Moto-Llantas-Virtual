@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -43,6 +44,17 @@ public class User implements Serializable {
 
     @Column(name = "user_type")
     private String userType;
+
+    @Column(nullable = false)
+    private boolean status = true;
+
+    private int failedAttempts = 0;
+
+    @Column(name = "account_locked")
+    private boolean accountLocked;
+
+    private LocalDateTime lockTime;
+
 
     public DocumentType getDocumentType() {
         return documentType;
@@ -95,6 +107,31 @@ public class User implements Serializable {
     public void setUserType(String userType) {
         this.userType = userType;
     }
+
+    public int getFailedAttempts() {
+        return failedAttempts;
+    }
+
+    public void setFailedAttempts(int failedAttempts) {
+        this.failedAttempts = failedAttempts;
+    }
+
+    public boolean isAccountLocked() {
+        return accountLocked;
+    }
+
+    public void setAccountLocked(boolean accountLocked) {
+        this.accountLocked = accountLocked;
+    }
+
+    public LocalDateTime getLockTime() {
+        return lockTime;
+    }
+
+    public void setLockTime(LocalDateTime lockTime) {
+        this.lockTime = lockTime;
+    }
+
 
     public User() {
     }
