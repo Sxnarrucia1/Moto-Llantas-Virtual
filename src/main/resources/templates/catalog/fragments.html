@@ -31,9 +31,9 @@
                       class="rounded-3xl px-4 py-2 w-full bg-gray-100/50 text-gray-700 focus:outline-none focus:ring-1 focus:ring-gray-300 appearance-none transition">
                   <option value="" class="text-gray-500">-- Filtrar por categoría --</option>
                   <option th:each="cat : ${categories}"
-                          th:value="${cat}"
-                          th:text="${cat}"
-                          th:selected="${cat == selectedCategory}">
+                          th:value="${cat.id}"
+                          th:text="${cat.name}"
+                          th:selected="${cat.id == selectedCategory}">
                   </option>
               </select>
               <div class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400">
@@ -215,7 +215,7 @@
 
                   <!-- Información adicional -->
                   <div class="space-y-2 text-gray-700 text-sm md:text-base">
-                      <p><span class="font-semibold">Categoría:</span> <span th:text="${product.category}">Categoría</span></p>
+                      <p><span class="font-semibold">Categoría:</span> <span th:text="${product.category?.name}">Categoría</span></p>
                       <p>
                           <span class="font-semibold">Stock:</span>
                           <span th:if="${product.stock > 0}" class="text-green-600 font-semibold">Hay existencias</span>
@@ -306,15 +306,6 @@
       </div>
 
   </section>
-
-
-
-
-
-
-
-
-
 
 
     </body>

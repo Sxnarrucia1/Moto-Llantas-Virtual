@@ -73,7 +73,7 @@
                         <tbody>
                             <tr th:each="p : ${productos}" class="border-t hover:bg-gray-50">
                                 <td class="py-2 px-4 font-medium text-gray-900" th:text="${p.name}"></td>
-                                <td class="py-2 px-4 text-gray-700" th:text="${p.category}"></td>
+                                <td class="py-2 px-4 text-gray-700" th:text="${p.category?.name}"></td>
                                 <td class="py-2 px-4 text-gray-600" th:text="${p.description}"></td>
                                 <td class="py-2 px-4 text-gray-600 font-semibold" th:text="'₡' + ${p.price}"></td>
                                 <td class="py-2 px-4" th:text="${p.stock}"></td>
@@ -163,7 +163,7 @@
 
                         <div>
                             <p class="font-semibold">🏷️ Categoría:</p>
-                            <p th:text="${productDetail.category}" class="pl-2 text-gray-900"></p>
+                            <p th:text="${productDetail.category?.name}" class="pl-2 text-gray-900"></p>
                         </div>
 
                         <div class="sm:col-span-2">
@@ -257,8 +257,18 @@
                         <!-- Categoría -->
                         <div>
                             <label class="block font-semibold text-gray-700 mb-1">Categoría *</label>
-                            <input type="text" th:field="*{category}" required placeholder="Ej. Lubricantes"
-                                   class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+
+                            <select th:field="*{category.id}" required
+                                    class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                                <option value="" disabled selected>Seleccione una categoría</option>
+
+                                <option th:each="cat : ${categorias}"
+                                        th:value="${cat.id}"
+                                        th:text="${cat.name}">
+                                </option>
+
+                            </select>
                         </div>
 
                         <!-- Precio y Stock -->

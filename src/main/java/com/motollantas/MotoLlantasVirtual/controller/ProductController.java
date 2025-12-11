@@ -1,5 +1,6 @@
 package com.motollantas.MotoLlantasVirtual.controller;
 
+import com.motollantas.MotoLlantasVirtual.Service.CategoryService;
 import com.motollantas.MotoLlantasVirtual.Service.ProductService;
 import com.motollantas.MotoLlantasVirtual.Service.S3Service;
 import com.motollantas.MotoLlantasVirtual.domain.Product;
@@ -18,6 +19,9 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @Autowired
     private S3Service s3Service;
@@ -89,6 +93,7 @@ public class ProductController {
         } else {
             product = productService.getProductById(id); // Producto existente para editar
         }
+        model.addAttribute("categorias", categoryService.getAllCategories());
         model.addAttribute("editProduct", product);
         model.addAttribute("productos", productService.getAllProductsOrdered());
         return "inventory/inventory";
