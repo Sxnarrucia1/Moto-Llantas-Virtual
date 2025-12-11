@@ -8,13 +8,15 @@ package com.motollantas.MotoLlantasVirtual.ServiceImpl;
  *
  * @author esteb
  */
+
 import com.motollantas.MotoLlantasVirtual.Service.MotorcycleService;
 import com.motollantas.MotoLlantasVirtual.dao.MotorcycleDao;
 import com.motollantas.MotoLlantasVirtual.domain.Motorcycle;
 import com.motollantas.MotoLlantasVirtual.domain.User;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
-import org.springframework.stereotype.Service;
 
 @Service
 public class MotorcycleServiceImpl implements MotorcycleService {
@@ -27,6 +29,18 @@ public class MotorcycleServiceImpl implements MotorcycleService {
 
     @Override
     public Motorcycle save(Motorcycle motorcycle) {
+
+        if (motorcycle.getYear() < 1900 || motorcycle.getYear() > 2100) {
+            throw new IllegalArgumentException("El año debe estar entre 1900 y 2100");
+        }
+
+        if (motorcycle.getKilometraje() != null && motorcycle.getKilometraje() < 0) {
+            throw new IllegalArgumentException("El kilometraje no puede ser negativo");
+        }
+        if (motorcycle.getDisplacement() != null && motorcycle.getDisplacement() < 0) {
+            throw new IllegalArgumentException("El cilindraje no puede ser negativo");
+        }
+
         return motorcycleDao.save(motorcycle);
     }
 
