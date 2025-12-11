@@ -1,106 +1,113 @@
 <!DOCTYPE html>
 <html class="h-full" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <head th:replace="~{layout/layout :: head}">
-        <title>Taller Llantas</title>
-    </head>
-    <body class="flex flex-col min-h-screen">
-        <section th:fragment="financeDashboard" class="overflow-x-auto">
-            <div class="p-6">
-                <h1 class="text-2xl font-bold mb-4">Dashboard Financiero</h1>
-                <div class="grid grid-cols-3 gap-4 mb-6">
-                    <div class="bg-green-100 p-4 rounded">
-                        <h2 class="text-lg font-semibold">Total Ingresos</h2>
-                        <p class="text-2xl font-bold text-green-700" id="income">[[${income}]]</p>
-                    </div>
-                    <div class="bg-red-100 p-4 rounded">
-                        <h2 class="text-lg font-semibold">Total Egresos</h2>
-                        <p class="text-2xl font-bold text-red-700" id="expense">[[${expense}]]</p>
-                    </div>
-                    <div class="bg-blue-100 p-4 rounded">
-                        <h2 class="text-lg font-semibold">Balance Total</h2>
-                        <p class="text-2xl font-bold text-blue-700" id="balance">[[${balance}]]</p>
-                    </div>
-                </div>
-                <div id="financialData"
-                     th:attr="data-income=${income}, data-expense=${expense}, data-balance=${balance}">
-                </div>
-                <canvas id="financialChart"></canvas>
-                <form th:action="@{/dashboard/report}" method="post" class="space-y-4 bg-white p-6 rounded shadow-md max-w-xl mx-auto">
-                    <h2 class="text-xl font-bold mb-4">Generar Reporte Financiero</h2>
-
-                    <div>
-                        <label for="startDate" class="block text-sm font-medium text-gray-700">Fecha de inicio</label>
-                        <input type="date" id="startDate" name="startDate" required
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                    </div>
-
-                    <div>
-                        <label for="endDate" class="block text-sm font-medium text-gray-700">Fecha de fin</label>
-                        <input type="date" id="endDate" name="endDate" required
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                    </div>
-
-                    <div>
-                        <label for="period" class="block text-sm font-medium text-gray-700">Periodo</label>
-                        <select id="period" name="period" required
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                            <option value="daily">Diario</option>
-                            <option value="weekly">Semanal</option>
-                            <option value="monthly">Mensual</option>
-                        </select>
-                    </div>
-
-                    <div class="flex justify-end">
-                        <button type="submit"
-                                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-                            Generar Reporte
-                        </button>
-                    </div>
-                </form>
+>
+<head th:replace="~{layout/layout :: head}">
+    <title>Taller Llantas</title>
+</head>
+<body class="flex flex-col min-h-screen">
+<section th:fragment="financeDashboard" class="overflow-x-auto">
+    <div class="p-6">
+        <h1 class="text-2xl font-bold mb-4">Dashboard Financiero</h1>
+        <div class="grid grid-cols-3 gap-4 mb-6">
+            <div class="bg-green-100 p-4 rounded">
+                <h2 class="text-lg font-semibold">Total Ingresos</h2>
+                <p class="text-2xl font-bold text-green-700" th:text="${incomeFormatted}"></p>
             </div>
-        </section>
-        <section th:fragment="financeReport" class="overflow-x-auto">
-            <h1 class="text-2xl font-bold mb-4">Reporte Financiero</h1>
-            <div class="mb-6">
-                <div class="flex gap-4 justify-end mt-4">
-                    <a th:href="@{/dashboard/report/export(startDate=${startDate}, endDate=${endDate}, period=${period}, format='pdf')}"
-                       class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition">Exportar PDF</a>
-                    <a th:href="@{/dashboard/report/export(startDate=${startDate}, endDate=${endDate}, period=${period}, format='excel')}"
-                       class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">Exportar Excel</a>
-                </div>
-                <table class="min-w-full bg-white rounded shadow">
-                    <thead class="bg-gray-200">
-                        <tr>
-                            <th class="px-4 py-2 text-left">Periodo</th>
-                            <th class="px-4 py-2 text-right">Ingresos</th>
-                            <th class="px-4 py-2 text-right">Egresos</th>
-                            <th class="px-4 py-2 text-right">Balance</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="summary : ${report.summaries}">
-                            <td class="px-4 py-2" th:text="${summary.label}"></td>
-                            <td class="px-4 py-2 text-right" th:text="${#numbers.formatDecimal(summary.income, 1, 'COMMA', 2, 'POINT')}"></td>
-                            <td class="px-4 py-2 text-right" th:text="${#numbers.formatDecimal(summary.expense, 1, 'COMMA', 2, 'POINT')}"></td>
-                            <td class="px-4 py-2 text-right" th:text="${#numbers.formatDecimal(summary.balance, 1, 'COMMA', 2, 'POINT')}"></td>
-                        </tr>
-                    </tbody>
-                    <tfoot class="bg-gray-100 font-semibold">
-                        <tr>
-                            <td class="px-4 py-2">Totales</td>
-                            <td class="px-4 py-2 text-right" th:text="${#numbers.formatDecimal(report.totalIncome, 1, 'COMMA', 2, 'POINT')}"></td>
-                            <td class="px-4 py-2 text-right" th:text="${#numbers.formatDecimal(report.totalExpense, 1, 'COMMA', 2, 'POINT')}"></td>
-                            <td class="px-4 py-2 text-right" th:text="${#numbers.formatDecimal(report.netBalance, 1, 'COMMA', 2, 'POINT')}"></td>
-                        </tr>
-                    </tfoot>
-                </table>
+            <div class="bg-red-100 p-4 rounded">
+                <h2 class="text-lg font-semibold">Total Egresos</h2>
+                <p class="text-2xl font-bold text-red-700" th:text="${expenseFormatted}"></p>
             </div>
-            <div class="bg-white p-4 rounded shadow mb-6">
-                <div id="reportDataContainer" th:attr="data-json=${reportJson}"></div>
-                <canvas id="reportChart" width="800" height="400"></canvas>
+            <div class="bg-blue-100 p-4 rounded">
+                <h2 class="text-lg font-semibold">Balance Total</h2>
+                <p class="text-2xl font-bold text-blue-700" th:text="${balanceFormatted}"></p>
             </div>
-        </section>
-    </body>
+        </div>
+        <div id="financialData"
+             th:attr="data-income=${income}, data-expense=${expense}, data-balance=${balance}">
+        </div>
+        <canvas id="financialChart"></canvas>
+        <form th:action="@{/dashboard/report}" method="post"
+              class="space-y-4 bg-white p-6 rounded shadow-md max-w-xl mx-auto">
+            <h2 class="text-xl font-bold mb-4">Generar Reporte Financiero</h2>
+
+            <div>
+                <label for="startDate" class="block text-sm font-medium text-gray-700">Fecha de inicio</label>
+                <input type="date" id="startDate" name="startDate" required
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+
+            <div>
+                <label for="endDate" class="block text-sm font-medium text-gray-700">Fecha de fin</label>
+                <input type="date" id="endDate" name="endDate" required
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+
+            <div>
+                <label for="period" class="block text-sm font-medium text-gray-700">Periodo</label>
+                <select id="period" name="period" required
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    <option value="daily">Diario</option>
+                    <option value="weekly">Semanal</option>
+                    <option value="monthly">Mensual</option>
+                </select>
+            </div>
+
+            <div class="flex justify-end">
+                <button type="submit"
+                        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                    Generar Reporte
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+<section th:fragment="financeReport" class="overflow-x-auto">
+    <h1 class="text-2xl font-bold mb-4">Reporte Financiero</h1>
+    <div class="mb-6">
+        <div class="flex gap-4 justify-end mt-4">
+            <a th:href="@{/dashboard/report/export(startDate=${startDate}, endDate=${endDate}, period=${period}, format='pdf')}"
+               class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition">Exportar PDF</a>
+            <a th:href="@{/dashboard/report/export(startDate=${startDate}, endDate=${endDate}, period=${period}, format='excel')}"
+               class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">Exportar Excel</a>
+        </div>
+        <table class="min-w-full bg-white rounded shadow">
+            <thead class="bg-gray-200">
+            <tr>
+                <th class="px-4 py-2 text-left">Periodo</th>
+                <th class="px-4 py-2 text-right">Ingresos</th>
+                <th class="px-4 py-2 text-right">Egresos</th>
+                <th class="px-4 py-2 text-right">Balance</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="summary : ${report.summaries}">
+                <td class="px-4 py-2" th:text="${summary.label}"></td>
+                <td class="px-4 py-2 text-right"
+                    th:text="${#numbers.formatDecimal(summary.income, 1, 'COMMA', 2, 'POINT')}"></td>
+                <td class="px-4 py-2 text-right"
+                    th:text="${#numbers.formatDecimal(summary.expense, 1, 'COMMA', 2, 'POINT')}"></td>
+                <td class="px-4 py-2 text-right"
+                    th:text="${#numbers.formatDecimal(summary.balance, 1, 'COMMA', 2, 'POINT')}"></td>
+            </tr>
+            </tbody>
+            <tfoot class="bg-gray-100 font-semibold">
+            <tr>
+                <td class="px-4 py-2">Totales</td>
+                <td class="px-4 py-2 text-right"
+                    th:text="${#numbers.formatDecimal(report.totalIncome, 1, 'COMMA', 2, 'POINT')}"></td>
+                <td class="px-4 py-2 text-right"
+                    th:text="${#numbers.formatDecimal(report.totalExpense, 1, 'COMMA', 2, 'POINT')}"></td>
+                <td class="px-4 py-2 text-right"
+                    th:text="${#numbers.formatDecimal(report.netBalance, 1, 'COMMA', 2, 'POINT')}"></td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="bg-white p-4 rounded shadow mb-6">
+        <div id="reportDataContainer" th:attr="data-json=${reportJson}"></div>
+        <canvas id="reportChart" width="800" height="400"></canvas>
+    </div>
+</section>
+</body>
 </html>

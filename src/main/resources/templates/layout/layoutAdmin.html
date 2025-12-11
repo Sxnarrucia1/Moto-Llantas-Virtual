@@ -90,20 +90,6 @@
                             🔧 <span>Orden de reparaciones</span>
                         </a>
                     </li>
-                    <!-- Reports -->
-                    <li sec:authorize="hasRole('ADMIN')" class="group">
-                        <div class="flex items-center justify-between p-3 text-white hover:bg-gray-700 rounded transition duration-300 cursor-pointer">
-                            <div class="flex items-center gap-2">
-                                📊 <span>Reportes</span>
-                            </div>
-                            <svg class="w-4 h-4 ml-2 transform group-hover:rotate-180 transition duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </div>
-                        <ul class="hidden group-hover:block bg-gray-700 text-white rounded-lg overflow-hidden animate-fade-in-down">
-                            <li><a href="#" class="block px-5 py-3 hover:bg-gray-600 transition duration-300">📈 Reporte de Ventas</a></li>
-                        </ul>
-                    </li>
 
                     <li sec:authorize="hasRole('ADMIN')">
                         <a href="/incomes/income" class="flex items-center gap-2 p-3 text-white hover:bg-gray-700 rounded transition duration-300">

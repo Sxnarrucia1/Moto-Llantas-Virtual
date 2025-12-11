@@ -5,15 +5,18 @@
 package com.motollantas.MotoLlantasVirtual.controller;
 
 import com.motollantas.MotoLlantasVirtual.Service.FinanceDashboardService;
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  *
@@ -32,9 +35,12 @@ public class FinanceDashboardController {
         BigDecimal expense = dashboardService.getTotalExpense();
         BigDecimal balance = dashboardService.getNetBalance();
 
-        model.addAttribute("income", income);
-        model.addAttribute("expense", expense);
-        model.addAttribute("balance", balance);
+        Locale cr = new Locale("es", "CR");
+        NumberFormat currency = NumberFormat.getCurrencyInstance(cr);
+
+        model.addAttribute("incomeFormatted", currency.format(income));
+        model.addAttribute("expenseFormatted", currency.format(expense));
+        model.addAttribute("balanceFormatted", currency.format(balance));
 
         return "dashboard/finance";
     }
