@@ -14,7 +14,7 @@ public interface ProductDao extends JpaRepository<Product, Long> {
 
     List<Product> findAllByOrderByStatusDescNameAsc();
 
-    List<Product> findByNameContainingIgnoreCaseOrCategoryContainingIgnoreCase(String name, String category);
+    List<Product> findByNameContainingIgnoreCaseOrCategory_NameContainingIgnoreCase(String name, String categoryName);
 
     List<Product> findByExpirationDateBetween(LocalDate start, LocalDate end);
 

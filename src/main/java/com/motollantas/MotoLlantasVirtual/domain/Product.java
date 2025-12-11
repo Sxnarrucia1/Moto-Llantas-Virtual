@@ -21,7 +21,9 @@ public class Product {
     @Column(name = "product_description")
     private String description;
 
-    private String category;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     private BigDecimal price;
 
@@ -60,11 +62,11 @@ public class Product {
         this.description = description;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category  category) {
         this.category = category;
     }
 
@@ -111,7 +113,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(String name, String description, String category, BigDecimal price, Integer stock, boolean status, LocalDate expirationDate, String imageUrl) {
+    public Product(String name, String description, Category  category, BigDecimal price, Integer stock, boolean status, LocalDate expirationDate, String imageUrl) {
         this.name = name;
         this.description = description;
         this.category = category;

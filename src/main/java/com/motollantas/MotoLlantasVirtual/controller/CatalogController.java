@@ -1,6 +1,8 @@
 package com.motollantas.MotoLlantasVirtual.controller;
 
+import com.motollantas.MotoLlantasVirtual.Service.CategoryService;
 import com.motollantas.MotoLlantasVirtual.Service.ProductService;
+import com.motollantas.MotoLlantasVirtual.domain.Category;
 import com.motollantas.MotoLlantasVirtual.domain.Product;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,9 @@ public class CatalogController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @GetMapping("/productDetails/{id}")
     public String showProductDetails(@PathVariable("id") Long id, Model model) {
@@ -29,21 +34,26 @@ public class CatalogController {
 
     @GetMapping("/catalog")
     public String showCatalog(@RequestParam(required = false) String keyword,
-                              @RequestParam(required = false) String category,
+                              @RequestParam(required = false) Long category,
                               @RequestParam(defaultValue = "0") int page,
                               Model model) {
 
         int pageSize = 12;
 
-        // Filtra los productos activos según filtros
-        List<Product> filteredProducts = productService.getAllProductsOrdered().stream()
-                .filter(Product::isStatus)
-                .filter(p -> keyword == null || keyword.isEmpty() ||
+        // Obtener todos los productos activos
+        List<Product> activeProducts = productService.getAllProductsOrdered().stream()
+                .filter(Product::isStatus) // Solo productos activos
+                .toList();
+
+        // Aplicar filtros dinámicos
+        List<Product> filteredProducts = activeProducts.stream()
+                .filter(p -> keyword == null || keyword.isBlank() ||
                         p.getName().toLowerCase().contains(keyword.toLowerCase()) ||
                         p.getDescription().toLowerCase().contains(keyword.toLowerCase()))
-                .filter(p -> category == null || category.isEmpty() ||
-                        p.getCategory().equalsIgnoreCase(category))
+                .filter(p -> category == null ||
+                        (p.getCategory() != null && p.getCategory().getId().equals(category)))
                 .toList();
+
 
         // calculando la cantidad de paginas
         int totalProducts = filteredProducts.size();
@@ -60,12 +70,7 @@ public class CatalogController {
         // solo toma los productos de la página actual
         List<Product> pageProducts = filteredProducts.subList(start, end);
 
-        // obtiene las categorias
-        List<String> categories = productService.getAllProductsOrdered().stream()
-                .map(Product::getCategory)
-                .filter(c -> c != null && !c.isEmpty())
-                .distinct()
-                .toList();
+        List<Category> categories = categoryService.getAllCategories();
 
 
         model.addAttribute("categories", categories);

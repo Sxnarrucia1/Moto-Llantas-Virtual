@@ -53,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> searchForName(String keyword) {
-        return productDao.findByNameContainingIgnoreCaseOrCategoryContainingIgnoreCase(keyword, keyword);
+        return productDao.findByNameContainingIgnoreCaseOrCategory_NameContainingIgnoreCase(keyword, keyword);
     }
 
     @Override
