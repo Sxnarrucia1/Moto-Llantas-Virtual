@@ -1,11 +1,10 @@
 package com.motollantas.MotoLlantasVirtual.ServiceImpl;
 
+import com.resend.Resend;
+import com.resend.services.emails.model.CreateEmailOptions;
 import com.resend.services.emails.model.CreateEmailResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import com.resend.Resend;
-import com.resend.services.emails.model.CreateEmailOptions;
-import com.resend.services.emails.model.EmailResponse;
 
 @Service
 public class EmailServiceImpl {
@@ -20,7 +19,7 @@ public class EmailServiceImpl {
     public void sendCredentialsEmail(String to, String tempPassword) {
 
         CreateEmailOptions params = CreateEmailOptions.builder()
-                .from("MotoLlantas <no-reply@motollantas.cr>")
+                .from("MotoLlantas <no-reply@motollantavirtual.xyz>")
                 .to(to)
                 .subject("Credenciales de Acceso")
                 .html("<h2>Bienvenido a MotoLlantas</h2>" +
