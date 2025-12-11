@@ -4,20 +4,20 @@
  */
 package com.motollantas.MotoLlantasVirtual.ServiceImpl;
 
+import com.motollantas.MotoLlantasVirtual.Service.UserService;
 import com.motollantas.MotoLlantasVirtual.dao.DocumentTypeDao;
 import com.motollantas.MotoLlantasVirtual.dao.UserDao;
 import com.motollantas.MotoLlantasVirtual.domain.DocumentType;
 import com.motollantas.MotoLlantasVirtual.domain.User;
-
-import java.time.LocalDateTime;
-import java.util.Optional;
-import com.motollantas.MotoLlantasVirtual.Service.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  *
@@ -142,7 +142,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
     @Override
     public Optional<User> findByIdentification(String identification) {
         // Mantener por compatibilidad; idealmente migrar a findByDocument(...)
@@ -201,10 +200,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
-
-    // ---------------- NUEVOS MÉTODOS ----------------
-
     @Override
     public Optional<User> findByDocument(DocumentType documentType, String identification) {
         return userDao.findByDocumentTypeAndIdentification(documentType, identification);
@@ -230,7 +225,7 @@ public class UserServiceImpl implements UserService {
             return; // permitido si tu negocio lo admite (empleados sin doc, etc.)
         }
         if (type == null) {
-            throw new IllegalArgumentException("Debe seleccionar el tipo de documento.");
+            throw new IllegalArgumentException("Debe seleccionar el tipo de documento1.");
         }
         if (Boolean.FALSE.equals(type.getIsActive())) {
             throw new IllegalArgumentException("El tipo de documento seleccionado no está activo.");
@@ -251,10 +246,10 @@ public class UserServiceImpl implements UserService {
         Optional<User> existing = userDao.findByDocumentTypeAndIdentification(type, number);
         if (existing.isPresent()) {
             Long existingId = existing.get().getIdUser();
-            Long currentId  = (currentUser != null) ? currentUser.getIdUser() : null;
+            Long currentId = (currentUser != null) ? currentUser.getIdUser() : null;
 
             // Si estoy creando (currentId == null) o es distinto usuario, es conflicto
-            if (currentId == null || !existingId.equals(currentId)) {
+            if (!existingId.equals(currentId)) {
                 throw new IllegalArgumentException("Ya existe un usuario con ese tipo y número de identificación.");
             }
         }

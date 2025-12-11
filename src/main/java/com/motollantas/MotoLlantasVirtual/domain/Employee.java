@@ -1,9 +1,9 @@
 package com.motollantas.MotoLlantasVirtual.domain;
 
 import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,21 +35,38 @@ public class Employee {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "document_type_id")
+    private DocumentType documentType;
+
     // Constructores
     public Employee() {
     }
 
-    public Employee(String fullName, String identification, String email, String address, LocalDate hiringDate, BigDecimal salary, User user) {
+    public Employee(String fullName, String identification, String email, String address, LocalDate hiringDate, BigDecimal salary, List<String> roles, boolean active, User user, DocumentType documentType) {
         this.fullName = fullName;
         this.identification = identification;
         this.email = email;
         this.address = address;
         this.hiringDate = hiringDate;
         this.salary = salary;
+        this.roles = roles;
+        this.active = active;
         this.user = user;
+        this.documentType = documentType;
     }
 
     // Getters y Setters
+
+
+    public DocumentType getDocumentType() {
+        return documentType;
+    }
+
+    public void setDocumentType(DocumentType documentType) {
+        this.documentType = documentType;
+    }
+
     public Long getId() {
         return id;
     }

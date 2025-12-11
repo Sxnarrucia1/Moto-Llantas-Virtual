@@ -1,15 +1,18 @@
 package com.motollantas.MotoLlantasVirtual.controller;
 
 import com.motollantas.MotoLlantasVirtual.DTO.EmployeeDTO;
-import com.motollantas.MotoLlantasVirtual.domain.Employee;
+import com.motollantas.MotoLlantasVirtual.Service.EmployeeService;
+import com.motollantas.MotoLlantasVirtual.dao.DocumentTypeDao;
 import com.motollantas.MotoLlantasVirtual.domain.ChangeHistory;
+import com.motollantas.MotoLlantasVirtual.domain.Employee;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import com.motollantas.MotoLlantasVirtual.Service.EmployeeService;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/employee")
@@ -18,10 +21,13 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
+    @Autowired
+    private DocumentTypeDao documentTypeDao;
+
     @GetMapping("/listEmployees")
     public String listEmployees(@RequestParam(required = false) String identification,
-            @RequestParam(required = false) String role,
-            Model model) {
+                                @RequestParam(required = false) String role,
+                                Model model) {
         List<Employee> employees;
 
         if (identification != null && !identification.isEmpty() && role != null && !role.isEmpty()) {
@@ -41,6 +47,7 @@ public class EmployeeController {
         model.addAttribute("selectedRole", role);
         model.addAttribute("identification", identification);
         model.addAttribute("employeeDTO", new EmployeeDTO());
+        model.addAttribute("documentTypes", documentTypeDao.findByIsActiveTrue());
         return "employee/listEmployees";
     }
 
@@ -52,7 +59,9 @@ public class EmployeeController {
     }
 
     @PostMapping("/create")
-    public String createEmployee(@ModelAttribute EmployeeDTO employeeDTO, RedirectAttributes redirectAttributes) {
+    public String createEmployee(@ModelAttribute EmployeeDTO employeeDTO, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        System.out.println("documentTypeId (DTO) = " + employeeDTO.getDocumentTypeId());
+        System.out.println("documentTypeId (request) = " + request.getParameter("documentTypeId"));
         try {
             employeeService.createEmployeeWithUser(employeeDTO);
             redirectAttributes.addFlashAttribute("mensajeExito", "Empleado creado con usuario asignado.");
@@ -65,7 +74,7 @@ public class EmployeeController {
 
     @PostMapping("/update/{id}")
     public String updateEmployee(Model model, @PathVariable Long id, @ModelAttribute Employee updatedEmployee,
-            RedirectAttributes redirectAttributes) {
+                                 RedirectAttributes redirectAttributes) {
         Employee existing = employeeService.getById(id);
         if (existing != null) {
             existing.setIdentification(updatedEmployee.getIdentification());
@@ -83,8 +92,8 @@ public class EmployeeController {
 
     @GetMapping("/search")
     public String searchEmployees(@RequestParam(required = false) String identification,
-            @RequestParam(required = false) String role,
-            RedirectAttributes redirectAttributes) {
+                                  @RequestParam(required = false) String role,
+                                  RedirectAttributes redirectAttributes) {
         redirectAttributes.addAttribute("identification", identification);
         redirectAttributes.addAttribute("role", role);
         return "redirect:/employee/listEmployees";
