@@ -4,10 +4,12 @@
  */
 package com.motollantas.MotoLlantasVirtual.DTO;
 
+import com.motollantas.MotoLlantasVirtual.domain.OrderStatus;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDateTime;
 
 /**
@@ -47,7 +49,27 @@ public class ClientDateDTO {
     private String serviceTypeName;
 
     private String formattedAppointmentDate;
-    
+
+    private OrderStatus status;
+
+    private String statusName;
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
+
     public Long getId() {
         return id;
     }

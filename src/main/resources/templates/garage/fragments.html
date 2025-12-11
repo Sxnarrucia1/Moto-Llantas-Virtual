@@ -22,19 +22,17 @@
                                         <h3 class="fw-normal" style="color: #484744;">Agendar Cita</h3>
                                         <h3 class="fw-normal mb-5" style="color: #F47808;">Información Personal</h3>
                                         <div class="row">
-                                            <div class="row">
-                                                <div class="mb-4 pb-2">
-                                                    <div data-mdb-input-init class="form-outline">
-                                                        <input type="text" th:value="${identification}"
-                                                               class="form-control form-control-lg" disabled/>
-                                                        <input type="hidden" name="identification"
-                                                               th:value="${identification}"/>
-                                                        <label class="form-label"
-                                                               for="form3Examplev4">Identificación</label>
-                                                    </div>
+                                            <div class="col-12 mb-4 pb-2">
+                                                <div data-mdb-input-init class="form-outline">
+                                                    <input type="text" th:value="${identification}"
+                                                           class="form-control form-control-lg" disabled/>
+                                                    <input type="hidden" name="identification"
+                                                           th:value="${identification}"/>
+                                                    <label class="form-label"
+                                                           for="form3Examplev4">Identificación</label>
                                                 </div>
                                             </div>
-                                            <div class="mb-4 pb-2">
+                                            <div class="col-12 mb-4 pb-2">
                                                 <div data-mdb-input-init class="form-outline">
                                                     <input type="text" th:value="${fullName}"
                                                            class="form-control form-control-lg" disabled/>
@@ -63,6 +61,7 @@
                                                             th:text="${type.serviceName}">
                                                     </option>
                                                 </select>
+                                                <label class="form-label" for="form3Examplev4">Tipo de Servicio</label>
                                             </div>
                                         </div>
                                     </div>
@@ -150,6 +149,7 @@
                 <th class="px-6 py-3 text-sm font-semibold text-center">Modelo</th>
                 <th class="px-6 py-3 text-sm font-semibold text-center">Año</th>
                 <th class="px-6 py-3 text-sm font-semibold text-center">Placa</th>
+                <th class="px-6 py-3 text-sm font-semibold text-center">Estado</th>
                 <th class="px-6 py-3 text-sm font-semibold text-center">Acciones</th>
             </tr>
             </thead>
@@ -162,6 +162,7 @@
                 <td class="px-6 py-4 text-center" th:text="${clientDates.modelName}"></td>
                 <td class="px-6 py-4 text-center" th:text="${clientDates.year}"></td>
                 <td class="px-6 py-4 text-center" th:text="${clientDates.licensePlate}"></td>
+                <td class="px-6 py-4 text-center" th:text="${clientDates.statusName}"></td>
                 <td class="px-6 py-4 text-center space-x-2">
                     <a th:href="@{'/garage/edit/' + ${clientDates.id}}"
                        class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">Editar</a>
@@ -173,7 +174,7 @@
                 </td>
             </tr>
             <tr th:each="clientDates : ${appointments}">
-                <td colspan="7">
+                <td colspan="8">
                     <div th:id="'modal-' + ${clientDates.id}"
                          class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
                         <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
@@ -194,8 +195,9 @@
                 </td>
             </tr>
             <tr th:if="${#lists.isEmpty(appointments)}">
-                <td colspan="7" class="px-6 py-4 text-center text-gray-500">No tienes citas agendadas.</td>
+                <td colspan="8" class="px-6 py-4 text-center text-gray-500">No tienes citas agendadas.</td>
             </tr>
+
             </tbody>
         </table>
     </div>

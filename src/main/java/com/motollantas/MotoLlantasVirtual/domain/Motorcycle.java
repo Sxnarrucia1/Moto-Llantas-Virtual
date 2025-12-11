@@ -8,10 +8,11 @@ package com.motollantas.MotoLlantasVirtual.domain;
  *
  * @author esteb
  */
+
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 @Entity
@@ -30,10 +31,13 @@ public class Motorcycle {
 
     private String modelName;
 
+    @Min(value = 1900, message = "El año debe ser mayor a 1900")
     private int year;
 
+    @Min(value = 0, message = "El cilindraje no puede ser negativo")
     private Integer displacement;
 
+    @Min(value = 0, message = "El kilometraje no puede ser negativo")
     private Integer kilometraje;
 
     private String licensePlate;
