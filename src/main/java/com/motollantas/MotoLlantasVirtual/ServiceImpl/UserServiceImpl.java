@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -31,6 +32,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private DocumentTypeDao documentTypeDao;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     private static final int MAX_FAILED_ATTEMPTS = 5;
@@ -72,6 +76,72 @@ public class UserServiceImpl implements UserService {
 
         return false;
     }
+
+    @Override
+    public String updateUserProfile(String email, String fullName,
+                                    String currentPassword,
+                                    String newPassword,
+                                    String confirmNewPassword) {
+
+        User user = userDao.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        user.setFullName(fullName);
+
+        boolean wantsToChangePassword =
+                (currentPassword != null && !currentPassword.isBlank()) ||
+                        (newPassword != null && !newPassword.isBlank()) ||
+                        (confirmNewPassword != null && !confirmNewPassword.isBlank());
+
+        // Si el usuario quiere cambiar la contraseña tiene que estar completo todos los campos
+        if (wantsToChangePassword) {
+
+            // Campos completos
+            if (currentPassword == null || currentPassword.isBlank() ||
+                    newPassword == null || newPassword.isBlank() ||
+                    confirmNewPassword == null || confirmNewPassword.isBlank()) {
+                return "error: Debe completar todos los campos para cambiar la contraseña.";
+            }
+
+            // Validar contraseña actual
+            if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+                return "error: La contraseña actual no es correcta.";
+            }
+
+            // Nueva vs confirmación
+            if (!newPassword.equals(confirmNewPassword)) {
+                return "error: La nueva contraseña y su confirmación no coinciden.";
+            }
+
+            // Evita misma contraseña
+            if (passwordEncoder.matches(newPassword, user.getPassword())) {
+                return "error: La nueva contraseña no puede ser igual a la actual.";
+            }
+
+            // Validaciones de seguridad
+            if (newPassword.length() < 12 || newPassword.length() > 18) {
+                return "error: La contraseña debe tener entre 12 y 18 caracteres.";
+            }
+
+            if (!newPassword.matches(".*[A-Z].*")) {
+                return "error: La contraseña debe incluir al menos una mayúscula.";
+            }
+
+            if (!newPassword.matches(".*[0-9].*")) {
+                return "error: La contraseña debe incluir al menos un número.";
+            }
+
+            // Guarda la contraseña nueva
+            user.setPassword(passwordEncoder.encode(newPassword));
+        }
+
+        // Guarda cambios si el usuario no modifica la contraseña
+        save(user);
+
+        return "success: Datos actualizados correctamente.";
+    }
+
+
 
     @Override
     public Optional<User> findByIdentification(String identification) {

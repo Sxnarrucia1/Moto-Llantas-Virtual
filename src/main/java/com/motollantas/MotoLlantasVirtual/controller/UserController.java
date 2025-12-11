@@ -33,45 +33,27 @@ public class UserController {
     }
 
     @PostMapping("/user/update")
-    public String updateUserProfile(@RequestParam("fullName") String fullName,
+    public String updateUserProfile(
+            @RequestParam("fullName") String fullName,
             @RequestParam(value = "currentPassword", required = false) String currentPassword,
             @RequestParam(value = "newPassword", required = false) String newPassword,
             @RequestParam(value = "confirmNewPassword", required = false) String confirmNewPassword,
             Principal principal,
             Model model) {
 
-        User user = userService.findByEmail(principal.getName());
+        String email = principal.getName();
 
-        // Actualizar nombre si es necesario
-        user.setFullName(fullName);
+        String result = userService.updateUserProfile(
+                email, fullName, currentPassword, newPassword, confirmNewPassword
+        );
 
-        // Si los campos de contraseña están presentes, se intenta cambiar la contraseña
-        if (currentPassword != null && !currentPassword.isBlank()
-                && newPassword != null && !newPassword.isBlank()
-                && confirmNewPassword != null && !confirmNewPassword.isBlank()) {
-
-            // Valida contraseña actual
-            if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
-                model.addAttribute("error", "La contraseña actual no es correcta.");
-                model.addAttribute("user", user);
-                return "users/userProfile";
-            }
-
-            // Valida que la nueva y la confirmación coincidan
-            if (!newPassword.equals(confirmNewPassword)) {
-                model.addAttribute("error", "La nueva contraseña y su confirmación no coinciden.");
-                model.addAttribute("user", user);
-                return "users/userProfile";
-            }
-
-            user.setPassword(passwordEncoder.encode(newPassword));
-            model.addAttribute("success", "Contraseña actualizada correctamente.");
+        if (result.startsWith("error:")) {
+            model.addAttribute("error", result.substring(6));
         } else {
-            model.addAttribute("success", "Perfil actualizado correctamente.");
+            model.addAttribute("success", result.substring(8));
         }
 
-        userService.save(user);
-        model.addAttribute("user", user);
+        model.addAttribute("user", userService.findByEmail(email));
         return "users/userProfile";
     }
 

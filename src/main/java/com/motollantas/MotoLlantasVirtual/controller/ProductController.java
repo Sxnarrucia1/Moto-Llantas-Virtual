@@ -65,14 +65,21 @@ public class ProductController {
 
     @PostMapping("/save")
     public String saveProduct(@ModelAttribute("product") Product product,
-                              @RequestParam("imageFile") MultipartFile imageFile) throws IOException {
-        if (!imageFile.isEmpty()) {
-            String imageUrl = s3Service.uploadFile(imageFile); // Subimos a S3
-            product.setImageUrl(imageUrl); // Guardamos la URL en el producto
+                              @RequestParam("imageFile") MultipartFile imageFile,
+                              Model model) {
+
+        String result = productService.saveProduct(product, imageFile);
+
+        if (result.startsWith("error:")) {
+            model.addAttribute("error", result.substring(6));
+            model.addAttribute("editProduct", product);
+            return "inventory/inventory";
         }
-        productService.save(product);
+
         return "redirect:/inventory";
     }
+
+
 
     @GetMapping("/edit/{id}")
     public String editProduct(@PathVariable Long id, Model model) {
