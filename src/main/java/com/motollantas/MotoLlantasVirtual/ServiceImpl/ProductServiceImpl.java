@@ -1,11 +1,13 @@
 package com.motollantas.MotoLlantasVirtual.ServiceImpl;
 
 import com.motollantas.MotoLlantasVirtual.Service.ProductService;
+import com.motollantas.MotoLlantasVirtual.Service.S3Service;
 import com.motollantas.MotoLlantasVirtual.dao.ProductDao;
 import com.motollantas.MotoLlantasVirtual.domain.Product;
 import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +17,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductDao productDao;
+
+    @Autowired
+    private S3Service s3Service;
 
     @Override
     public List<Product> getActiveProducts() {
@@ -60,6 +65,49 @@ public class ProductServiceImpl implements ProductService {
     public void save(Product product) {
         productDao.save(product);
     }
+
+    @Override
+    public String saveProduct(Product product, MultipartFile imageFile) {
+
+        // Validación de precio
+        if (product.getPrice() != null && product.getPrice().doubleValue() > 99999999.99) {
+            return "error: El precio excede el valor permitido.";
+        }
+
+        // Validación de stock
+        if (product.getStock() != null && product.getStock() > 1000000000) {
+            return "error: El stock es demasiado grande.";
+        }
+
+        Product original = null;
+
+        if (product.getId() != null) {
+            original = productDao.findById(product.getId())
+                    .orElse(null);
+        }
+
+        // Manejo de imagen con S3
+        try {
+            if (!imageFile.isEmpty()) {
+                String imageUrl = s3Service.uploadFile(imageFile);
+                product.setImageUrl(imageUrl);
+            } else if (original != null) {
+                product.setImageUrl(original.getImageUrl());
+            }
+        } catch (Exception e) {
+            return "error: No se pudo procesar la imagen.";
+        }
+
+        // Manejo de fecha
+        if (product.getExpirationDate() == null && original != null) {
+            product.setExpirationDate(original.getExpirationDate());
+        }
+
+        // Guardar en base
+        productDao.save(product);
+        return "success";
+    }
+
 
     @Override
     public List<Product> getProductsExpiringSoon(int days) {

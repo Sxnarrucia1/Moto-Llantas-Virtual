@@ -36,7 +36,10 @@ package com.motollantas.MotoLlantasVirtual.Service ;
         void deleteByEmail(String email);
         void disableByEmail(String email);
 
-
+        String updateUserProfile(String email, String fullName,
+                                 String currentPassword,
+                                 String newPassword,
+                                 String confirmNewPassword);
 
 
     }
