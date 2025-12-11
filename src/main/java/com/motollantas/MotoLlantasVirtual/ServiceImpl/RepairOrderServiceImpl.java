@@ -6,33 +6,22 @@ package com.motollantas.MotoLlantasVirtual.ServiceImpl;
 
 import com.motollantas.MotoLlantasVirtual.DTO.AdminDateDTO;
 import com.motollantas.MotoLlantasVirtual.DTO.ClientDateDTO;
-import com.motollantas.MotoLlantasVirtual.Service.InventoryService;
-import com.motollantas.MotoLlantasVirtual.Service.MotorcycleService;
-import com.motollantas.MotoLlantasVirtual.Service.NotificationService;
-import com.motollantas.MotoLlantasVirtual.Service.RepairOrderService;
-import com.motollantas.MotoLlantasVirtual.Service.ServiceTypeService;
-import com.motollantas.MotoLlantasVirtual.Service.UserService;
+import com.motollantas.MotoLlantasVirtual.Service.*;
 import com.motollantas.MotoLlantasVirtual.dao.RepairOrderDao;
 import com.motollantas.MotoLlantasVirtual.dao.UserDao;
-import com.motollantas.MotoLlantasVirtual.domain.Employee;
-import com.motollantas.MotoLlantasVirtual.domain.Motorcycle;
-import com.motollantas.MotoLlantasVirtual.domain.OrderPriority;
-import com.motollantas.MotoLlantasVirtual.domain.OrderStatus;
-import com.motollantas.MotoLlantasVirtual.domain.RepairOrder;
-import com.motollantas.MotoLlantasVirtual.domain.RepairOrderProduct;
-import com.motollantas.MotoLlantasVirtual.domain.ServiceType;
-import com.motollantas.MotoLlantasVirtual.domain.User;
+import com.motollantas.MotoLlantasVirtual.domain.*;
 import com.motollantas.MotoLlantasVirtual.handler.InventoryException;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -133,6 +122,8 @@ public class RepairOrderServiceImpl implements RepairOrderService {
         List<RepairOrder> orders = repair.findByUserId(userId);
         return orders.stream().map(order -> {
             ClientDateDTO dto = modelMapper.map(order, ClientDateDTO.class);
+            dto.setStatus(order.getOrderStatus());
+            dto.setStatusName(formatStatus(order.getOrderStatus()));
             if (order.getServiceType() != null) {
                 dto.setServiceTypeName(order.getServiceType().getServiceName());
             }
@@ -304,16 +295,11 @@ public class RepairOrderServiceImpl implements RepairOrderService {
 
     private String formatStatus(OrderStatus status) {
         return switch (status) {
-            case NUEVO ->
-                "Nuevo";
-            case EN_PROGRESO ->
-                "En Progreso";
-            case EN_ESPERA ->
-                "En Espera";
-            case COMPLETADO ->
-                "Completado";
-            default ->
-                status.name();
+            case NUEVO -> "Nuevo";
+            case EN_PROGRESO -> "En Progreso";
+            case EN_ESPERA -> "En Espera";
+            case COMPLETADO -> "Completado";
+            default -> status.name();
         };
     }
 
