@@ -22,19 +22,17 @@
                                         <h3 class="fw-normal" style="color: #484744;">Agendar Cita</h3>
                                         <h3 class="fw-normal mb-5" style="color: #F47808;">Información Personal</h3>
                                         <div class="row">
-                                            <div class="row">
-                                                <div class="mb-4 pb-2">
-                                                    <div data-mdb-input-init class="form-outline">
-                                                        <input type="text" th:value="${identification}"
-                                                               class="form-control form-control-lg" disabled/>
-                                                        <input type="hidden" name="identification"
-                                                               th:value="${identification}"/>
-                                                        <label class="form-label"
-                                                               for="form3Examplev4">Identificación</label>
-                                                    </div>
+                                            <div class="col-12 mb-4 pb-2">
+                                                <div data-mdb-input-init class="form-outline">
+                                                    <input type="text" th:value="${identification}"
+                                                           class="form-control form-control-lg" disabled/>
+                                                    <input type="hidden" name="identification"
+                                                           th:value="${identification}"/>
+                                                    <label class="form-label"
+                                                           for="form3Examplev4">Identificación</label>
                                                 </div>
                                             </div>
-                                            <div class="mb-4 pb-2">
+                                            <div class="col-12 mb-4 pb-2">
                                                 <div data-mdb-input-init class="form-outline">
                                                     <input type="text" th:value="${fullName}"
                                                            class="form-control form-control-lg" disabled/>
@@ -63,6 +61,7 @@
                                                             th:text="${type.serviceName}">
                                                     </option>
                                                 </select>
+                                                <label class="form-label" for="form3Examplev4">Tipo de Servicio</label>
                                             </div>
                                         </div>
                                     </div>

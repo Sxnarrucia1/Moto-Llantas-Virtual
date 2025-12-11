@@ -75,7 +75,8 @@
             <nav class="p-4 bg-gray-800 min-h-screen">
                 <ul class="space-y-2">
                     <li>
-                        <a href="/dashboard/finance" class="flex items-center gap-2 p-3 text-white hover:bg-gray-700 rounded transition duration-300">
+                        <a th:href="${#authorization.expression('hasRole(''ADMIN'')') ? '/dashboard/finance' : '/garage/myOrders'}"
+                           class="flex items-center gap-2 p-3 text-white hover:bg-gray-700 rounded transition duration-300">
                             🏠 <span>Inicio</span>
                         </a>
                     </li>
