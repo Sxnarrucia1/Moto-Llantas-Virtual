@@ -770,6 +770,23 @@ document.addEventListener('DOMContentLoaded', function () {
     // Inicializa al cargar (por si el usuario vuelve a la vista con errores)
     applyPattern();
 
+function handleEditExpenseClick(button) {
+    const id = button.getAttribute("data-id");
+    const date = button.getAttribute("data-date");
+    const amount = button.getAttribute("data-amount");
+    const description = button.getAttribute("data-description");
+    const category = button.getAttribute("data-category");
+
+    document.getElementById('edit-expense-id').value = id;
+    document.getElementById('edit-expense-date').value = date;
+    document.getElementById('edit-expense-amount').value = amount;
+    document.getElementById('edit-expense-description').value = description;
+    document.getElementById('edit-expense-category').value = category;
+
+    openExpenseModal('editExpenseModal');
+}
+
+
 
 // script for changeQuantity in productDetails
         function changeQuantity(delta) {
