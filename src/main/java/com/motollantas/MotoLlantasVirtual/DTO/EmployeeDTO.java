@@ -25,10 +25,12 @@ public class EmployeeDTO {
 
     private List<String> roles;
 
+    private Integer documentTypeId;
+
     public EmployeeDTO() {
     }
 
-    public EmployeeDTO(String fullName, String identification, String email, String address, LocalDate hiringDate, BigDecimal salary, String userPassword, List<String> roles) {
+    public EmployeeDTO(String fullName, String identification, String email, String address, LocalDate hiringDate, BigDecimal salary, String userPassword, List<String> roles, Integer documentTypeId) {
         this.fullName = fullName;
         this.identification = identification;
         this.email = email;
@@ -37,6 +39,15 @@ public class EmployeeDTO {
         this.salary = salary;
         this.userPassword = userPassword;
         this.roles = roles;
+        this.documentTypeId = documentTypeId;
+    }
+
+    public Integer getDocumentTypeId() {
+        return documentTypeId;
+    }
+
+    public void setDocumentTypeId(Integer documentTypeId) {
+        this.documentTypeId = documentTypeId;
     }
 
     public String getFullName() {

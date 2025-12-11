@@ -1,18 +1,23 @@
 package com.motollantas.MotoLlantasVirtual.ServiceImpl;
 
 import com.motollantas.MotoLlantasVirtual.DTO.EmployeeDTO;
-import com.motollantas.MotoLlantasVirtual.domain.Employee;
-import com.motollantas.MotoLlantasVirtual.domain.ChangeHistory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.*;
 import com.motollantas.MotoLlantasVirtual.Service.EmployeeService;
 import com.motollantas.MotoLlantasVirtual.Service.UserService;
+import com.motollantas.MotoLlantasVirtual.dao.DocumentTypeDao;
 import com.motollantas.MotoLlantasVirtual.dao.EmployeeDao;
+import com.motollantas.MotoLlantasVirtual.domain.ChangeHistory;
+import com.motollantas.MotoLlantasVirtual.domain.DocumentType;
+import com.motollantas.MotoLlantasVirtual.domain.Employee;
 import com.motollantas.MotoLlantasVirtual.domain.User;
-import java.security.SecureRandom;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -28,7 +33,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-    
+
+    @Autowired
+    private DocumentTypeDao documentTypeDao;
+
     private final List<String> availableRoles = Arrays.asList("ADMIN", "MECANICO", "SERVICIO_CLIENTE", "BODEGUERO");
 
     private static final List<String> ROLE_PRIORITY = List.of(
@@ -133,14 +141,25 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void createEmployeeWithUser(EmployeeDTO dto) {
+        // Validaciones básicas
         if (userService.existsByEmail(dto.getEmail())) {
             throw new RuntimeException("El correo ya está registrado.");
         }
-
         if (userService.existsByIdentification(dto.getIdentification())) {
             throw new RuntimeException("La identificación ya está registrada.");
         }
 
+        // 1) Resolver DocumentType ANTES de crear/guardar el usuario
+        if (dto.getDocumentTypeId() == null) {
+            throw new RuntimeException("Debe seleccionar el tipo de documento.");
+        }
+        DocumentType docType = documentTypeDao.findById(dto.getDocumentTypeId())
+                .orElseThrow(() -> new RuntimeException("Tipo de documento inválido."));
+        if (Boolean.FALSE.equals(docType.getIsActive())) {
+            throw new RuntimeException("El tipo de documento seleccionado no está activo.");
+        }
+
+        // 2) Crear User con docType e identificación
         String tempPassword = generateRandomPassword(10);
 
         User user = new User();
@@ -148,9 +167,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         user.setPassword(passwordEncoder.encode(tempPassword));
         user.setFullName(dto.getFullName());
         user.setIdentification(dto.getIdentification());
+        user.setDocumentType(docType);                 // 👉 CLAVE
         user.setUserType("EMPLOYEE");
+
         userService.save(user);
 
+        // 3) Crear Employee con el mismo docType
         Employee employee = new Employee();
         employee.setFullName(dto.getFullName());
         employee.setIdentification(dto.getIdentification());
@@ -161,6 +183,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setRoles(dto.getRoles());
         employee.setUser(user);
         employee.setActive(true);
+        employee.setDocumentType(docType);
         save(employee);
 
         String primaryRole = determinePrimaryRole(dto.getRoles());

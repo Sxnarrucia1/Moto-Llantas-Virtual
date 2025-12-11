@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="h-full" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+>
 <head th:replace="~{layout/layout :: head}">
     <title>Taller Llantas</title>
 </head>
@@ -10,7 +10,8 @@
 <section th:fragment="listEmployees">
     <div class="flex justify-between items-center mb-4">
         <h2 class="text-3xl font-bold text-orange-600">Lista de Empleados</h2>
-        <button onclick="openCreateEmployeeModal()" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded shadow">
+        <button onclick="openCreateEmployeeModal()"
+                class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded shadow">
             + Crear Nuevo Empleado
         </button>
     </div>
@@ -54,13 +55,15 @@
                             class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">
                         Editar
                     </button>
-                    <form th:action="@{'/employee/delete/' + ${employee.id}}" method="post" th:if="${employee.active}" class="inline">
+                    <form th:action="@{'/employee/delete/' + ${employee.id}}" method="post" th:if="${employee.active}"
+                          class="inline">
                         <button type="submit"
                                 class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">
                             Desactivar
                         </button>
                     </form>
-                    <form th:action="@{'/employee/restore/' + ${employee.id}}" method="post" th:if="${!employee.active}" class="inline">
+                    <form th:action="@{'/employee/restore/' + ${employee.id}}" method="post" th:if="${!employee.active}"
+                          class="inline">
                         <button type="submit"
                                 class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
                             Restaurar
@@ -76,9 +79,12 @@
     </div>
 
     <!-- Create Modal -->
-    <div id="createEmployeeModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div id="createEmployeeModal"
+         class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
         <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl relative">
-            <button onclick="closeCreateEmployeeModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+            <button onclick="closeCreateEmployeeModal()"
+                    class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">&times;
+            </button>
             <h3 class="text-xl font-semibold text-gray-800 mb-4">Crear Nuevo Empleado</h3>
 
             <form th:action="@{/employee/create}" method="post" th:object="${employeeDTO}" class="space-y-4">
@@ -86,38 +92,37 @@
 
                     <!-- NUEVO: Tipo de documento -->
                     <div>
-                        <label class="block text-sm font-medium mb-1">Tipo de documento</label>
-                        <select name="documentType.id"
+                        <select th:field="*{documentTypeId}"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-md
                                        focus:ring focus:ring-[#F47808] focus:outline-none"
                                 required>
-                            <option value="" selected>Seleccione...</option>
+                            <option value="" selected disabled>Tipo de Documento</option>
                             <option th:each="dt : ${documentTypes}"
                                     th:value="${dt.id}"
                                     th:text="${dt.name}">
                             </option>
                         </select>
                     </div>
-
+                    <input type="hidden" name="debugDocType" th:value="*{documentTypeId}">
                     <input type="text" name="identification" placeholder="Cédula"
-                           class="border p-2 rounded w-full" required />
+                           class="border p-2 rounded w-full" required/>
                     <input type="text" name="fullName" placeholder="Nombre Completo"
-                           class="border p-2 rounded w-full" required />
+                           class="border p-2 rounded w-full" required/>
                     <input type="email" name="email" placeholder="Correo"
-                           class="border p-2 rounded w-full" required />
+                           class="border p-2 rounded w-full" required/>
                     <input type="text" name="address" placeholder="Dirección"
-                           class="border p-2 rounded w-full" required />
+                           class="border p-2 rounded w-full" required/>
                     <input type="date" name="hiringDate"
-                           class="border p-2 rounded w-full" required />
+                           class="border p-2 rounded w-full" required/>
                     <input type="number" name="salary" placeholder="Salario"
-                           class="border p-2 rounded w-full" step="100000" required />
+                           class="border p-2 rounded w-full" step="100000" required/>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                         <div th:each="role : ${roles}">
                             <label class="inline-flex items-center space-x-2">
                                 <input type="checkbox" name="roles"
                                        th:value="${role}"
-                                       class="form-checkbox text-orange-500" />
+                                       class="form-checkbox text-orange-500"/>
                                 <span th:text="${role}"></span>
                             </label>
                         </div>
@@ -144,7 +149,8 @@
              class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
             <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl relative">
                 <button th:attr="onclick=|closeEditEmployeeModal('${employee.id}')|"
-                        class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+                        class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">&times;
+                </button>
                 <h3 class="text-xl font-semibold text-gray-800 mb-4">Editar Empleado</h3>
 
                 <form th:action="@{'/employee/update/' + ${employee.id}}" method="post" class="space-y-4">
@@ -152,12 +158,11 @@
 
                         <!-- NUEVO: Tipo de documento -->
                         <div>
-                            <label class="block text-sm font-medium mb-1">Tipo de documento</label>
                             <select name="documentType.id"
                                     class="w-full px-4 py-2 border border-gray-300 rounded-md
                                            focus:ring focus:ring-[#F47808] focus:outline-none"
                                     required>
-                                <option value="">Seleccione...</option>
+                                <option value="">Tipo de Documento</option>
                                 <option th:each="dt : ${documentTypes}"
                                         th:value="${dt.id}"
                                         th:text="${dt.name}"
@@ -168,22 +173,22 @@
 
                         <input type="text" name="identification"
                                th:value="${employee.identification}" placeholder="Cédula"
-                               class="border p-2 rounded w-full" required />
+                               class="border p-2 rounded w-full" required/>
                         <input type="text" name="fullName"
                                th:value="${employee.fullName}" placeholder="Nombre Completo"
-                               class="border p-2 rounded w-full" required />
+                               class="border p-2 rounded w-full" required/>
                         <input type="email" name="email"
                                th:value="${employee.email}" placeholder="Correo"
-                               class="border p-2 rounded w-full" required />
+                               class="border p-2 rounded w-full" required/>
                         <input type="text" name="address"
                                th:value="${employee.address}" placeholder="Dirección"
-                               class="border p-2 rounded w-full" required />
+                               class="border p-2 rounded w-full" required/>
                         <input type="date" name="hiringDate"
                                th:value="${employee.hiringDate}"
-                               class="border p-2 rounded w-full" required />
+                               class="border p-2 rounded w-full" required/>
                         <input type="number" name="salary"
                                th:value="${employee.salary}" placeholder="Salario"
-                               class="border p-2 rounded w-full" step="100000" required />
+                               class="border p-2 rounded w-full" step="100000" required/>
 
                         <div th:each="role : ${roles}">
                             <label class="inline-flex items-center space-x-2">
@@ -191,7 +196,7 @@
                                        name="roles"
                                        th:value="${role}"
                                        th:checked="${employee.roles.contains(role)}"
-                                       class="form-checkbox text-orange-500" />
+                                       class="form-checkbox text-orange-500"/>
                                 <span th:text="${role}"></span>
                             </label>
                         </div>
@@ -251,13 +256,15 @@
                               th:text="${employee.active} ? 'Activo' : 'Inactivo'"></span>
                 </td>
                 <td class="px-6 py-4 text-center space-x-2">
-                    <form th:action="@{'/employee/delete/' + ${employee.id}}" method="post" th:if="${employee.active}" class="inline">
+                    <form th:action="@{'/employee/delete/' + ${employee.id}}" method="post" th:if="${employee.active}"
+                          class="inline">
                         <button type="submit"
                                 class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">
                             Desactivar
                         </button>
                     </form>
-                    <form th:action="@{'/employee/restore/' + ${employee.id}}" method="post" th:if="${!employee.active}" class="inline">
+                    <form th:action="@{'/employee/restore/' + ${employee.id}}" method="post" th:if="${!employee.active}"
+                          class="inline">
                         <button type="submit"
                                 class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm"
                                 onclick="return confirm('¿Está usted seguro que quiere restaurar este empleado?')">
@@ -277,7 +284,7 @@
 <section th:fragment="filterByRole">
     <form th:action="@{/employee/search}" method="get" class="mb-4 flex flex-wrap items-center gap-4">
         <input type="text" name="identification" th:value="${identification}" placeholder="Buscar por cédula"
-               class="border p-2 rounded w-64" />
+               class="border p-2 rounded w-64"/>
 
         <select name="role" class="border p-2 rounded">
             <option value="">-- Filtrar por rol --</option>
