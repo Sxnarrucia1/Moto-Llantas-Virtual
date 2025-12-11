@@ -334,42 +334,63 @@ function handleModalFormSubmit(form) {
     }
 }
 
+
 function initializeProductForm(scope) {
-    const addButton = scope.querySelector('#add-product-btn');
-    const usageList = scope.querySelector('#product-usage-list');
-    const optionsTemplate = scope.querySelector('#product-options-template');
+  const addButton = scope.querySelector('#add-product-btn');
+  const usageList = scope.querySelector('#product-usage-list');
+  const optionsTemplate = scope.querySelector('#product-options-template');
 
-    if (!addButton || !usageList || !optionsTemplate) {
-        console.warn('Elementos del formulario de productos no encontrados.');
-        return;
+  if (!addButton || !usageList || !optionsTemplate) {
+    console.warn('Elementos del formulario de productos no encontrados.');
+    return;
+  }
+
+  // Agregar filas
+  addButton.addEventListener('click', () => {
+    const index = usageList.children.length;
+    const productOptions = optionsTemplate.innerHTML;
+
+    const row = document.createElement('div');
+    row.className = 'product-row grid grid-cols-4 gap-4 mb-2 items-center';
+    row.innerHTML = `
+      <select name="usedProducts[${index}].product.id" class="form-select rounded-md border-gray-300">
+        ${productOptions}
+      </select>
+      <input type="number" min="1" name="usedProducts[${index}].quantityUsed" class="form-input rounded-md border-gray-300" placeholder="Cantidad usada" />
+      <input type="text" name="usedProducts[${index}].notes" class="form-input rounded-md border-gray-300" placeholder="Notas (opcional)" />
+      <button type="button" class="remove-product-btn text-red-600 hover:text-red-800 font-bold text-xl leading-none" aria-label="Eliminar producto">&times;</button>
+    `;
+    usageList.appendChild(row);
+  });
+
+  // Delegado para eliminar filas (robusto y sin cerrar el modal)
+  usageList.addEventListener('click', (event) => {
+    const btn = event.target.closest('.remove-product-btn');
+    if (!btn) return;
+
+    event.preventDefault();
+    event.stopPropagation(); // <-- clave para que no cierre el modal
+
+    const row = btn.closest('.product-row');
+    if (row) {
+      row.remove();
+      reindexUsedProducts(usageList);
     }
+  });
 
-    addButton.addEventListener('click', () => {
-        const index = usageList.children.length;
-        const productOptions = optionsTemplate.innerHTML;
-
-        const row = document.createElement('div');
-        row.className = 'product-row grid grid-cols-4 gap-4 mb-2 items-center';
-        row.innerHTML = `
-            <select name="usedProducts[${index}].product.id" class="form-select rounded-md border-gray-300">
-                ${productOptions}
-            </select>
-            <input type="number" min="1" name="usedProducts[${index}].quantityUsed" class="form-input rounded-md border-gray-300" placeholder="Cantidad usada" />
-            <input type="text" name="usedProducts[${index}].notes" class="form-input rounded-md border-gray-300" placeholder="Notas (opcional)" />
-            <button type="button" class="remove-product-btn text-red-600 hover:text-red-800 font-bold text-xl leading-none">&times;</button>
-        `;
-        usageList.appendChild(row);
+  // Reindexa los name="usedProducts[i].campo" tras eliminar
+  function reindexUsedProducts(list) {
+    [...list.querySelectorAll('.product-row')].forEach((row, i) => {
+      const sel = row.querySelector('select[name^="usedProducts"][name$=".product.id"]');
+      const qty = row.querySelector('input[name^="usedProducts"][name$=".quantityUsed"]');
+      const notes = row.querySelector('input[name^="usedProducts"][name$=".notes"]');
+      if (sel) sel.name = `usedProducts[${i}].product.id`;
+      if (qty) qty.name = `usedProducts[${i}].quantityUsed`;
+      if (notes) notes.name = `usedProducts[${i}].notes`;
     });
-
-    usageList.addEventListener('click', (event) => {
-        if (event.target.classList.contains('remove-product-btn')) {
-            event.preventDefault();
-            const row = event.target.closest('.product-row');
-            if (row)
-                row.remove();
-        }
-    });
+  }
 }
+
 
 function attachAllModalFormListeners() {
     const modalContent = document.getElementById("modal-content");
