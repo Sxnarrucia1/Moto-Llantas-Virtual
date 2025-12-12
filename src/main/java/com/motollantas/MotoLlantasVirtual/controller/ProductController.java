@@ -31,6 +31,7 @@ public class ProductController {
         List<Product> products = productService.getAllProductsOrdered();
         List<Product> expiringProducts = productService.getProductsExpiringSoon(30);
 
+        model.addAttribute("categorias", categoryService.getAllCategories());
         model.addAttribute("productos", products);
         model.addAttribute("expiringProducts", expiringProducts);
         System.out.println("Productos por vencer: " + expiringProducts.size());
@@ -75,6 +76,7 @@ public class ProductController {
         String result = productService.saveProduct(product, imageFile);
 
         if (result.startsWith("error:")) {
+            model.addAttribute("categorias", categoryService.getAllCategories());
             model.addAttribute("error", result.substring(6));
             model.addAttribute("editProduct", product);
             return "inventory/inventory";

@@ -32,6 +32,9 @@ public class Product {
 
     private boolean status;
 
+    @Column(name = "lote")
+    private String lote;
+
     @Column(name = "expiration_date")
     private LocalDate expirationDate;
 
@@ -110,10 +113,13 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
+    public String getLote() { return lote; }
+    public void setLote(String lote) { this.lote = lote; }
+
     public Product() {
     }
 
-    public Product(String name, String description, Category  category, BigDecimal price, Integer stock, boolean status, LocalDate expirationDate, String imageUrl) {
+    public Product(String name, String description, Category  category, BigDecimal price, Integer stock, boolean status, LocalDate expirationDate, String imageUrl, String lote) {
         this.name = name;
         this.description = description;
         this.category = category;
@@ -122,5 +128,6 @@ public class Product {
         this.status = status;
         this.expirationDate = expirationDate;
         this.imageUrl = imageUrl;
+        this.lote = lote;
     }
 }
