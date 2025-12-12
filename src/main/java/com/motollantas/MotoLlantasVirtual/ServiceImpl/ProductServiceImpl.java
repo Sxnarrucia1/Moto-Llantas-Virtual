@@ -1,8 +1,10 @@
 package com.motollantas.MotoLlantasVirtual.ServiceImpl;
 
+import com.motollantas.MotoLlantasVirtual.Service.CategoryService;
 import com.motollantas.MotoLlantasVirtual.Service.ProductService;
 import com.motollantas.MotoLlantasVirtual.Service.S3Service;
 import com.motollantas.MotoLlantasVirtual.dao.ProductDao;
+import com.motollantas.MotoLlantasVirtual.domain.Category;
 import com.motollantas.MotoLlantasVirtual.domain.Product;
 import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private S3Service s3Service;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @Override
     public List<Product> getActiveProducts() {
@@ -102,6 +107,18 @@ public class ProductServiceImpl implements ProductService {
         if (product.getExpirationDate() == null && original != null) {
             product.setExpirationDate(original.getExpirationDate());
         }
+
+        // Maneja la categoria
+        if (product.getCategory() != null && product.getCategory().getId() != null) {
+            Category cat = categoryService.getCategoryById(product.getCategory().getId());
+            product.setCategory(cat);
+        } else if (original != null) {
+            product.setCategory(original.getCategory());
+        }
+
+
+
+        System.out.println("CATEGORY ID RECIBIDO = " + product.getCategory().getId());
 
         // Guardar en base
         productDao.save(product);
